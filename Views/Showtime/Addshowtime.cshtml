@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "Addshowtime";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var theater = MovieTicketBooking.Dao.TheaterDao.Instance().getAllTheater();
+
+
+}
+@model MovieTicketBooking.Models.Movie
+@{
+    var showtimes = MovieTicketBooking.Dao.ShowtimeDao.Instance().getShowtimeOfMovie(Model.movie_id);
+    String p = Model.release_date?.ToString("yyyy-MM-dd");
+}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<style>
+
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        background-color: #0F021B;
+        border: 1px solid #640EA1;
+    }
+
+    tr {
+        border: 1px solid #640EA1;
+    }
+
+    thead th {
+        background-color: #492173;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+        background-color: #1A042D;
+    }
+
+    img {
+        max-width: 200px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        border-radius: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px
+    }
+
+
+
+    .truncate-overflow {
+        --max-lines: 5;
+        position: relative;
+        overflow: hidden;
+        padding-right: 1rem;
+        max-width: 20%;
+    }
+
+
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity here */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        /* Ensure the loading overlay stays on top */
+    }
+
+    .loader {
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+
+
+
+
+        .loader.active {
+            display: block;
+        }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        color: aliceblue;
+        background-color: #2A3038;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    #imagePreview {
+        display: none;
+        margin-top: 37px;
+        border-radius: 10px;
+    }
+
+    .grid-container {
+        display: grid;
+        gap: 2px;
+        /* Adjust gap between squares */
+    }
+
+    .grid-item {
+        background-color: lightblue;
+        /* Adjust square color */
+        border: 1px solid darkblue;
+        /* Adjust square border */
+    }
+</style>
+<div class="card mb-3" style="max-width: 100%;margin:auto">
+    <div class="row g-0">
+        <div class="card-header" style="color:aliceblue; font-size:15px;font-weight:bold">Show time of movie</div>
+        <div class="col-md-1" style="margin-left:30px;padding:0">
+            <img src="@Model.poster_image" class="img-fluid rounded-start" alt="..." style="height:200px">
+        </div>
+        <div class="col-md-4" style="padding:0;border-right:1px solid grey">
+            <div class="card-body">
+                <h5 class="card-title">Movie: @Model.title</h5>
+                <p class="card-text" style="color:aliceblue">Duration: @Model.duration minutes</p>
+                <p class="card-text" style="color:aliceblue">Release date: @p</p>
+
+            </div>
+        </div>
+        <div class="col-md-4" style="padding:0">
+            <div class="card-body">
+                <p class="card-title">Genre: @Model.genre</p>
+                <p class="card-text" style="color:aliceblue">Language: @Model.language </p>
+                <p class="card-text" style="color:aliceblue">Director: @Model.director</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; color: #492173; background-color: #8f56cc; border: none" onclick="formaddroom()">Add Showtime </button>
+<div id="newtheater" style="display: none; background-color: #1e1e27e3; border-radius: 10px; padding: 10px; ">
+
+    <form method="post" action="/Showtime/Insertshowtimeofmovie" enctype="multipart/form-data">
+        <div>
+            <input type="hidden" value="@Model.movie_id" name="movie_id" />
+            <div style="color:aliceblue; font-size:20px;font-weight:bold;margin-bottom:30px">Show timing</div>
+            <div style="display:flex;justify-content:space-around ">
+
+                <div class="form-group" style="width:48%">
+                    <label for="date" class="form-label">Theater</label>
+                    <select class="form-control" id="theaterSelect" name="theater_id" style="color:aliceblue">
+                        <option value="">Select Theater</option>
+                        @for (int i = 0; i < theater.Count; i++)
+                        {
+                            <option value="@theater[i].theater_id">@theater[i].name</option>
+                        }
+
+                    </select>
+                </div>
+                <div id="roomContainer" style="width:48%">
+                    <label for="date" class="form-label">Room</label>
+                </div>
+
+
+            </div>
+            <div style="display:flex;justify-content:space-around">
+                <div class="form-group" style="width:30%">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="show_date">
+                </div>
+                <div class="form-group" style="width:30%">
+                    <label for="time" class="form-label">Time Start</label>
+                    <input type="time" class="form-control" id="time" name="starttime" step="60">
+                </div>
+                <div class="form-group" style="width:30%">
+                    <label for="time" class="form-label">Time End</label>
+                    <input type="time" class="form-control" id="time" name="endtime" step="60">
+                    <input type="hidden" value="0" name="status" />
+                </div>
+            </div>
+        </div>
+        <button class="upload btn btn-primary btn-icon-text" type="submit" style="margin-top:30px" id="btnsubmit"> <i class="mdi mdi-file-check btn-icon-prepend"></i>Save</button>
+
+    </form>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:100px;text-align:center">NO</th>
+                <th style="width:250px;text-align:center">THEATER</th>
+                <th style="width:150px;text-align:center">SHOW DATE</th>
+                <th style="width:150px;text-align:center">START TIME</th>
+                <th style="width:150px;text-align:center">END TIME</th>
+                <th style="width:150px;text-align:center">STATUS</th>
+                <th style="width:100px;text-align:center">DELETE</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < showtimes.Count; i++)
+            {
+
+                String post = showtimes[i].show_date.ToString("yyyy-MM-dd");
+                String st = showtimes[i].starttime.ToString("hh:mm tt");
+                String et = showtimes[i].endtime.ToString("hh:mm tt");
+                int sta = showtimes[i].status;
+                String stat = "";
+                if (sta == 0)
+                {
+                    stat = "Comming";
+                }
+                else
+                {
+                    stat = "Ended";
+                }
+                <tr>
+                    <td style="width:100px;text-align:center">@(i+1)</td>
+                    <td style="display:flex;justify-content:center;align-items:center"><div style="width: 250px; word-wrap: break-word; text-align: center">@showtimes[i].Theater.name <br />(@showtimes[i].Room.room_name)</div></td>
+                    <td style="width:150px;text-align:center">@post</td>
+                    <td style="width:150px;text-align:center">@st</td>
+                    <td style="width:150px;text-align:center">@et</td>
+                    <td style="width:150px;text-align:center">@stat</td>
+                    <td style="width:100px;text-align:center"><button type="button" style="height: 40px; border: none; border-radius: 10px; background-color: #9a17e6; color: white; font-weight: bold;">Delete</button></td>
+                </tr>
+
+            }
+
+
+        </tbody>
+    </table>
+</div>
+<script>
+    $('#theaterSelect').change(function () {
+        var theaterId = $(this).val();
+        $.ajax({
+            url: '/Showtime/FetchRooms', // Controller action to fetch rooms
+            type: 'GET',
+            data: { theaterId: theaterId },
+            success: function (response) {
+                $('#roomContainer').html(response); // Display rooms in the container
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    function formaddroom() {
+        var x = document.getElementById("newtheater");
+
+        if (x.style.display === "none") {
+            x.style.display = "block";
+
+
+        } else {
+            x.style.display = "none";
+
+        }
+    }
+</script>

@@ -1,0 +1,240 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+@model List<MovieTicketBooking.Models.Movie>
+<style>
+    /* CSS */
+    .button-42 {
+        background-color: initial;
+        background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+        height: 40px;
+        line-height: 40px;
+        outline: 0;
+        overflow: hidden;
+        padding: 0 20px;
+        pointer-events: auto;
+        position: relative;
+        text-align: center;
+        touch-action: manipulation;
+        user-select: none;
+        -webkit-user-select: none;
+        vertical-align: top;
+        white-space: nowrap;
+        width: 10%;
+        z-index: 9;
+        border: 0;
+        transition: box-shadow .2s;
+    }
+
+        .button-42:hover {
+            box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+        }
+</style>
+
+<div data-elementor-type="wp-page" data-elementor-id="84" class="elementor elementor-84">
+    <section class="elementor-section elementor-top-section elementor-element elementor-element-08975e9 elementor-section-full_width elementor-section-height-default elementor-section-height-default"
+             data-id="08975e9" data-element_type="section">
+        <div class="elementor-container elementor-column-gap-default">
+            <div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-222b7e7"
+                 data-id="222b7e7" data-element_type="column">
+                <div class="elementor-widget-wrap elementor-element-populated">
+                    <div class="elementor-element elementor-element-6dd3468 elementor-widget__width-inherit elementor-widget elementor-widget-Amy_Movie_Slide"
+                         data-id="6dd3468" data-element_type="widget"
+                         data-widget_type="Amy_Movie_Slide.default">
+                        <div class="elementor-widget-container">
+
+                            <div class="amy-shortcode amy-mv-slide">
+                                <div class="amy-slick "
+                                     data-slick='{"slidesToShow":1,"slidesToScroll":1,"autoplay":true,"autoplaySpeed":3000,"prevArrow": "<a class=\"amy-arrow fa amy-pre fa-chevron-right\"></a>","nextArrow": "<a class=\"amy-arrow fa amy-next fa-chevron-left\"></a>","arrows":true,"infinite":true,"fade":true,"useCSS":true,"useTransform":true,"dots":true}'>
+                                    <div class="slide-item">
+
+                                    </div>
+                                    <div class="slide-item">
+                                        <div class="slide-thumb">
+                                            <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
+                                                <img src="~/asset/assets/images/img_27.jpg"
+                                                     alt="The Hurricane Heist" />
+                                            </a>
+                                        </div>
+                                        <div class="slide-content">
+                                            <h2 class="slide-title">
+                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
+                                                    The Hurricane <span class="last_word">Heist</span>
+                                                </a>
+                                            </h2>
+
+                                            <div class="slide-release">
+                                                From <span>
+                                                    Apr 29
+                                                </span>
+                                            </div>
+
+                                            <div class="slide-desc">
+                                                <p>
+                                                    Sed ut perspiciatis unde omnis iste natus error sit
+                                                    voluptatem accusantium doloremque laudantium, totam
+                                                    rem aperiam, eaque ipsa quae ab ...
+                                                </p>
+                                            </div>
+
+                                            <div class="slide-button">
+                                                <a href="https://player.vimeo.com/video/51834631"
+                                                   class="fancybox.iframe amy-fancybox">
+                                                    <i aria-hidden="true" class="fa fa-play"></i>
+                                                    Trailer
+                                                </a>
+                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
+                                                    <i aria-hidden="true" class="fa fa-exclamation"></i>
+                                                    Detail
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="elementor-container elementor-column-gap-default">
+        <div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-a503e51"
+             data-id="a503e51" data-element_type="column">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                <div class="elementor-element elementor-element-46cb6f1 elementor-widget elementor-widget-Amy_V2_Movie_Heading"
+                     data-id="46cb6f1" data-element_type="widget"
+                     data-widget_type="Amy_V2_Movie_Heading.default">
+                    <div class="elementor-widget-container">
+                        <div class="amy-heading text-center has-seperator    seperator-1 ">
+                            <header class="entry-header">
+                                <span class="seperator seperator-left"></span>
+                                <h2 class="title-heading"><span class="title">Now Playing</span></h2><span class="seperator seperator-right"></span>
+                            </header>
+                        </div>
+                    </div>
+                </div>
+                <div class="elementor-element elementor-element-f8ea438 elementor-widget elementor-widget-Amy_Movie_Grid"
+                     data-id="f8ea438" data-element_type="widget" data-widget_type="Amy_Movie_Grid.default">
+                    <div class="elementor-widget-container">
+                        <div class="amy-shortcode amy-mv-grid layout1">
+
+                            <div style="width:80%;margin:auto">
+
+                                <div class="row amy-ajax-content">
+                                    @for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        String post = Model[i].release_date?.ToString("yyyy-MM-dd");
+                                        <div class="col-md-15 grid-item">
+                                            <article class="entry-item" onclick="">
+                                                <div class="entry-thumb">
+                                                    <img class=""
+                                                         src="@Model[i].poster_image"
+                                                         alt="Kubo and the Two Strings">
+                                                    <div class="right-info">
+                                                        <span class="pg">
+                                                            G
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="entry-content">
+                                                    <h4 class="entry-title">
+                                                        @Model[i].title
+                                                    </h4>
+                                                    <div class="entry-date">
+                                                        Release: @post
+                                                    </div>
+                                                    <div class="entry-button">
+                                                        <a href="https://player.vimeo.com/video/51834631">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Trailer
+                                                        </a>
+                                                        <a href="/Client/Detail_movie?movie_id=@Model[i].movie_id">
+                                                            <i aria-hidden="true" class="fa fa-exclamation"></i>
+                                                            Detail
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="pic-caption open-left">
+                                                    <h4 class="entry-title">
+                                                        <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/kubo-and-the-two-strings/">
+                                                            @Model[i].title
+                                                        </a>
+                                                    </h4>
+                                                    <span class="pg">
+                                                        G
+                                                    </span>
+                                                    <div class="desc-mv">
+                                                        <p>
+                                                            <span>Release: </span>
+                                                            @post
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Genre: </span>
+                                                            <a href="">@Model[i].genre</a>,
+
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Duration: </span>
+                                                            @Model[i].duration  minutes
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Language: </span>
+                                                            @Model[i].language
+                                                        </p>
+                                                    </div>
+                                                    <div class="entry-button" style="top:80%">
+                                                        <a href="https://player.vimeo.com/video/51834631"
+                                                           class="fancybox.iframe amy-fancybox">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Buy Ticket
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="entry-button">
+                                                        <a href="https://player.vimeo.com/video/51834631"
+                                                           class="fancybox.iframe amy-fancybox">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Trailer
+                                                        </a>
+                                                        <a href="/Client/Detailmovie?movie_id=@Model[i].movie_id">
+                                                            <i aria-hidden="true" class="fa fa-exclamation"></i>
+                                                            Detail
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+
+                                    }
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HTML !-->
+<div style="text-align:center;margin:15px 15px">
+    <button class="button-42" role="button">Button 42</button>
+</div>
+

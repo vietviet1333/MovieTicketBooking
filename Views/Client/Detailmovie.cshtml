@@ -1,0 +1,416 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    ViewBag.Title = "Detail_movie";
+    var cities = MovieTicketBooking.Dao.TheaterDao.Instance().GetCityShowtime();
+}
+@model MovieTicketBooking.Models.Movie
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+<style>
+    .modalshowtime {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 99999; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* modalshowtime Content/Box */
+    .modalshowtime-content {
+        background-color: #f0e3d8;
+        margin: 5% auto; /* 15% from the top and centered */
+        padding: 20px 20px;
+        border: 1px solid #888;
+        width: 80%;
+        height: 500px;
+        overflow-y: scroll;
+    }
+
+    /* The clo Button */
+    .clo {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .clo:hover,
+        .clo:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .bo {
+        width: 70%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .phim {
+        font-size: 3ch;
+        font-weight: bold;
+        color: rgb(53, 53, 53);
+        border-bottom: 3px solid #fe7900;
+        padding-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .phim-content {
+        width: 100%;
+    }
+
+    .to {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        margin-top: 40px;
+    }
+
+    .tol {
+        height: auto;
+        width: 25%;
+    }
+
+        .tol img {
+            width: 90%;
+        }
+
+    .tor {
+        width: 70%;
+    }
+
+    .moti {
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px solid rgb(185, 185, 185);
+        font-size: 23px;
+        font-weight: bold
+    }
+
+    .inf {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .infl {
+        font-weight: bold;
+        width: 20%;
+    }
+
+        .infl div {
+            height: 30px;
+            font-size: 20px;
+        }
+
+    .infr {
+        color: rgb(94, 94, 94);
+        width: 80%;
+    }
+
+        .infr div {
+            height: 30px;
+            font-size: 15px;
+            align-items: center;
+            display: flex
+        }
+
+    .btn-end button {
+        border: none;
+        background-color: #fe7900;
+        color: white;
+        border-radius: 5px;
+        margin-top: 20px;
+        height: 30px;
+    }
+
+        .btn-end button:hover {
+            cursor: pointer;
+            border: none;
+            background-color: #000648;
+            color: white;
+        }
+
+    .bot {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .det {
+        text-align: center;
+        color: #fe7900;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .dett {
+        width: 100%;
+        height: auto;
+        font-size: 17px;
+        margin-bottom: 20px
+    }
+
+    .da.selected {
+        background-color: rgb(241, 188, 136); /* Change background color when selected */
+    }
+
+    .btncity.selectedne {
+        background-color: black;
+        color: #f0e3d8;
+        border: none;
+        border-radius: 5px
+    }
+
+    .da {
+        display: flex;
+        width: 100px;
+        height: 60px;
+        background-color: antiquewhite;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid black;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    .ngay {
+        margin-left: 10px;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btncity {
+        border: none;
+        margin: 10px 10px;
+        background-color: #f0e3d8;
+        height: 50px
+    }
+</style>
+<div id="showtime" class="modalshowtime">
+    <div class="modalshowtime-content">
+        <span class="clo">&times;</span>
+        <div class="date-range" id="dateRangeContainer" style="display: flex;justify-content:space-evenly; height :100px;border-bottom:2px solid black">
+            <!-- Date buttons will be generated here -->
+        </div>
+        <input type="hidden"  data-movieid="@Model.movie_id" id="movie_id" />
+        <div style="display: flex; margin-top: 20px; border-bottom: 2px solid black; width: 98.5%;">
+            @foreach (var city in cities)
+            {
+                <button name="@city.id_city" class="btncity">@city.title_city</button>
+            }
+        </div>
+
+        <div id="showtimetheater">
+
+        </div>
+    </div>
+</div>
+<div style="height:20px"></div>
+<div class="bo">
+    <div class="phim">
+        Movie Details
+    </div>
+    <div class="phim-content">
+        <div class="to">
+            <div class="tol">
+                <img src="@Model.poster_image"
+                     alt="" class="anh">
+
+            </div>
+            <div class="tor">
+                <div class="moti">
+                    @Model.title
+                </div>
+                <div class="inf">
+                    <div class="infl">
+                        <div>Director: </div>
+                        <div>Cast: </div>
+                        <div>Genre:</div>
+                        <div>Release date: </div>
+                        <div>Duration: </div>
+                        <div>Language: </div>
+                    </div>
+                    <div class="infr">
+                        <div> @Model.director</div>
+                        <div>@Model.cast</div>
+                        <div>@Model.genre</div>
+                        <div>@(Model.release_date?.ToString("yyyy-MM-dd"))</div>
+                        <div>@Model.duration minutes</div>
+                        <div>@Model.language</div>
+                    </div>
+                </div>
+                <div class="btn-end">
+                    <button>Trailler</button>
+                    <button id="openShowtime">Buy ticket</button>
+                </div>
+            </div>
+        </div>
+        <div class="bot">
+            <div class="det">Details</div>
+            <div class="dett">@Model.description</div>
+        </div>
+    </div>
+
+</div>
+<script>
+    // Get the modalshowtime
+    var modalshowtime = document.getElementById("showtime");
+
+    // Get the button that opens the modalshowtime
+    var btn = document.getElementById("openShowtime");
+
+    // Get the <span> element that clos the modalshowtime
+    var span = document.getElementsByClassName("clo")[0];
+
+    // When the user clicks on the button, open the modalshowtime
+    btn.onclick = function () {
+        modalshowtime.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), clo the modalshowtime
+    span.onclick = function () {
+        modalshowtime.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modalshowtime, clo it
+    window.onclick = function (event) {
+        if (event.target == modalshowtime) {
+            modalshowtime.style.display = "none";
+        }
+    }
+
+</script>
+<script>
+    var today = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var dateRangeContainer = document.getElementById("dateRangeContainer");
+
+    for (var i = 0; i < 10; i++) {
+        var date = new Date(today.getTime() + i * 24 * 60 * 60 * 1000);
+        var yyyy = date.getFullYear();
+        var mm = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because getMonth() returns zero-based month index
+        var ddStr = String(date.getDate()).padStart(2, '0');
+        var button = document.createElement("button");
+        button.classList.add("da");
+        button.name = yyyy + '-' + mm + '-' + ddStr;
+        var dayDiv = document.createElement("div");
+        var monthSpan = document.createElement("span");
+        monthSpan.classList.add("thang");
+        monthSpan.textContent = date.getMonth() + 1;
+        var dayOfWeekEm = document.createElement("em");
+        dayOfWeekEm.classList.add("thu");
+        dayOfWeekEm.textContent = days[date.getDay()];
+        dayDiv.appendChild(monthSpan);
+        dayDiv.appendChild(document.createElement("br"));
+        dayDiv.appendChild(dayOfWeekEm);
+
+        var dateStrong = document.createElement("strong");
+        dateStrong.classList.add("ngay");
+        var dateDiv = document.createElement("div");
+        dateDiv.style.fontSize = "30px";
+        dateDiv.textContent = date.getDate();
+        dateStrong.appendChild(dateDiv);
+
+        button.appendChild(dayDiv);
+        button.appendChild(dateStrong);
+        if (i === 0) {
+            button.classList.add("selected");
+            button.id = "selectedButton";
+        }
+        // Add event listener to each button
+        button.addEventListener("click", function () {
+            // Remove 'selected' class from all buttons
+            var buttons = document.querySelectorAll(".da");
+            buttons.forEach(function (btn) {
+                btn.classList.remove("selected");
+                btn.removeAttribute("id");
+            });
+
+            // Add 'selected' class to the clicked button
+            this.classList.add("selected");
+            this.id = "selectedButton";
+        });
+        dateRangeContainer.appendChild(button);
+    };
+
+</script>
+<script>
+
+
+    var btnci = document.querySelectorAll(".btncity");
+    btnci[0].classList.add("selectedne");
+    btnci[0].id = "btncity";
+    // Loop through each button and add event listener
+    btnci.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            // Remove 'selected' class from all buttons
+            btnci.forEach(function (btn) {
+                btn.classList.remove("selectedne");
+                btn.removeAttribute("id");
+            });
+
+            // Add 'selected' class to the clicked button
+            this.classList.add("selectedne");
+            this.id = "btncity";
+        });
+    });
+
+</script>
+<script>
+    $(".btncity,.da").on("click", function () {
+        debugger
+        var showtimedatee = $("#selectedButton").attr("name");
+        var city = $("#btncity").attr("name");
+        var movie_id = $("#movie_id").data("movieid");
+        $.ajax({
+            url: '/Showtime/TheaterShowtime', // Controller action to fetch rooms
+            type: 'POST',
+            data: {
+                id_city: city,
+                showtimedate: showtimedatee,
+                movieid: movie_id
+
+            },
+            success: function (response) {
+                $('#showtimetheater').html(response); // Display rooms in the container
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+    function getdatadefault() {
+        debugger
+        var showtimedatee = $("#selectedButton").attr("name");
+        var city = $("#btncity").attr("name");
+        var movie_id = $("#movie_id").data("movieid");
+
+        $.ajax({
+            url: '/Showtime/TheaterShowtime', // Controller action to fetch rooms
+            type: 'POST',
+            data: {
+                id_city: city,
+                showtimedate: showtimedatee,
+                movieid: movie_id
+
+            },
+            success: function (response) {
+                $('#showtimetheater').html(response); // Display rooms in the container
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    };
+    getdatadefault();
+</script>

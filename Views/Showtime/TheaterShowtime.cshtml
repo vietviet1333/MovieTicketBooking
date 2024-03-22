@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewBag.Title = "TheaterShowtime";
+    DateTime showtimedate = (DateTime)ViewData["ShowtimeDate"];
+}
+@model List<MovieTicketBooking.Models.Theater>
+
+<style>
+    .theatershowtime {
+        padding: 20px 20px;
+        width: 99%;
+        border-bottom: 1px solid grey;
+    }
+
+    .showtimee {
+        margin-top: 20px
+    }
+
+    .name {
+        font-size: 20px;
+        font-weight: bold
+    }
+
+    
+</style>
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="theatershowtime">
+        <div class="name" data-theaterid="@Model[i].theater_id">@Model[i].name</div>
+        <div class="showdate" data-showdate="@showtimedate" hidden></div>
+        <div class="showtimee"></div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".name").each(function () {
+            var theaterId = $(this).data("theaterid");
+            var showtimeDate = $(".showdate").data("showdate");
+            getShowtime(theaterId, showtimeDate, $(this).siblings('.showtimee'));
+            
+        });
+    });
+
+    function getShowtime(theaterId,showtimeDate, container) {
+    
+        $.ajax({
+            url: '/Showtime/ShowtimeofTheater',
+            type: 'POST',
+            data: {
+                theater_id: theaterId,
+                showtimedate: showtimeDate,
+            },
+            success: function (response) {
+                container.html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+ 
+    }
+</script>

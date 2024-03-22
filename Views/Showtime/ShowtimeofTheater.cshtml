@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "TheaterShowtime";
+}
+@model List<MovieTicketBooking.Models.Showtime>
+<style>
+    .time {
+        margin-left: 10px;
+        border: 1px solid grey;
+        height: 30px;
+        width: 80px;
+        background-color: #f0e3d8;
+        border-radius: 5px
+    }
+</style>
+<div style="display:flex">
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var start = Model[i].starttime.ToString("hh:mm tt");
+        <a href="/Showtime/ShowtimeBooking?showtimeid=@Model[i].showtime_id">
+            <button class="time">@start</button>
+        </a>
+
+    }
+</div>

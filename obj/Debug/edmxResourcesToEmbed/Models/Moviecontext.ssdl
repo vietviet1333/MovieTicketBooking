@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MovieTicketBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Admin">
+          <Property Name="username" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar(max)" />
+        </EntityType>-->
+  <EntityType Name="Chair">
+    <Key>
+      <PropertyRef Name="chair_id" />
+    </Key>
+    <Property Name="chair_id" Type="int" Nullable="false" />
+    <Property Name="room_id" Type="int" />
+    <Property Name="chair_type" Type="int" />
+  </EntityType>
+  <EntityType Name="Movie">
+    <Key>
+      <PropertyRef Name="movie_id" />
+    </Key>
+    <Property Name="movie_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="varchar" MaxLength="200" />
+    <Property Name="description" Type="varchar(max)" />
+    <Property Name="release_date" Type="date" />
+    <Property Name="duration" Type="int" />
+    <Property Name="genre" Type="varchar" MaxLength="100" />
+    <Property Name="poster_image" Type="varchar" MaxLength="400" />
+    <Property Name="director" Type="varchar" MaxLength="200" />
+    <Property Name="cast" Type="varchar(max)" />
+    <Property Name="language" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="room_id" />
+    </Key>
+    <Property Name="room_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="room_name" Type="varchar" MaxLength="100" />
+    <Property Name="capacity" Type="int" />
+    <Property Name="theater_id" Type="int" />
+  </EntityType>
+  <EntityType Name="Theater">
+    <Key>
+      <PropertyRef Name="theater_id" />
+    </Key>
+    <Property Name="theater_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="200" />
+    <Property Name="location" Type="varchar" MaxLength="300" />
+    <Property Name="facilities" Type="varchar(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_name" Type="varchar" MaxLength="100" />
+    <Property Name="email" Type="varchar" MaxLength="100" />
+    <Property Name="user_phone" Type="varchar" MaxLength="50" />
+    <Property Name="birthday" Type="date" />
+    <Property Name="gender" Type="int" />
+    <Property Name="password" Type="varchar" MaxLength="400" />
+  </EntityType>
+  <Association Name="FK__Chair__room_id__412EB0B6">
+    <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+    <End Role="Chair" Type="Self.Chair" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="room_id" />
+      </Principal>
+      <Dependent Role="Chair">
+        <PropertyRef Name="room_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Room__theater_id__403A8C7D">
+    <End Role="Theater" Type="Self.Theater" Multiplicity="0..1" />
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Theater">
+        <PropertyRef Name="theater_id" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="theater_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MovieTicketBookingModelStoreContainer">
+    <EntitySet Name="Chair" EntityType="Self.Chair" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Movie" EntityType="Self.Movie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Theater" EntityType="Self.Theater" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Chair__room_id__412EB0B6" Association="Self.FK__Chair__room_id__412EB0B6">
+      <End Role="Room" EntitySet="Room" />
+      <End Role="Chair" EntitySet="Chair" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Room__theater_id__403A8C7D" Association="Self.FK__Room__theater_id__403A8C7D">
+      <End Role="Theater" EntitySet="Theater" />
+      <End Role="Room" EntitySet="Room" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

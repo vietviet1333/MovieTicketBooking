@@ -1,0 +1,391 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+
+@model MovieTicketBooking.Models.Showtime
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+    .containek {
+        width: 80%;
+        margin: auto;
+        /*        background-color: rgb(234, 229, 222);*/
+        border: 2px solid black;
+    }
+    #selectedList span {
+        font-size: 16px;
+        margin: 2px;
+        font-weight: initial;
+    }
+
+    .lefttop {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+
+    .ghichu {
+        display: grid;
+        text-align: center;
+        color: rgb(85, 85, 85);
+    }
+
+    .containekhead {
+        height: 40px;
+        width: 100%;
+        background-color: black;
+        color: antiquewhite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .containekleft {
+        padding: 20px 20px;
+        /*        border-right: 2px solid rgb(190, 190, 190);*/
+        width: 70%;
+    }
+
+    .containekright {
+        width: 30%;
+    }
+
+    .containekmain {
+        display: flex;
+    }
+
+    .leftscreen {
+        height: 30px;
+        width: 100%;
+        margin-top: 10px;
+        background-color: rgb(125, 125, 125);
+        border-top-left-radius: 1000%;
+        border-top-right-radius: 1000%;
+    }
+
+    .screenlayout {
+        height: 30px;
+        width: 100%;
+        margin-top: 10px;
+        background-color: white;
+        border-top-left-radius: 1000%;
+        border-top-right-radius: 1000%;
+        position: relative;
+        top: -30px;
+        text-align: center;
+        color: rgb(183, 73, 0);
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .screen {
+        margin-top: 20px;
+    }
+
+    #gridcontainek {
+        max-width: fit-content;
+        margin: auto;
+        overflow-x: scroll;
+    }
+
+    .infoshowtime {
+        width: 100%;
+        height: 60px;
+        font-size: 15px;
+        font-weight: bold;
+        color: rgb(0, 0, 0);
+        margin-top: 10px;
+    }
+
+    .rap {
+        width: auto;
+        margin-top: 10px;
+        text-align: center;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .phiminfo {
+        width: 100%;
+        margin-top: 30px;
+        display: flex;
+    }
+
+        .phiminfo img {
+            width: 50%;
+            padding: 10px 10px
+        }
+
+    .namephim {
+        width: 50%;
+        height: auto;
+        padding: 5px 5px;
+        color: rgb(255, 106, 0);
+        font-size: 20px;
+        font-weight: bold;
+        overflow: hidden;
+    }
+
+    .namecon {
+        width: auto;
+        word-wrap: break-word;
+    }
+
+    .infomore {
+        margin: auto;
+        width: 100%;
+        height: 20px;
+        padding: 10px 20px;
+        font-size: 15px;
+        font-weight: bold;
+        height: auto
+    }
+
+    .foo {
+        display: flex;
+        height: auto;
+        width: 80%;
+        justify-content: space-evenly;
+        margin: auto;
+        border: 2px solid black;
+        border-top: none;
+    }
+
+        .foo button {
+            background-color: white;
+            border: none;
+            font-size: 40px;
+            width: 15%;
+            color: rgb(255, 145, 0);
+            cursor: pointer;
+        }
+
+    .phimfoo {
+        height: 100%;
+        width: 30%;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+        .phimfoo div {
+            margin: 10px 10px;
+        }
+
+    .ticketfoo {
+        height: 100%;
+        width: 40%;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+        .ticketfoo div {
+            margin: 10px 10px;
+        }
+    #ticketbill {
+        justify-content: space-between;
+        margin: 10px 10px;
+        border-bottom: 1px dashed #b8b8b8;
+        display: flex;
+        padding: 10px 10px;
+    }
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #F5F5F5;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, rgb(217, 166, 122)), color-stop(0.72, rgb(189, 133, 73)), color-stop(0.86, rgb(148, 92, 28)));
+    }
+</style>
+
+<div>
+    <div class="containek">
+        <div class="containekhead">
+            BOOKING ONLINE
+        </div>
+
+        <div class="containekmain">
+            <div class="containekleft">
+                <div class="lefttop">
+                    <span class="ghichu">
+                        <i class="fa-solid fa-square"
+                           style="color: rgb(169, 0, 0);font-size: 35px;"></i>
+                        <label for="">Checked</label>
+                    </span>
+                    <span class="ghichu">
+                        <i class="fa-solid fa-square"
+                           style="color: rgb(139, 139, 139);font-size: 35px;"></i><label for="">Selected</label>
+                    </span>
+                    <span class="ghichu">
+                        <i class="fa-regular fa-square" style="color: rgb(154, 205, 153);font-size: 35px;"></i><label for="">
+                            Empty
+                            seat
+                        </label>
+                    </span>
+                </div>
+                <div class="screen">
+                    <div class="leftscreen"></div>
+                    <div class="screenlayout">Screen</div>
+                </div>
+                <div id="gridcontainek"></div>
+
+                <input type="hidden" id="rowsInput" value="@Model.Room.number_row" hidden>
+                <input type="hidden" id="columnsInput" value="@Model.Room.number_column" hidden>
+            </div>
+
+            <div class="containekright">
+                <div class="topright">
+                    <div class="infoshowtime">
+                        <div style="display: flex;justify-content: space-evenly;">
+                            <div class="rap"><span>@Model.Theater.name</span></div>
+                            <div class="rap"><span>@Model.Room.room_name</span></div>
+                            <div class="rap"><span>Empty seat: 85/200</span></div>
+                        </div>
+                        <div style="display: flex;justify-content: space-evenly;">
+                            @{
+                                var showdate = Model.show_date.ToString("yyyy-MM-dd");
+                                var starttime = Model.starttime.ToString("hh:mm tt");
+                                var endtime = Model.endtime.ToString("hh:mm tt");
+
+                            }
+                            <div class="rap">@showdate</div>
+                            <div class="rap">@starttime</div>
+                            <div class="rap">@endtime</div>
+                        </div>
+                    </div>
+                    <div class="phiminfo">
+                        <img src="@Model.Movie.poster_image"
+                             alt="">
+                        <div class="namephim">
+                            <div class="namecon">@Model.Movie.title</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="infomore">
+                            Duration: @Model.Movie.duration munites
+                        </div>
+                        <div class="infomore">
+                            Genre: @Model.Movie.genre
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="foo">
+        <button><i class="fa-solid fa-circle-left"></i></button>
+        <div class="phimfoo">
+            <div>Movie name: @Model.Movie.title</div>
+            <div>Duration: @Model.Movie.duration mutines</div>
+            <div>Genre: @Model.Movie.genre</div>
+            <div>Theater: @Model.Theater.name</div>
+            <div>Ticket date: @showdate</div>
+        </div>
+        <div class="ticketfoo">
+            <div id="ticketbill">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Seat: <span id="selectedList"></span></div>
+                <div style="color: rgb(255, 145, 0);"><span id="price"></span>$</div>
+            </div>
+            <div id="ticketbill">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Com bo: iCombo 1 Big Extra STD,iCombo 1 Big Extra STD,iCombo 1 Big Extra STD,iCombo 1 Big Extra STD</div>
+                <div style="color: rgb(255, 145, 0);">100$</div>
+            </div>
+            <div id="ticketbill" style="border:none">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Total: </div>
+                <div style="color: rgb(255, 145, 0);">120$</div>
+            </div>
+        </div>
+        <button><i class="fa-solid fa-circle-right"></i></button>
+    </div>
+</div>
+<script>
+    function createGrid() {
+        // Get the values of rows and columns from input fields
+        const rows = document.getElementById('rowsInput').value;
+        const columns = document.getElementById('columnsInput').value;
+
+        // Get the containek where the grid will be placed
+        const gridcontainek = document.getElementById('gridcontainek');
+
+        // Clear previous grid if any
+        gridcontainek.innerHTML = '';
+
+        // Create a table element
+        gridcontainek.style.display = 'grid';
+        gridcontainek.style.gridTemplateColumns = `repeat(${columns}, 40px)`;
+        gridcontainek.style.gridTemplateRows = `repeat(${rows}, 40px)`;
+        const selectedList = document.getElementById('selectedList');
+        const price = document.getElementById('price');
+        // Array to store selected button data
+        const selectedData = [];
+        const totalSquares = columns * rows;
+
+        for (let i = 0; i < totalSquares; i++) {
+            const gridItem = document.createElement('button');
+            gridItem.textContent = "A" + i;
+            gridItem.style.width = "35px";
+            gridItem.style.height = "35px";
+            gridItem.style.textAlign = 'center';
+            gridItem.style.fontSize = '10px'; // Adjust the size
+            gridItem.style.border = '2px solid rgb(154, 205, 153)';
+            gridItem.style.backgroundColor = 'white'; // Default color for empty seats
+
+            // Add event listener to toggle selection
+            gridItem.addEventListener('click', function () {
+                if (selectedData.length >= 8 && gridItem.style.backgroundColor === 'white') {
+                    alert('Maximum selection limit reached.');
+                    return;
+                }
+                // Toggle selection by changing background color
+                if (gridItem.style.backgroundColor === 'white') {
+                    gridItem.style.backgroundColor = 'rgb(169, 0, 0)'; // Change to selected color
+                    gridItem.style.color = "white";
+                    gridItem.style.border = '2px solid rgb(169, 0, 0)';
+                    selectedData.push(gridItem.textContent);
+                } else {
+                    gridItem.style.backgroundColor = 'white';
+                    gridItem.style.border = '2px solid rgb(154, 205, 153)';
+                    gridItem.style.color = "black";
+                    const index = selectedData.indexOf(gridItem.textContent);
+                    if (index !== -1) {
+                        selectedData.splice(index, 1);
+                    }
+                    // Change back to default color
+                }
+                updateList();
+            });
+            gridcontainek.appendChild(gridItem);
+        }
+        function updateList() {
+            // Clear the list
+            selectedList.innerHTML = '';
+            price.textContent = 5 * selectedData.length;
+            // Add each selected data to the list
+            selectedData.forEach(function (data) {
+                const listItem = document.createElement('span');
+                const phay = document.createElement('span');
+                phay.textContent = ',';
+                phay.style.color = "black";
+                listItem.textContent = data;
+                listItem.style.color = "black";
+                selectedList.appendChild(listItem);
+                selectedList.appendChild(phay);
+            });
+        }
+    }
+
+    // Initially create the grid
+    createGrid();
+</script>
+

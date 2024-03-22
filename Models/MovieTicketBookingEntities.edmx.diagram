@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e7b56c99f4d04dabad174d4cf6280f90" Name="Diagram1">
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Chair" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.City" Width="1.5" PointX="0.5" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Movie" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Room" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Theater" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.User" Width="1.5" PointX="8.75" PointY="4.375" IsExpanded="true" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Chair__room_id__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Theater__city_id__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Room__theater_id__403A8C7D" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Showtime" Width="1.5" PointX="5.375" PointY="4.75" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

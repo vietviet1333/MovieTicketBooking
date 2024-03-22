@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MovieTicketBookingModelStoreContainer" CdmEntityContainer="MovieTicketBookingEntities1">
+    <EntitySetMapping Name="Chairs">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Chair">
+        <MappingFragment StoreEntitySet="Chair">
+          <ScalarProperty Name="chair_id" ColumnName="chair_id" />
+          <ScalarProperty Name="room_id" ColumnName="room_id" />
+          <ScalarProperty Name="name_chair" ColumnName="name_chair" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.City">
+        <MappingFragment StoreEntitySet="City">
+          <ScalarProperty Name="id_city" ColumnName="id_city" />
+          <ScalarProperty Name="title_city" ColumnName="title_city" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Movies">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Movie">
+        <MappingFragment StoreEntitySet="Movie">
+          <ScalarProperty Name="movie_id" ColumnName="movie_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="release_date" ColumnName="release_date" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="genre" ColumnName="genre" />
+          <ScalarProperty Name="poster_image" ColumnName="poster_image" />
+          <ScalarProperty Name="director" ColumnName="director" />
+          <ScalarProperty Name="cast" ColumnName="cast" />
+          <ScalarProperty Name="language" ColumnName="language" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Room">
+        <MappingFragment StoreEntitySet="Room">
+          <ScalarProperty Name="room_id" ColumnName="room_id" />
+          <ScalarProperty Name="room_name" ColumnName="room_name" />
+          <ScalarProperty Name="theater_id" ColumnName="theater_id" />
+          <ScalarProperty Name="number_row" ColumnName="number_row" />
+          <ScalarProperty Name="number_column" ColumnName="number_column" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Theaters">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Theater">
+        <MappingFragment StoreEntitySet="Theater">
+          <ScalarProperty Name="theater_id" ColumnName="theater_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="location" ColumnName="location" />
+          <ScalarProperty Name="city_id" ColumnName="city_id" />
+          <ScalarProperty Name="Theater_image" ColumnName="Theater_image" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="user_phone" ColumnName="user_phone" />
+          <ScalarProperty Name="birthday" ColumnName="birthday" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="password" ColumnName="password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

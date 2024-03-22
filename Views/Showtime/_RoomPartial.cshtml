@@ -1,0 +1,13 @@
+﻿@model List<MovieTicketBooking.Models.Room>
+<div class="form-group" >
+    <label for="date" class="form-label">Room</label>
+    <select class="form-control" id="room" name="room_id" style="color:aliceblue">
+
+        @foreach (var room in Model)
+        {
+            <option value="@room.room_id">@room.room_name</option>
+        }
+
+    </select>
+
+</div>
