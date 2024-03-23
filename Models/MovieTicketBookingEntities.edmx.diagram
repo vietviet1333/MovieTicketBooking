@@ -18,6 +18,9 @@
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Booking" Width="1.5" PointX="8" PointY="8.125" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.FoodDrink" Width="1.5" PointX="0.75" PointY="9.75" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

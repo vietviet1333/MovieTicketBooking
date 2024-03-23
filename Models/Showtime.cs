@@ -14,6 +14,12 @@ namespace MovieTicketBooking.Models
     
     public partial class Showtime
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Showtime()
+        {
+            this.Bookings = new HashSet<Booking>();
+        }
+    
         public int showtime_id { get; set; }
         public int movie_id { get; set; }
         public int theater_id { get; set; }
@@ -26,5 +32,7 @@ namespace MovieTicketBooking.Models
         public virtual Movie Movie { get; set; }
         public virtual Room Room { get; set; }
         public virtual Theater Theater { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

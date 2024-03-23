@@ -140,6 +140,12 @@
       <End Role="Theater" EntitySet="Theaters" />
       <End Role="Showtime" EntitySet="Showtimes" />
     </AssociationSet>
+    <EntitySet Name="Bookings" EntityType="MovieTicketBookingModel.Booking" />
+    <EntitySet Name="FoodDrinks" EntityType="MovieTicketBookingModel.FoodDrink" />
+    <AssociationSet Name="FK__Booking__showtim__4E88ABD4" Association="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4">
+      <End Role="Showtime" EntitySet="Showtimes" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Showtime">
     <Key>
@@ -156,6 +162,7 @@
     <NavigationProperty Name="Movie" Relationship="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" FromRole="Showtime" ToRole="Movie" />
     <NavigationProperty Name="Room" Relationship="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" FromRole="Showtime" ToRole="Room" />
     <NavigationProperty Name="Theater" Relationship="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" FromRole="Showtime" ToRole="Theater" />
+    <NavigationProperty Name="Bookings" Relationship="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" FromRole="Showtime" ToRole="Booking" />
   </EntityType>
   <Association Name="FK__Showtimes__movie__49C3F6B7">
     <End Type="MovieTicketBookingModel.Movie" Role="Movie" Multiplicity="0..1" />
@@ -190,6 +197,41 @@
       </Principal>
       <Dependent Role="Showtime">
         <PropertyRef Name="theater_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Booking">
+    <Key>
+      <PropertyRef Name="booking_id" />
+    </Key>
+    <Property Name="booking_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="showtime_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="number_of_seats" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="total_price" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="booking_time" Type="DateTime" Precision="3" />
+    <Property Name="combo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Showtime" Relationship="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" FromRole="Booking" ToRole="Showtime" />
+  </EntityType>
+  <EntityType Name="FoodDrink">
+    <Key>
+      <PropertyRef Name="fooddrink_id" />
+    </Key>
+    <Property Name="fooddrink_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fooddrink_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="fooddrink_description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="fooddrink_status" Type="Int32" />
+    <Property Name="price" Type="Decimal" Precision="18" Scale="0" />
+  </EntityType>
+  <Association Name="FK__Booking__showtim__4E88ABD4">
+    <End Type="MovieTicketBookingModel.Showtime" Role="Showtime" Multiplicity="0..1" />
+    <End Type="MovieTicketBookingModel.Booking" Role="Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Showtime">
+        <PropertyRef Name="showtime_id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="showtime_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShowtimeController.cs" />
     <Compile Include="Controllers\TheaterController.cs" />
+    <Compile Include="Dao\FoodDrinkDao.cs" />
     <Compile Include="Dao\MovieDao.cs" />
     <Compile Include="Dao\RoomDao.cs" />
     <Compile Include="Dao\ShowtimeDao.cs" />
@@ -140,10 +141,16 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Booking.cs">
+      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Chair.cs">
       <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\City.cs">
+      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FoodDrink.cs">
       <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Movie.cs">

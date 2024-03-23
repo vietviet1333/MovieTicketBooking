@@ -1,5 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="MovieTicketBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Admin">
+          <Property Name="username" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar(max)" />
+        </EntityType>-->
+  <EntityType Name="Booking">
+    <Key>
+      <PropertyRef Name="booking_id" />
+    </Key>
+    <Property Name="booking_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="showtime_id" Type="int" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="number_of_seats" Type="varchar" MaxLength="200" />
+    <Property Name="total_price" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="booking_time" Type="datetime" />
+    <Property Name="combo" Type="varchar" MaxLength="500" />
+  </EntityType>
   <EntityType Name="Chair">
     <Key>
       <PropertyRef Name="chair_id" />
@@ -14,6 +34,16 @@
     </Key>
     <Property Name="id_city" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="title_city" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="FoodDrink">
+    <Key>
+      <PropertyRef Name="fooddrink_id" />
+    </Key>
+    <Property Name="fooddrink_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fooddrink_name" Type="varchar" MaxLength="200" />
+    <Property Name="fooddrink_description" Type="varchar" MaxLength="500" />
+    <Property Name="fooddrink_status" Type="int" />
+    <Property Name="price" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="Movie">
     <Key>
@@ -76,6 +106,18 @@
     <Property Name="gender" Type="int" />
     <Property Name="password" Type="varchar" MaxLength="400" />
   </EntityType>
+  <Association Name="FK__Booking__showtim__4E88ABD4">
+    <End Role="Showtimes" Type="Self.Showtimes" Multiplicity="0..1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Showtimes">
+        <PropertyRef Name="showtime_id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="showtime_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Chair__room_id__46E78A0C">
     <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
     <End Role="Chair" Type="Self.Chair" Multiplicity="*" />
@@ -149,13 +191,19 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="MovieTicketBookingModelStoreContainer">
+    <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Chair" EntityType="Self.Chair" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FoodDrink" EntityType="Self.FoodDrink" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Movie" EntityType="Self.Movie" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Showtimes" EntityType="Self.Showtimes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Theater" EntityType="Self.Theater" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Booking__showtim__4E88ABD4" Association="Self.FK__Booking__showtim__4E88ABD4">
+      <End Role="Showtimes" EntitySet="Showtimes" />
+      <End Role="Booking" EntitySet="Booking" />
+    </AssociationSet>
     <AssociationSet Name="FK__Chair__room_id__46E78A0C" Association="Self.FK__Chair__room_id__46E78A0C">
       <End Role="Room" EntitySet="Room" />
       <End Role="Chair" EntitySet="Chair" />

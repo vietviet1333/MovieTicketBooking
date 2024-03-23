@@ -84,5 +84,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Bookings">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Booking">
+        <MappingFragment StoreEntitySet="Booking">
+          <ScalarProperty Name="combo" ColumnName="combo" />
+          <ScalarProperty Name="booking_time" ColumnName="booking_time" />
+          <ScalarProperty Name="total_price" ColumnName="total_price" />
+          <ScalarProperty Name="number_of_seats" ColumnName="number_of_seats" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
+          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FoodDrinks">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.FoodDrink">
+        <MappingFragment StoreEntitySet="FoodDrink">
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="fooddrink_status" ColumnName="fooddrink_status" />
+          <ScalarProperty Name="fooddrink_description" ColumnName="fooddrink_description" />
+          <ScalarProperty Name="fooddrink_name" ColumnName="fooddrink_name" />
+          <ScalarProperty Name="fooddrink_id" ColumnName="fooddrink_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    var combo = MovieTicketBooking.Dao.FoodDrinkDao.Instance().GetFoodDrink();
 }
 
 @model MovieTicketBooking.Models.Showtime
@@ -13,6 +14,7 @@
         /*        background-color: rgb(234, 229, 222);*/
         border: 2px solid black;
     }
+
     #selectedList span {
         font-size: 16px;
         margin: 2px;
@@ -183,6 +185,7 @@
         .ticketfoo div {
             margin: 10px 10px;
         }
+
     #ticketbill {
         justify-content: space-between;
         margin: 10px 10px;
@@ -190,6 +193,7 @@
         display: flex;
         padding: 10px 10px;
     }
+
     ::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         background-color: #F5F5F5;
@@ -205,6 +209,83 @@
         border-radius: 10px;
         background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.44, rgb(217, 166, 122)), color-stop(0.72, rgb(189, 133, 73)), color-stop(0.86, rgb(148, 92, 28)));
     }
+
+    .containekmain2 {
+        width: 100%;
+        background-color: white;
+        height: auto;
+        display: none;
+    }
+
+    .containekmain2head {
+        height: 70px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid black;
+        font-weight: bold;
+        font-size: 20px
+    }
+
+    .foodlist {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly
+    }
+
+    .fooditems {
+        width: 30%;
+        height: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f7f0ff;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 10px;
+    }
+
+        .fooditems img {
+            width: 40%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+    .fooddescription {
+        width: 50%;
+    }
+
+    .numberi {
+        width: 20%;
+        padding: 7%;
+        margin: 10px;
+        border: none;
+        height: 40px;
+    }
+
+
+    .btns {
+        background-color: rgb(255, 153, 0);
+        border: none;
+        color: white;
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+    }
+
+    .namecombo {
+        font-size: 17px;
+        font-weight: bold;
+        color: orange;
+    }
+
+    .descombo {
+        font-size: 14px;
+    }
 </style>
 
 <div>
@@ -213,7 +294,7 @@
             BOOKING ONLINE
         </div>
 
-        <div class="containekmain">
+        <div class="containekmain" id="containekmain">
             <div class="containekleft">
                 <div class="lefttop">
                     <span class="ghichu">
@@ -281,10 +362,34 @@
             </div>
 
         </div>
+        <div class="containekmain2" id="containekmain2">
+            <div class="containekmain2head">
+                <span>Food and Drinks</span>
+            </div>
+            <div class="foodlist" id="foodList">
+                @for (int i = 0; i < combo.Count; i++)
+                {
+                    <div class="fooditems">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/menuboard-combo1-2-2024-coonline-combo2_1710302669633.jpg?alt=media&token=4411c416-6a40-4b24-85ac-1dac89009ac8"
+                             alt="">
+                        <div class="fooddescription">
+                            <input id="P@(i)" value="@combo[i].price" hidden />
+                            <div class="namecombo" id="N@(i)">@combo[i].fooddrink_name</div>
+                            <div class="descombo">@combo[i].fooddrink_description </div>
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <button class="btns" id="B@(i)" type="button" onclick="decrement(@(i))">-</button>
+                                <input class="numberi" id="I@(i)" value="0" readonly>
+                                <button class="btns" id="b@(i)" type="button" onclick="increment(@(i))">+</button>
+                            </div>
+                        </div>
+                    </div>
+                }
 
+            </div>
+        </div>
     </div>
     <div class="foo">
-        <button><i class="fa-solid fa-circle-left"></i></button>
+        <button type="button" onclick="seat()"><i class="fa-solid fa-circle-left"></i></button>
         <div class="phimfoo">
             <div>Movie name: @Model.Movie.title</div>
             <div>Duration: @Model.Movie.duration mutines</div>
@@ -298,18 +403,19 @@
                 <div style="color: rgb(255, 145, 0);"><span id="price"></span>$</div>
             </div>
             <div id="ticketbill">
-                <div style="width: 80%; color: rgb(255, 145, 0);">Com bo: iCombo 1 Big Extra STD,iCombo 1 Big Extra STD,iCombo 1 Big Extra STD,iCombo 1 Big Extra STD</div>
-                <div style="color: rgb(255, 145, 0);">100$</div>
+                <div style="width: 80%; color: rgb(255, 145, 0);">Com bo:<div id="selectcombo"></div> </div>
+                <div style="color: rgb(255, 145, 0);"><span id="pricecombo"></span>$</div>
             </div>
             <div id="ticketbill" style="border:none">
                 <div style="width: 80%; color: rgb(255, 145, 0);">Total: </div>
-                <div style="color: rgb(255, 145, 0);">120$</div>
+                <div style="color: rgb(255, 145, 0);"><span id="totalpricefull"></span>$</div>
             </div>
         </div>
-        <button><i class="fa-solid fa-circle-right"></i></button>
+        <button type="button" onclick="combodrink()"><i class="fa-solid fa-circle-right"></i></button>
     </div>
 </div>
 <script>
+    var priceseat = 0;
     function createGrid() {
         // Get the values of rows and columns from input fields
         const rows = document.getElementById('rowsInput').value;
@@ -371,6 +477,8 @@
             // Clear the list
             selectedList.innerHTML = '';
             price.textContent = 5 * selectedData.length;
+            priceseat = 5 * selectedData.length;
+            totalPriceFull();
             // Add each selected data to the list
             selectedData.forEach(function (data) {
                 const listItem = document.createElement('span');
@@ -386,6 +494,104 @@
     }
 
     // Initially create the grid
+
     createGrid();
 </script>
+<script>
+    var totalPriceOfCombo = 0;
+    
+    function combodrink() {
+        var containekmain = document.querySelector("#containekmain");
+        var containekmain2 = document.querySelector("#containekmain2");
+        containekmain.style.display = "none";
+        containekmain2.style.display = "block";
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
 
+    function seat() {
+        var containekmain = document.querySelector("#containekmain");
+        var containekmain2 = document.querySelector("#containekmain2");
+        containekmain.style.display = "flex";
+        containekmain2.style.display = "none";
+        window.scrollTo({
+            top: 100,
+            behavior: 'smooth'
+        });
+    }
+    
+    function increment(index) {
+       
+        var selectcombo = document.getElementById("selectcombo");
+        var combo = document.createElement("div");
+        var price = document.getElementById("P" + index);
+        var namecombo = document.getElementById("N" + index);
+        var inputField = document.getElementById('I' + index); 
+        var currentValue = parseInt(inputField.value); 
+        var existingCombo = document.getElementById('C' + index);
+        //remove the same name combo in list
+        if (existingCombo) {
+            selectcombo.removeChild(existingCombo);
+        }
+        //Check currentvalue
+        if (currentValue < 4) {
+            inputField.value = currentValue + 1;
+            //price of combo
+            var pri = price.value * 1;
+            totalPriceOfCombo += pri;
+            pricombo();
+        } else {
+            alert("Maximum is 4")
+        } 
+        
+       
+        //display combo
+        combo.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
+        combo.id = 'C' + index; // Set unique id for the combo
+        combo.style.color = "black";
+        selectcombo.appendChild(combo);
+    }
+
+    function decrement(index) {
+  
+        var selectcombo = document.getElementById("selectcombo");
+        var namecombo = document.getElementById("N" + index);
+        var inputField = document.getElementById('I' + index); // Get the input field
+        var currentValue = parseInt(inputField.value); // Get the current value and parse it to integer
+        var existingCombo = document.getElementById('C' + index);
+        if (existingCombo) {
+            selectcombo.removeChild(existingCombo);
+        }
+
+        if (currentValue > 0) {
+            inputField.value = currentValue - 1;
+            if (inputField.value > 0) {
+                var combo = document.createElement("div");
+                combo.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
+                combo.id = 'C' + index; // Set unique id for the combo
+                combo.style.color = "black";
+                selectcombo.appendChild(combo);
+            }
+        }
+  
+        if (currentValue >   0 ) {
+            var price = document.getElementById("P" + index); // Get the price element
+            var pri = price.value * 1;
+            totalPriceOfCombo -= pri;
+            pricombo();
+        }
+    }
+
+    function pricombo() {
+        var pricecombo = document.getElementById("pricecombo");
+        pricecombo.textContent = totalPriceOfCombo;
+        totalPriceFull();
+    }
+
+    function totalPriceFull() {
+        var total = document.getElementById("totalpricefull");
+        total.textContent = priceseat + totalPriceOfCombo;
+    }
+</script>
