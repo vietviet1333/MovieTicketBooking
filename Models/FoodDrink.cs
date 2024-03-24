@@ -14,10 +14,19 @@ namespace MovieTicketBooking.Models
     
     public partial class FoodDrink
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public FoodDrink()
+        {
+            this.Bookingcomboes = new HashSet<Bookingcombo>();
+        }
+    
         public int fooddrink_id { get; set; }
         public string fooddrink_name { get; set; }
         public string fooddrink_description { get; set; }
-        public Nullable<int> fooddrink_status { get; set; }
-        public Nullable<decimal> price { get; set; }
+        public int fooddrink_status { get; set; }
+        public decimal price { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Bookingcombo> Bookingcomboes { get; set; }
     }
 }

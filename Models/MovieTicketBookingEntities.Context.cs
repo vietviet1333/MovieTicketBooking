@@ -32,7 +32,9 @@ namespace MovieTicketBooking.Models
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Showtime> Showtimes { get; set; }
-        public virtual DbSet<Booking> Bookings { get; set; }
         public virtual DbSet<FoodDrink> FoodDrinks { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Bookingseat> Bookingseats { get; set; }
+        public virtual DbSet<Bookingcombo> Bookingcomboes { get; set; }
     }
 }

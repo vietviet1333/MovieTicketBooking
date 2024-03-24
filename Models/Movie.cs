@@ -23,14 +23,14 @@ namespace MovieTicketBooking.Models
         public int movie_id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
-        public Nullable<System.DateTime> release_date { get; set; }
-        public Nullable<int> duration { get; set; }
+        public System.DateTime release_date { get; set; }
+        public int duration { get; set; }
         public string genre { get; set; }
         public string poster_image { get; set; }
         public string director { get; set; }
         public string cast { get; set; }
         public string language { get; set; }
-        public Nullable<int> status { get; set; }
+        public int status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Showtime> Showtimes { get; set; }

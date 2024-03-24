@@ -4,23 +4,29 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e7b56c99f4d04dabad174d4cf6280f90" Name="Diagram1">
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Chair" Width="1.5" PointX="7.5" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.City" Width="1.5" PointX="0.5" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Movie" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Room" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Theater" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.User" Width="1.5" PointX="8.75" PointY="4.375" IsExpanded="true" />
+      <Diagram DiagramId="e7b56c99f4d04dabad174d4cf6280f90" Name="Diagram1" ZoomLevel="44">
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Chair" Width="1.5" PointX="18.625" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.City" Width="1.5" PointX="10.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Movie" Width="1.5" PointX="10.375" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Room" Width="1.5" PointX="16.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Theater" Width="1.5" PointX="13.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.User" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Chair__room_id__412EB0B6" ManuallyRouted="false" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Theater__city_id__440B1D61" ManuallyRouted="false" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Room__theater_id__403A8C7D" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Showtime" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Showtime" Width="1.5" PointX="13.125" PointY="4.875" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.Booking" Width="1.5" PointX="8" PointY="8.125" />
-        <EntityTypeShape EntityType="MovieTicketBookingModel.FoodDrink" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.FoodDrink" Width="1.5" PointX="12.875" PointY="9.5" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Booking" Width="1.5" PointX="17.375" PointY="7.25" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Bookingseat" Width="1.5" PointX="20.875" PointY="4.125" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Bookingcombo" Width="1.5" PointX="20.625" PointY="8.75" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Bookingco__booki__59063A47" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Bookingse__booki__5812160E" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Bookingco__combo__5AEE82B9" />
+        <AssociationConnector Association="MovieTicketBookingModel.FK__Bookingse__room___59FA5E80" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

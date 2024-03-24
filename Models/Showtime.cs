@@ -24,9 +24,9 @@ namespace MovieTicketBooking.Models
         public int movie_id { get; set; }
         public int theater_id { get; set; }
         public int room_id { get; set; }
-        public DateTime show_date { get; set; }
-        public DateTime starttime { get; set; }
-        public DateTime endtime { get; set; }
+        public System.DateTime show_date { get; set; }
+        public System.DateTime starttime { get; set; }
+        public System.DateTime endtime { get; set; }
         public int status { get; set; }
     
         public virtual Movie Movie { get; set; }

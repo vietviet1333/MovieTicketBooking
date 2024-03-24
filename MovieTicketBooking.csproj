@@ -133,6 +133,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShowtimeController.cs" />
     <Compile Include="Controllers\TheaterController.cs" />
+    <Compile Include="Dao\BookingDao.cs" />
     <Compile Include="Dao\FoodDrinkDao.cs" />
     <Compile Include="Dao\MovieDao.cs" />
     <Compile Include="Dao\RoomDao.cs" />

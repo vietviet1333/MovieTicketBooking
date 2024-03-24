@@ -12,14 +12,14 @@ namespace MovieTicketBooking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Bookingseat
     {
-        public int user_id { get; set; }
-        public string user_name { get; set; }
-        public string email { get; set; }
-        public string user_phone { get; set; }
-        public System.DateTime birthday { get; set; }
-        public int gender { get; set; }
-        public string password { get; set; }
+        public int booking_id { get; set; }
+        public int room_id { get; set; }
+        public int nameseat { get; set; }
+        public int bookingseat_id { get; set; }
+    
+        public virtual Booking Booking { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

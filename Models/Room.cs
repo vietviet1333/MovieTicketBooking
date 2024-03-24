@@ -19,18 +19,21 @@ namespace MovieTicketBooking.Models
         {
             this.Chairs = new HashSet<Chair>();
             this.Showtimes = new HashSet<Showtime>();
+            this.Bookingseats = new HashSet<Bookingseat>();
         }
     
         public int room_id { get; set; }
         public string room_name { get; set; }
-        public Nullable<int> theater_id { get; set; }
-        public Nullable<int> number_row { get; set; }
-        public Nullable<int> number_column { get; set; }
+        public int theater_id { get; set; }
+        public int number_row { get; set; }
+        public int number_column { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Chair> Chairs { get; set; }
         public virtual Theater Theater { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Showtime> Showtimes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Bookingseat> Bookingseats { get; set; }
     }
 }

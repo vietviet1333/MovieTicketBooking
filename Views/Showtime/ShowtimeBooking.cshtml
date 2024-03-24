@@ -286,9 +286,100 @@
     .descombo {
         font-size: 14px;
     }
+
+    #checkcount {
+        height: auto;
+        width: 30%;
+        background-color: white;
+        display: none;
+        margin: auto;
+        margin-top: 140px;
+        border-top: 9px solid #ff9900;
+        border-radius: 5%;
+        box-shadow: rgba(255, 153, 0, 0.7) 0px 1px 4px;
+    }
+        #checkcount img {
+            width: 30%;
+            margin: 2%;
+        }
+    #phimcheckcount {
+        width: 50%;
+        height: auto;
+        margin: 10px 10px;
+  
+    }
+    #namephimcheckcount {
+        font-size: 20px;
+        font-weight: bold;
+        color: #ff7d00;
+        margin: 10px 10px;
+        width: auto;
+        word-wrap: break-word;
+    }
+    #durationphimcheckcount {
+        font-weight: bold;
+        color: black;
+        margin: 10px 10px;
+        width: auto;
+        word-wrap: break-word;
+    }
+    #genrephimcheckcount {
+        font-weight: bold;
+        color: black;
+        margin: 10px 10px;
+        width: auto;
+        word-wrap: break-word;
+    }
+    #theaterofcheckcount {
+        font-weight: bold;
+        font-size: 17px;
+        margin: 0px 10px;
+        color: #3c3c3c;
+    }
+    #roomofcheckcount {
+        font-size: 17px;
+        font-weight: 500;
+        color: #505050;
+        margin: 0px 10px;
+    }
+    #starttimecheckcount {
+        font-weight: bold;
+        margin: 0px 20px;
+    }
+    #showdatecheckcount {
+        font-weight: bold;
+       
+    }
+    #checkcountbtngroup{
+        display:none
+    }
+    #checkcountbtngroup {
+        display: flex;
+        width: 100%;
+        margin-top: 20px;
+        justify-content: center;
+    
+    }
+    #btncomback {
+        border: none;
+        height: 40px;
+        color: #ff9400;
+        background-color: white;
+        margin: 0px 30px;
+        width: 100px;
+        cursor:pointer;
+    }
+    #btncheckcount {
+        border: none;
+        background-color: #ff7f00;
+        border-radius: 10px;
+        color: white;
+        width: 100px;
+        margin: 0px 30px;
+    }
 </style>
 
-<div>
+<div id="fu">
     <div class="containek">
         <div class="containekhead">
             BOOKING ONLINE
@@ -387,6 +478,7 @@
 
             </div>
         </div>
+
     </div>
     <div class="foo">
         <button type="button" onclick="seat()"><i class="fa-solid fa-circle-left"></i></button>
@@ -414,6 +506,48 @@
         <button type="button" onclick="combodrink()"><i class="fa-solid fa-circle-right"></i></button>
     </div>
 </div>
+<div id="checkcount">
+    <div style="display:flex; justify-content:start">
+        <img src="@Model.Movie.poster_image" />
+        <div id="phimcheckcount">
+            <div id="namephimcheckcount">@Model.Movie.title</div>
+            <div id="durationphimcheckcount">Duration: @Model.Movie.duration minutes</div>
+            <div id="genrephimcheckcount">Genre: @Model.Movie.genre</div>
+        </div>
+    </div>
+    <div id="infoticketcheckcount">
+        <div style="display: flex; justify-content: start; padding: 20px; margin: auto">
+            <div id="theaterofcheckcount">@Model.Theater.name</div>
+            <div> - </div>
+            <div id="roomofcheckcount">@Model.Room.room_name</div>
+        </div>
+        <div style="display: flex; margin: 10px 25px; " >
+            <div >Performance:</div>
+            <div id="starttimecheckcount">@starttime</div>
+            <div id="showdatecheckcount">@showdate</div>
+        </div>
+    </div>
+    <div style=" margin-top: 20px; width: 100%; justify-content: center; display: flex;border-top:1px solid">
+        <div style="width:90%;" >
+            <div style="display: flex; height: auto;align-items: center;  padding: 20px 20px;width:100%">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Seat: <span id="selectedListcheckcount"></span></div>
+                <div style="color: rgb(255, 145, 0);"><span id="pricecheckcount"></span>$</div>
+            </div>
+            <div style="display: flex; height: auto; border-top: 1px dashed; align-items: center; padding: 20px 20px; width: 100%">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Com bo:<div id="selectcombocheckcount"></div> </div>
+                <div style="color: rgb(255, 145, 0);"><span id="pricecombocheckcount"></span>$</div>
+            </div>
+            <div style="display: flex; height: auto; border-top: 1px dashed; align-items: center; padding: 20px 20px; width: 100%">
+                <div style="width: 80%; color: rgb(255, 145, 0);">Total: </div>
+                <div style="color: rgb(255, 145, 0);"><span id="totalpricefullcheckcount"></span>$</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="checkcountbtngroup">
+    <button id="btncomback">Come Back</button>
+    <button id="btncheckcount">Checkcount</button>
+</div>
 <script>
     var priceseat = 0;
     function createGrid() {
@@ -432,7 +566,9 @@
         gridcontainek.style.gridTemplateColumns = `repeat(${columns}, 40px)`;
         gridcontainek.style.gridTemplateRows = `repeat(${rows}, 40px)`;
         const selectedList = document.getElementById('selectedList');
+        const selectedListcheckcount = document.getElementById("selectedListcheckcount");
         const price = document.getElementById('price');
+        const pricecheckcount = document.getElementById("pricecheckcount");
         // Array to store selected button data
         const selectedData = [];
         const totalSquares = columns * rows;
@@ -475,20 +611,31 @@
         }
         function updateList() {
             // Clear the list
+            debugger
             selectedList.innerHTML = '';
+            selectedListcheckcount.innerHTML = '';
             price.textContent = 5 * selectedData.length;
             priceseat = 5 * selectedData.length;
+            pricecheckcount.textContent = 5 * selectedData.length;
             totalPriceFull();
             // Add each selected data to the list
             selectedData.forEach(function (data) {
                 const listItem = document.createElement('span');
                 const phay = document.createElement('span');
+                const listItemcheckcount = document.createElement('span');
+                const phaycheckcount = document.createElement('span');
                 phay.textContent = ',';
                 phay.style.color = "black";
                 listItem.textContent = data;
                 listItem.style.color = "black";
+                phaycheckcount.textContent = ',';
+                phaycheckcount.style.color = "black";
+                listItemcheckcount.textContent = data;
+                listItemcheckcount.style.color = "black";
                 selectedList.appendChild(listItem);
                 selectedList.appendChild(phay);
+                selectedListcheckcount.appendChild(listItemcheckcount);
+                selectedListcheckcount.appendChild(phaycheckcount);
             });
         }
     }
@@ -499,41 +646,66 @@
 </script>
 <script>
     var totalPriceOfCombo = 0;
-    
+
     function combodrink() {
+        debugger
+        const selectedList = document.getElementById('selectedList');
         var containekmain = document.querySelector("#containekmain");
         var containekmain2 = document.querySelector("#containekmain2");
-        containekmain.style.display = "none";
-        containekmain2.style.display = "block";
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        var checkcount = document.getElementById("checkcount");
+        var checkcountbtngroup = document.getElementById("checkcountbtngroup");
+        if (selectedList.textContent == "") {
+            alert("Please select seat");
+        } else {
+            if (containekmain2.style.display != "block") {
+                containekmain.style.display = "none";
+                containekmain2.style.display = "block";
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                document.getElementById("fu").style.display = "none";
+                checkcountbtngroup.style.display = "flex";
+                checkcount.style.display = "block";
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
     }
 
     function seat() {
+
         var containekmain = document.querySelector("#containekmain");
         var containekmain2 = document.querySelector("#containekmain2");
+
         containekmain.style.display = "flex";
         containekmain2.style.display = "none";
         window.scrollTo({
             top: 100,
             behavior: 'smooth'
         });
+
     }
-    
+
     function increment(index) {
-       
+
         var selectcombo = document.getElementById("selectcombo");
+        var selectcombocheckcount = document.getElementById("selectcombocheckcount");
         var combo = document.createElement("div");
+        var combocheckcount = document.createElement("div");
         var price = document.getElementById("P" + index);
         var namecombo = document.getElementById("N" + index);
-        var inputField = document.getElementById('I' + index); 
-        var currentValue = parseInt(inputField.value); 
+        var inputField = document.getElementById('I' + index);
+        var currentValue = parseInt(inputField.value);
         var existingCombo = document.getElementById('C' + index);
+        var existingCombocheckcount = document.getElementById('Cc' + index);
         //remove the same name combo in list
         if (existingCombo) {
             selectcombo.removeChild(existingCombo);
+            selectcombocheckcount.removeChild(existingCombocheckcount);
         }
         //Check currentvalue
         if (currentValue < 4) {
@@ -544,54 +716,91 @@
             pricombo();
         } else {
             alert("Maximum is 4")
-        } 
-        
-       
+        }
+
+
         //display combo
         combo.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
         combo.id = 'C' + index; // Set unique id for the combo
         combo.style.color = "black";
+        combocheckcount.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
+        combocheckcount.id = 'Cc' + index; // Set unique id for the combo
+        combocheckcount.style.color = "black";
         selectcombo.appendChild(combo);
+        selectcombocheckcount.appendChild(combocheckcount);
+      
     }
 
     function decrement(index) {
-  
+        var combocheckcount = document.createElement("div")
+        var selectcombocheckcount = document.getElementById("selectcombocheckcount");
         var selectcombo = document.getElementById("selectcombo");
         var namecombo = document.getElementById("N" + index);
         var inputField = document.getElementById('I' + index); // Get the input field
         var currentValue = parseInt(inputField.value); // Get the current value and parse it to integer
         var existingCombo = document.getElementById('C' + index);
+        var existingCombocheckcount = document.getElementById('Cc' + index);
         if (existingCombo) {
             selectcombo.removeChild(existingCombo);
+            selectcombocheckcount.removeChild(existingCombocheckcount);
         }
 
         if (currentValue > 0) {
             inputField.value = currentValue - 1;
             if (inputField.value > 0) {
-                var combo = document.createElement("div");
                 combo.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
                 combo.id = 'C' + index; // Set unique id for the combo
                 combo.style.color = "black";
+                combocheckcount.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
+                combocheckcount.id = 'Cc' + index; // Set unique id for the combo
+                combocheckcount.style.color = "black";
                 selectcombo.appendChild(combo);
+                selectcombocheckcount.appendChild(combocheckcount);
             }
         }
-  
-        if (currentValue >   0 ) {
+
+        if (currentValue > 0) {
             var price = document.getElementById("P" + index); // Get the price element
             var pri = price.value * 1;
             totalPriceOfCombo -= pri;
             pricombo();
         }
+        
     }
-
+   
     function pricombo() {
         var pricecombo = document.getElementById("pricecombo");
+        var pricecombocheckcount = document.getElementById("pricecombocheckcount");
+        pricecombocheckcount.textContent = totalPriceOfCombo;
         pricecombo.textContent = totalPriceOfCombo;
         totalPriceFull();
     }
 
     function totalPriceFull() {
         var total = document.getElementById("totalpricefull");
+        var totalcheckcount = document.getElementById("totalpricefullcheckcount");
         total.textContent = priceseat + totalPriceOfCombo;
+        totalcheckcount.textContent = priceseat + totalPriceOfCombo;
+    }
+</script>
+<script>
+    function userCheckcount() {
+
+        $.ajax({
+            url: '/Showtime/TheaterShowtime', // Controller action to fetch rooms
+            type: 'POST',
+            data: {
+                id_city: city,
+                showtimedate: showtimedatee,
+                movieid: movie_id
+
+            },
+            success: function (response) {
+                $('#showtimetheater').html(response); // Display rooms in the container
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
     }
 </script>
