@@ -1,5 +1,6 @@
 ﻿using MovieTicketBooking.Dao;
 using MovieTicketBooking.Models;
+using MovieTicketBooking.ModelView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                var mo = MovieDao.Instance().getMovieById(id_movie);
+                var mo = MovieDao.Instance().GetMovieById(id_movie);
                 return View(mo);
             }
             catch
@@ -128,11 +129,24 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
+               
                 var st = ShowtimeDao.Instance().ShowtimeBooking(showtimeid);
                 return View(st);
             }
             catch {
                 return Redirect("Client/Home");
+            }
+        }
+        [HttpPost]
+        public ActionResult BookingCheckcount(string nameseats , string idcombos,string quantitycombos , int showtime_id, decimal totalofbooking, int room_id) {
+            try
+            {
+                BookingDao.Instance().InsertBooking(nameseats, idcombos, quantitycombos, showtime_id, totalofbooking, room_id);
+                return RedirectToAction("Client/Home");
+            }
+            catch
+            {
+                return RedirectToAction("Client/Home");
             }
         }
     }

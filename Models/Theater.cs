@@ -24,7 +24,7 @@ namespace MovieTicketBooking.Models
         public int theater_id { get; set; }
         public string name { get; set; }
         public string location { get; set; }
-        public int city_id { get; set; }
+        public Nullable<int> city_id { get; set; }
         public string Theater_image { get; set; }
     
         public virtual City City { get; set; }

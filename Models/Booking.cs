@@ -11,7 +11,7 @@ namespace MovieTicketBooking.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Booking
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,13 +20,13 @@ namespace MovieTicketBooking.Models
             this.Bookingcomboes = new HashSet<Bookingcombo>();
             this.Bookingseats = new HashSet<Bookingseat>();
         }
-
+    
         public int booking_id { get; set; }
-        public int showtime_id { get; set; }
-        public int user_id { get; set; }
-        public decimal total_price { get; set; }
-        public System.DateTime booking_time { get; set; }
-
+        public Nullable<int> showtime_id { get; set; }
+        public Nullable<int> user_id { get; set; }
+        public Nullable<decimal> total_price { get; set; }
+        public Nullable<System.DateTime> booking_time { get; set; }
+    
         public virtual Showtime Showtime { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bookingcombo> Bookingcomboes { get; set; }

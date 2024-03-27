@@ -41,7 +41,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                var mo = MovieDao.Instance().getMovieById(movie_id);
+                var mo = MovieDao.Instance().GetMovieById(movie_id);
                 return View(mo);
             }
             catch

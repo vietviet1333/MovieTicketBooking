@@ -16,7 +16,7 @@
 <div style="display:flex">
     @for (int i = 0; i < Model.Count; i++)
     {
-        var start = Model[i].starttime.ToString("hh:mm tt");
+        var start = Model[i].starttime?.ToString("hh:mm tt");
         <a href="/Showtime/ShowtimeBooking?showtimeid=@Model[i].showtime_id">
             <button class="time">@start</button>
         </a>

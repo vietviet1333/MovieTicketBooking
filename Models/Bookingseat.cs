@@ -14,9 +14,9 @@ namespace MovieTicketBooking.Models
     
     public partial class Bookingseat
     {
-        public int booking_id { get; set; }
-        public int room_id { get; set; }
-        public int nameseat { get; set; }
+        public Nullable<int> booking_id { get; set; }
+        public Nullable<int> room_id { get; set; }
+        public string nameseat { get; set; }
         public int bookingseat_id { get; set; }
     
         public virtual Booking Booking { get; set; }

@@ -133,7 +133,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShowtimeController.cs" />
     <Compile Include="Controllers\TheaterController.cs" />
+    <Compile Include="Dao\BookingcomboDao.cs" />
     <Compile Include="Dao\BookingDao.cs" />
+    <Compile Include="Dao\BookingseatDao.cs" />
     <Compile Include="Dao\FoodDrinkDao.cs" />
     <Compile Include="Dao\MovieDao.cs" />
     <Compile Include="Dao\RoomDao.cs" />
@@ -143,48 +145,54 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Booking.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Bookingcombo.cs">
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Bookingseat.cs">
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Chair.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\City.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FoodDrink.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Movie.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MovieTicketBookingEntities.Context.cs">
+    <Compile Include="Models\MovieTicketBookingEntities2.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MovieTicketBookingEntities.Context.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MovieTicketBookingEntities.cs">
+    <Compile Include="Models\MovieTicketBookingEntities2.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\MovieTicketBookingEntities.Designer.cs">
+    <Compile Include="Models\MovieTicketBookingEntities2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MovieTicketBookingEntities.edmx</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Room.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Showtime.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Theater.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">
-      <DependentUpon>MovieTicketBookingEntities.tt</DependentUpon>
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
-    <Compile Include="ModelView\ShowtimeView.cs" />
+    <Compile Include="ModelView\BookingView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -992,15 +1000,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\MovieTicketBookingEntities.Context.tt">
+    <Content Include="Models\MovieTicketBookingEntities2.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MovieTicketBookingEntities.edmx</DependentUpon>
-      <LastGenOutput>MovieTicketBookingEntities.Context.cs</LastGenOutput>
+      <DependentUpon>MovieTicketBookingEntities2.edmx</DependentUpon>
+      <LastGenOutput>MovieTicketBookingEntities2.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\MovieTicketBookingEntities.tt">
+    <Content Include="Models\MovieTicketBookingEntities2.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MovieTicketBookingEntities.edmx</DependentUpon>
-      <LastGenOutput>MovieTicketBookingEntities.cs</LastGenOutput>
+      <DependentUpon>MovieTicketBookingEntities2.edmx</DependentUpon>
+      <LastGenOutput>MovieTicketBookingEntities2.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1133,12 +1141,12 @@
     <Content Include="asset\admin\vendors\mdi\fonts\materialdesignicons-webfont.ttf" />
     <Content Include="asset\admin\vendors\mdi\fonts\materialdesignicons-webfont.woff" />
     <Content Include="asset\admin\vendors\mdi\fonts\materialdesignicons-webfont.woff2" />
-    <EntityDeploy Include="Models\MovieTicketBookingEntities.edmx">
+    <EntityDeploy Include="Models\MovieTicketBookingEntities2.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MovieTicketBookingEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>MovieTicketBookingEntities2.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\MovieTicketBookingEntities.edmx.diagram">
-      <DependentUpon>MovieTicketBookingEntities.edmx</DependentUpon>
+    <Content Include="Models\MovieTicketBookingEntities2.edmx.diagram">
+      <DependentUpon>MovieTicketBookingEntities2.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

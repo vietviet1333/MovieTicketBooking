@@ -18,8 +18,8 @@ namespace MovieTicketBooking.Models
         public string user_name { get; set; }
         public string email { get; set; }
         public string user_phone { get; set; }
-        public System.DateTime birthday { get; set; }
-        public int gender { get; set; }
+        public Nullable<System.DateTime> birthday { get; set; }
+        public Nullable<int> gender { get; set; }
         public string password { get; set; }
     }
 }

@@ -69,7 +69,7 @@ namespace MovieTicketBooking.Dao
             return null;
 
         }
-        public Movie getMovieById(int id_movie)
+        public Movie GetMovieById(int id_movie)
         {
             try
             {

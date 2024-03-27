@@ -256,9 +256,9 @@
             @for (int i = 0; i < showtimes.Count; i++)
             {
 
-                String post = showtimes[i].show_date.ToString("yyyy-MM-dd");
-                String st = showtimes[i].starttime.ToString("hh:mm tt");
-                String et = showtimes[i].endtime.ToString("hh:mm tt");
+                String post = showtimes[i].show_date?.ToString("yyyy-MM-dd");
+                String st = showtimes[i].starttime?.ToString("hh:mm tt");
+                String et = showtimes[i].endtime?.ToString("hh:mm tt");
                 int sta = showtimes[i].status;
                 String stat = "";
                 if (sta == 0)

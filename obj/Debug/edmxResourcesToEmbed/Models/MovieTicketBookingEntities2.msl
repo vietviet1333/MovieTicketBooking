@@ -1,6 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="MovieTicketBookingModelStoreContainer" CdmEntityContainer="MovieTicketBookingEntities2">
+    <EntitySetMapping Name="Bookings">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Booking">
+        <MappingFragment StoreEntitySet="Booking">
+          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+          <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="total_price" ColumnName="total_price" />
+          <ScalarProperty Name="booking_time" ColumnName="booking_time" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bookingcomboes">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingcombo">
+        <MappingFragment StoreEntitySet="Bookingcombo">
+          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+          <ScalarProperty Name="combo_id" ColumnName="combo_id" />
+          <ScalarProperty Name="bookingcombo_id" ColumnName="bookingcombo_id" />
+          <ScalarProperty Name="quantity_combo" ColumnName="quantity_combo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Bookingseats">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingseat">
+        <MappingFragment StoreEntitySet="Bookingseat">
+          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+          <ScalarProperty Name="room_id" ColumnName="room_id" />
+          <ScalarProperty Name="nameseat" ColumnName="nameseat" />
+          <ScalarProperty Name="bookingseat_id" ColumnName="bookingseat_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Chairs">
       <EntityTypeMapping TypeName="MovieTicketBookingModel.Chair">
         <MappingFragment StoreEntitySet="Chair">
@@ -15,6 +46,17 @@
         <MappingFragment StoreEntitySet="City">
           <ScalarProperty Name="id_city" ColumnName="id_city" />
           <ScalarProperty Name="title_city" ColumnName="title_city" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FoodDrinks">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.FoodDrink">
+        <MappingFragment StoreEntitySet="FoodDrink">
+          <ScalarProperty Name="fooddrink_id" ColumnName="fooddrink_id" />
+          <ScalarProperty Name="fooddrink_name" ColumnName="fooddrink_name" />
+          <ScalarProperty Name="fooddrink_description" ColumnName="fooddrink_description" />
+          <ScalarProperty Name="fooddrink_status" ColumnName="fooddrink_status" />
+          <ScalarProperty Name="price" ColumnName="price" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -46,6 +88,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Showtimes">
+      <EntityTypeMapping TypeName="MovieTicketBookingModel.Showtime">
+        <MappingFragment StoreEntitySet="Showtimes">
+          <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
+          <ScalarProperty Name="movie_id" ColumnName="movie_id" />
+          <ScalarProperty Name="theater_id" ColumnName="theater_id" />
+          <ScalarProperty Name="room_id" ColumnName="room_id" />
+          <ScalarProperty Name="show_date" ColumnName="show_date" />
+          <ScalarProperty Name="starttime" ColumnName="starttime" />
+          <ScalarProperty Name="endtime" ColumnName="endtime" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Theaters">
       <EntityTypeMapping TypeName="MovieTicketBookingModel.Theater">
         <MappingFragment StoreEntitySet="Theater">
@@ -67,62 +123,6 @@
           <ScalarProperty Name="birthday" ColumnName="birthday" />
           <ScalarProperty Name="gender" ColumnName="gender" />
           <ScalarProperty Name="password" ColumnName="password" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Showtimes">
-      <EntityTypeMapping TypeName="MovieTicketBookingModel.Showtime">
-        <MappingFragment StoreEntitySet="Showtimes">
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="endtime" ColumnName="endtime" />
-          <ScalarProperty Name="starttime" ColumnName="starttime" />
-          <ScalarProperty Name="show_date" ColumnName="show_date" />
-          <ScalarProperty Name="room_id" ColumnName="room_id" />
-          <ScalarProperty Name="theater_id" ColumnName="theater_id" />
-          <ScalarProperty Name="movie_id" ColumnName="movie_id" />
-          <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="FoodDrinks">
-      <EntityTypeMapping TypeName="MovieTicketBookingModel.FoodDrink">
-        <MappingFragment StoreEntitySet="FoodDrink">
-          <ScalarProperty Name="price" ColumnName="price" />
-          <ScalarProperty Name="fooddrink_status" ColumnName="fooddrink_status" />
-          <ScalarProperty Name="fooddrink_description" ColumnName="fooddrink_description" />
-          <ScalarProperty Name="fooddrink_name" ColumnName="fooddrink_name" />
-          <ScalarProperty Name="fooddrink_id" ColumnName="fooddrink_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Bookings">
-      <EntityTypeMapping TypeName="MovieTicketBookingModel.Booking">
-        <MappingFragment StoreEntitySet="Booking">
-          <ScalarProperty Name="booking_time" ColumnName="booking_time" />
-          <ScalarProperty Name="total_price" ColumnName="total_price" />
-          <ScalarProperty Name="user_id" ColumnName="user_id" />
-          <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
-          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Bookingseats">
-      <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingseat">
-        <MappingFragment StoreEntitySet="Bookingseat">
-          <ScalarProperty Name="bookingseat_id" ColumnName="bookingseat_id" />
-          <ScalarProperty Name="nameseat" ColumnName="nameseat" />
-          <ScalarProperty Name="room_id" ColumnName="room_id" />
-          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Bookingcomboes">
-      <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingcombo">
-        <MappingFragment StoreEntitySet="Bookingcombo">
-          <ScalarProperty Name="quantity_combo" ColumnName="quantity_combo" />
-          <ScalarProperty Name="bookingcombo_id" ColumnName="bookingcombo_id" />
-          <ScalarProperty Name="combo_id" ColumnName="combo_id" />
-          <ScalarProperty Name="booking_id" ColumnName="booking_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

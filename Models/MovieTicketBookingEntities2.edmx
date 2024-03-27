@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MovieTicketBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MovieTicketBookingModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Admin">
@@ -30,6 +30,7 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="booking_id" Type="int" />
           <Property Name="combo_id" Type="int" />
           <Property Name="bookingcombo_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="quantity_combo" Type="int" />
         </EntityType>
         <EntityType Name="Bookingseat">
           <Key>
@@ -37,7 +38,7 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           </Key>
           <Property Name="booking_id" Type="int" />
           <Property Name="room_id" Type="int" />
-          <Property Name="nameseat" Type="int" />
+          <Property Name="nameseat" Type="varchar" MaxLength="100" />
           <Property Name="bookingseat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Chair">
@@ -315,18 +316,54 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
             <End Role="Theater" EntitySet="Theater" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MovieTicketBookingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="booking_id" />
+          </Key>
+          <Property Name="booking_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="showtime_id" Type="Int32" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="total_price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="booking_time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Showtime" Relationship="Self.FK__Booking__showtim__4E88ABD4" FromRole="Booking" ToRole="Showtimes" />
+          <NavigationProperty Name="Bookingcomboes" Relationship="Self.FK__Bookingco__booki__59063A47" FromRole="Booking" ToRole="Bookingcombo" />
+          <NavigationProperty Name="Bookingseats" Relationship="Self.FK__Bookingse__booki__5812160E" FromRole="Booking" ToRole="Bookingseat" />
+        </EntityType>
+        <EntityType Name="Bookingcombo">
+          <Key>
+            <PropertyRef Name="bookingcombo_id" />
+          </Key>
+          <Property Name="booking_id" Type="Int32" />
+          <Property Name="combo_id" Type="Int32" />
+          <Property Name="bookingcombo_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="quantity_combo" Type="Int32" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__Bookingco__booki__59063A47" FromRole="Bookingcombo" ToRole="Booking" />
+          <NavigationProperty Name="FoodDrink" Relationship="Self.FK__Bookingco__combo__5AEE82B9" FromRole="Bookingcombo" ToRole="FoodDrink" />
+        </EntityType>
+        <EntityType Name="Bookingseat">
+          <Key>
+            <PropertyRef Name="bookingseat_id" />
+          </Key>
+          <Property Name="booking_id" Type="Int32" />
+          <Property Name="room_id" Type="Int32" />
+          <Property Name="nameseat" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="bookingseat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Booking" Relationship="Self.FK__Bookingse__booki__5812160E" FromRole="Bookingseat" ToRole="Booking" />
+          <NavigationProperty Name="Room" Relationship="Self.FK__Bookingse__room___59FA5E80" FromRole="Bookingseat" ToRole="Room" />
+        </EntityType>
         <EntityType Name="Chair">
           <Key>
             <PropertyRef Name="chair_id" />
           </Key>
-          <Property Name="chair_id" Type="Int32" Nullable="false" />
+          <Property Name="chair_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="room_id" Type="Int32" />
           <Property Name="name_chair" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Room" Relationship="Self.FK__Chair__room_id__412EB0B6" FromRole="Chair" ToRole="Room" />
+          <NavigationProperty Name="Room" Relationship="Self.FK__Chair__room_id__46E78A0C" FromRole="Chair" ToRole="Room" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -335,6 +372,17 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="id_city" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="title_city" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Theaters" Relationship="Self.FK__Theater__city_id__440B1D61" FromRole="City" ToRole="Theater" />
+        </EntityType>
+        <EntityType Name="FoodDrink">
+          <Key>
+            <PropertyRef Name="fooddrink_id" />
+          </Key>
+          <Property Name="fooddrink_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fooddrink_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="fooddrink_description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fooddrink_status" Type="Int32" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Bookingcomboes" Relationship="Self.FK__Bookingco__combo__5AEE82B9" FromRole="FoodDrink" ToRole="Bookingcombo" />
         </EntityType>
         <EntityType Name="Movie">
           <Key>
@@ -351,7 +399,7 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="cast" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="language" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="Int32" />
-          <NavigationProperty Name="Showtimes" Relationship="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" FromRole="Movie" ToRole="Showtime" />
+          <NavigationProperty Name="Showtimes" Relationship="Self.FK__Showtimes__movie__49C3F6B7" FromRole="Movie" ToRole="Showtimes" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -362,10 +410,27 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="theater_id" Type="Int32" />
           <Property Name="number_row" Type="Int32" />
           <Property Name="number_column" Type="Int32" />
-          <NavigationProperty Name="Chairs" Relationship="Self.FK__Chair__room_id__412EB0B6" FromRole="Room" ToRole="Chair" />
+          <NavigationProperty Name="Bookingseats" Relationship="Self.FK__Bookingse__room___59FA5E80" FromRole="Room" ToRole="Bookingseat" />
+          <NavigationProperty Name="Chairs" Relationship="Self.FK__Chair__room_id__46E78A0C" FromRole="Room" ToRole="Chair" />
           <NavigationProperty Name="Theater" Relationship="Self.FK__Room__theater_id__403A8C7D" FromRole="Room" ToRole="Theater" />
-          <NavigationProperty Name="Showtimes" Relationship="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" FromRole="Room" ToRole="Showtime" />
-          <NavigationProperty Name="Bookingseats" Relationship="MovieTicketBookingModel.FK__Bookingse__room___59FA5E80" FromRole="Room" ToRole="Bookingseat" />
+          <NavigationProperty Name="Showtimes" Relationship="Self.FK__Showtimes__room___4BAC3F29" FromRole="Room" ToRole="Showtimes" />
+        </EntityType>
+        <EntityType Name="Showtime">
+          <Key>
+            <PropertyRef Name="showtime_id" />
+          </Key>
+          <Property Name="showtime_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="movie_id" Type="Int32" />
+          <Property Name="theater_id" Type="Int32" />
+          <Property Name="room_id" Type="Int32" />
+          <Property Name="show_date" Type="DateTime" Precision="3" />
+          <Property Name="starttime" Type="DateTime" Precision="3" />
+          <Property Name="endtime" Type="DateTime" Precision="3" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="Bookings" Relationship="Self.FK__Booking__showtim__4E88ABD4" FromRole="Showtimes" ToRole="Booking" />
+          <NavigationProperty Name="Movie" Relationship="Self.FK__Showtimes__movie__49C3F6B7" FromRole="Showtimes" ToRole="Movie" />
+          <NavigationProperty Name="Room" Relationship="Self.FK__Showtimes__room___4BAC3F29" FromRole="Showtimes" ToRole="Room" />
+          <NavigationProperty Name="Theater" Relationship="Self.FK__Showtimes__theat__4AB81AF0" FromRole="Showtimes" ToRole="Theater" />
         </EntityType>
         <EntityType Name="Theater">
           <Key>
@@ -378,7 +443,7 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="Theater_image" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="City" Relationship="Self.FK__Theater__city_id__440B1D61" FromRole="Theater" ToRole="City" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK__Room__theater_id__403A8C7D" FromRole="Theater" ToRole="Room" />
-          <NavigationProperty Name="Showtimes" Relationship="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" FromRole="Theater" ToRole="Showtime" />
+          <NavigationProperty Name="Showtimes" Relationship="Self.FK__Showtimes__theat__4AB81AF0" FromRole="Theater" ToRole="Showtimes" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -392,7 +457,67 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
           <Property Name="gender" Type="Int32" />
           <Property Name="password" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="FK__Chair__room_id__412EB0B6">
+        <Association Name="FK__Booking__showtim__4E88ABD4">
+          <End Role="Showtimes" Type="Self.Showtime" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Showtimes">
+              <PropertyRef Name="showtime_id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="showtime_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bookingco__booki__59063A47">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="0..1" />
+          <End Role="Bookingcombo" Type="Self.Bookingcombo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="booking_id" />
+            </Principal>
+            <Dependent Role="Bookingcombo">
+              <PropertyRef Name="booking_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bookingse__booki__5812160E">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="0..1" />
+          <End Role="Bookingseat" Type="Self.Bookingseat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="booking_id" />
+            </Principal>
+            <Dependent Role="Bookingseat">
+              <PropertyRef Name="booking_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bookingco__combo__5AEE82B9">
+          <End Role="FoodDrink" Type="Self.FoodDrink" Multiplicity="0..1" />
+          <End Role="Bookingcombo" Type="Self.Bookingcombo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FoodDrink">
+              <PropertyRef Name="fooddrink_id" />
+            </Principal>
+            <Dependent Role="Bookingcombo">
+              <PropertyRef Name="combo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bookingse__room___59FA5E80">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="Bookingseat" Type="Self.Bookingseat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Bookingseat">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Chair__room_id__46E78A0C">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="Chair" Type="Self.Chair" Multiplicity="*" />
           <ReferentialConstraint>
@@ -416,6 +541,18 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Showtimes__movie__49C3F6B7">
+          <End Role="Movie" Type="Self.Movie" Multiplicity="0..1" />
+          <End Role="Showtimes" Type="Self.Showtime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movie">
+              <PropertyRef Name="movie_id" />
+            </Principal>
+            <Dependent Role="Showtimes">
+              <PropertyRef Name="movie_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Room__theater_id__403A8C7D">
           <End Role="Theater" Type="Self.Theater" Multiplicity="0..1" />
           <End Role="Room" Type="Self.Room" Multiplicity="*" />
@@ -428,14 +565,63 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Showtimes__room___4BAC3F29">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="Showtimes" Type="Self.Showtime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="room_id" />
+            </Principal>
+            <Dependent Role="Showtimes">
+              <PropertyRef Name="room_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Showtimes__theat__4AB81AF0">
+          <End Role="Theater" Type="Self.Theater" Multiplicity="0..1" />
+          <End Role="Showtimes" Type="Self.Showtime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Theater">
+              <PropertyRef Name="theater_id" />
+            </Principal>
+            <Dependent Role="Showtimes">
+              <PropertyRef Name="theater_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MovieTicketBookingEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bookings" EntityType="Self.Booking" />
+          <EntitySet Name="Bookingcomboes" EntityType="Self.Bookingcombo" />
+          <EntitySet Name="Bookingseats" EntityType="Self.Bookingseat" />
           <EntitySet Name="Chairs" EntityType="Self.Chair" />
           <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="FoodDrinks" EntityType="Self.FoodDrink" />
           <EntitySet Name="Movies" EntityType="Self.Movie" />
           <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="Showtimes" EntityType="Self.Showtime" />
           <EntitySet Name="Theaters" EntityType="Self.Theater" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK__Chair__room_id__412EB0B6" Association="Self.FK__Chair__room_id__412EB0B6">
+          <AssociationSet Name="FK__Booking__showtim__4E88ABD4" Association="Self.FK__Booking__showtim__4E88ABD4">
+            <End Role="Showtimes" EntitySet="Showtimes" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bookingco__booki__59063A47" Association="Self.FK__Bookingco__booki__59063A47">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="Bookingcombo" EntitySet="Bookingcomboes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bookingse__booki__5812160E" Association="Self.FK__Bookingse__booki__5812160E">
+            <End Role="Booking" EntitySet="Bookings" />
+            <End Role="Bookingseat" EntitySet="Bookingseats" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bookingco__combo__5AEE82B9" Association="Self.FK__Bookingco__combo__5AEE82B9">
+            <End Role="FoodDrink" EntitySet="FoodDrinks" />
+            <End Role="Bookingcombo" EntitySet="Bookingcomboes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bookingse__room___59FA5E80" Association="Self.FK__Bookingse__room___59FA5E80">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Bookingseat" EntitySet="Bookingseats" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Chair__room_id__46E78A0C" Association="Self.FK__Chair__room_id__46E78A0C">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="Chair" EntitySet="Chairs" />
           </AssociationSet>
@@ -443,212 +629,60 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
             <End Role="City" EntitySet="Cities" />
             <End Role="Theater" EntitySet="Theaters" />
           </AssociationSet>
+          <AssociationSet Name="FK__Showtimes__movie__49C3F6B7" Association="Self.FK__Showtimes__movie__49C3F6B7">
+            <End Role="Movie" EntitySet="Movies" />
+            <End Role="Showtimes" EntitySet="Showtimes" />
+          </AssociationSet>
           <AssociationSet Name="FK__Room__theater_id__403A8C7D" Association="Self.FK__Room__theater_id__403A8C7D">
             <End Role="Theater" EntitySet="Theaters" />
             <End Role="Room" EntitySet="Rooms" />
           </AssociationSet>
-          <EntitySet Name="Showtimes" EntityType="MovieTicketBookingModel.Showtime" />
-          <AssociationSet Name="FK__Showtimes__movie__49C3F6B7" Association="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7">
-            <End Role="Movie" EntitySet="Movies" />
-            <End Role="Showtime" EntitySet="Showtimes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Showtimes__room___4BAC3F29" Association="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29">
+          <AssociationSet Name="FK__Showtimes__room___4BAC3F29" Association="Self.FK__Showtimes__room___4BAC3F29">
             <End Role="Room" EntitySet="Rooms" />
-            <End Role="Showtime" EntitySet="Showtimes" />
+            <End Role="Showtimes" EntitySet="Showtimes" />
           </AssociationSet>
-          <AssociationSet Name="FK__Showtimes__theat__4AB81AF0" Association="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0">
+          <AssociationSet Name="FK__Showtimes__theat__4AB81AF0" Association="Self.FK__Showtimes__theat__4AB81AF0">
             <End Role="Theater" EntitySet="Theaters" />
-            <End Role="Showtime" EntitySet="Showtimes" />
-          </AssociationSet>
-          <EntitySet Name="FoodDrinks" EntityType="MovieTicketBookingModel.FoodDrink" />
-          <EntitySet Name="Bookings" EntityType="MovieTicketBookingModel.Booking" />
-          <AssociationSet Name="FK__Booking__showtim__4E88ABD4" Association="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4">
-            <End Role="Showtime" EntitySet="Showtimes" />
-            <End Role="Booking" EntitySet="Bookings" />
-          </AssociationSet>
-          <EntitySet Name="Bookingseats" EntityType="MovieTicketBookingModel.Bookingseat" />
-          <EntitySet Name="Bookingcomboes" EntityType="MovieTicketBookingModel.Bookingcombo" />
-          <AssociationSet Name="FK__Bookingco__booki__59063A47" Association="MovieTicketBookingModel.FK__Bookingco__booki__59063A47">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="Bookingcombo" EntitySet="Bookingcomboes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Bookingse__booki__5812160E" Association="MovieTicketBookingModel.FK__Bookingse__booki__5812160E">
-            <End Role="Booking" EntitySet="Bookings" />
-            <End Role="Bookingseat" EntitySet="Bookingseats" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Bookingco__combo__5AEE82B9" Association="MovieTicketBookingModel.FK__Bookingco__combo__5AEE82B9">
-            <End Role="FoodDrink" EntitySet="FoodDrinks" />
-            <End Role="Bookingcombo" EntitySet="Bookingcomboes" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Bookingse__room___59FA5E80" Association="MovieTicketBookingModel.FK__Bookingse__room___59FA5E80">
-            <End Role="Room" EntitySet="Rooms" />
-            <End Role="Bookingseat" EntitySet="Bookingseats" />
+            <End Role="Showtimes" EntitySet="Showtimes" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Showtime">
-          <Key>
-            <PropertyRef Name="showtime_id" />
-          </Key>
-          <Property Name="showtime_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="movie_id" Type="Int32" />
-          <Property Name="theater_id" Type="Int32" />
-          <Property Name="room_id" Type="Int32" />
-          <Property Name="show_date" Type="DateTime" Precision="3" />
-          <Property Name="starttime" Type="DateTime" Precision="3" />
-          <Property Name="endtime" Type="DateTime" Precision="3" />
-          <Property Name="status" Type="Int32" />
-          <NavigationProperty Name="Movie" Relationship="MovieTicketBookingModel.FK__Showtimes__movie__49C3F6B7" FromRole="Showtime" ToRole="Movie" />
-          <NavigationProperty Name="Room" Relationship="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" FromRole="Showtime" ToRole="Room" />
-          <NavigationProperty Name="Theater" Relationship="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" FromRole="Showtime" ToRole="Theater" />
-          <NavigationProperty Name="Bookings" Relationship="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" FromRole="Showtime" ToRole="Booking" />
-        </EntityType>
-        <Association Name="FK__Showtimes__movie__49C3F6B7">
-          <End Type="MovieTicketBookingModel.Movie" Role="Movie" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Showtime" Role="Showtime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Movie">
-              <PropertyRef Name="movie_id" />
-            </Principal>
-            <Dependent Role="Showtime">
-              <PropertyRef Name="movie_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Showtimes__room___4BAC3F29">
-          <End Type="MovieTicketBookingModel.Room" Role="Room" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Showtime" Role="Showtime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Room">
-              <PropertyRef Name="room_id" />
-            </Principal>
-            <Dependent Role="Showtime">
-              <PropertyRef Name="room_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Showtimes__theat__4AB81AF0">
-          <End Type="MovieTicketBookingModel.Theater" Role="Theater" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Showtime" Role="Showtime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Theater">
-              <PropertyRef Name="theater_id" />
-            </Principal>
-            <Dependent Role="Showtime">
-              <PropertyRef Name="theater_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="FoodDrink">
-          <Key>
-            <PropertyRef Name="fooddrink_id" />
-          </Key>
-          <Property Name="fooddrink_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="fooddrink_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="fooddrink_description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="fooddrink_status" Type="Int32" />
-          <Property Name="price" Type="Decimal" Precision="18" Scale="0" />
-          <NavigationProperty Name="Bookingcomboes" Relationship="MovieTicketBookingModel.FK__Bookingco__combo__5AEE82B9" FromRole="FoodDrink" ToRole="Bookingcombo" />
-        </EntityType>
-        <EntityType Name="Booking">
-          <Key>
-            <PropertyRef Name="booking_id" />
-          </Key>
-          <Property Name="booking_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="showtime_id" Type="Int32" />
-          <Property Name="user_id" Type="Int32" />
-          <Property Name="total_price" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="booking_time" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Showtime" Relationship="MovieTicketBookingModel.FK__Booking__showtim__4E88ABD4" FromRole="Booking" ToRole="Showtime" />
-          <NavigationProperty Name="Bookingcomboes" Relationship="MovieTicketBookingModel.FK__Bookingco__booki__59063A47" FromRole="Booking" ToRole="Bookingcombo" />
-          <NavigationProperty Name="Bookingseats" Relationship="MovieTicketBookingModel.FK__Bookingse__booki__5812160E" FromRole="Booking" ToRole="Bookingseat" />
-        </EntityType>
-        <Association Name="FK__Booking__showtim__4E88ABD4">
-          <End Type="MovieTicketBookingModel.Showtime" Role="Showtime" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Booking" Role="Booking" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Showtime">
-              <PropertyRef Name="showtime_id" />
-            </Principal>
-            <Dependent Role="Booking">
-              <PropertyRef Name="showtime_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Bookingseat">
-          <Key>
-            <PropertyRef Name="bookingseat_id" />
-          </Key>
-          <Property Name="booking_id" Type="Int32" />
-          <Property Name="room_id" Type="Int32" />
-          <Property Name="nameseat" Type="Int32" />
-          <Property Name="bookingseat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Booking" Relationship="MovieTicketBookingModel.FK__Bookingse__booki__5812160E" FromRole="Bookingseat" ToRole="Booking" />
-          <NavigationProperty Name="Room" Relationship="MovieTicketBookingModel.FK__Bookingse__room___59FA5E80" FromRole="Bookingseat" ToRole="Room" />
-        </EntityType>
-        <EntityType Name="Bookingcombo">
-          <Key>
-            <PropertyRef Name="bookingcombo_id" />
-          </Key>
-          <Property Name="booking_id" Type="Int32" />
-          <Property Name="combo_id" Type="Int32" />
-          <Property Name="bookingcombo_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Booking" Relationship="MovieTicketBookingModel.FK__Bookingco__booki__59063A47" FromRole="Bookingcombo" ToRole="Booking" />
-          <NavigationProperty Name="FoodDrink" Relationship="MovieTicketBookingModel.FK__Bookingco__combo__5AEE82B9" FromRole="Bookingcombo" ToRole="FoodDrink" />
-        </EntityType>
-        <Association Name="FK__Bookingco__booki__59063A47">
-          <End Type="MovieTicketBookingModel.Booking" Role="Booking" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Bookingcombo" Role="Bookingcombo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="booking_id" />
-            </Principal>
-            <Dependent Role="Bookingcombo">
-              <PropertyRef Name="booking_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Bookingse__booki__5812160E">
-          <End Type="MovieTicketBookingModel.Booking" Role="Booking" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Bookingseat" Role="Bookingseat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Booking">
-              <PropertyRef Name="booking_id" />
-            </Principal>
-            <Dependent Role="Bookingseat">
-              <PropertyRef Name="booking_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Bookingco__combo__5AEE82B9">
-          <End Type="MovieTicketBookingModel.FoodDrink" Role="FoodDrink" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Bookingcombo" Role="Bookingcombo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FoodDrink">
-              <PropertyRef Name="fooddrink_id" />
-            </Principal>
-            <Dependent Role="Bookingcombo">
-              <PropertyRef Name="combo_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Bookingse__room___59FA5E80">
-          <End Type="MovieTicketBookingModel.Room" Role="Room" Multiplicity="0..1" />
-          <End Type="MovieTicketBookingModel.Bookingseat" Role="Bookingseat" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Room">
-              <PropertyRef Name="room_id" />
-            </Principal>
-            <Dependent Role="Bookingseat">
-              <PropertyRef Name="room_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MovieTicketBookingModelStoreContainer" CdmEntityContainer="MovieTicketBookingEntities2">
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="MovieTicketBookingModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="total_price" ColumnName="total_price" />
+                <ScalarProperty Name="booking_time" ColumnName="booking_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bookingcomboes">
+            <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingcombo">
+              <MappingFragment StoreEntitySet="Bookingcombo">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="combo_id" ColumnName="combo_id" />
+                <ScalarProperty Name="bookingcombo_id" ColumnName="bookingcombo_id" />
+                <ScalarProperty Name="quantity_combo" ColumnName="quantity_combo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bookingseats">
+            <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingseat">
+              <MappingFragment StoreEntitySet="Bookingseat">
+                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+                <ScalarProperty Name="nameseat" ColumnName="nameseat" />
+                <ScalarProperty Name="bookingseat_id" ColumnName="bookingseat_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Chairs">
             <EntityTypeMapping TypeName="MovieTicketBookingModel.Chair">
               <MappingFragment StoreEntitySet="Chair">
@@ -663,6 +697,17 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
               <MappingFragment StoreEntitySet="City">
                 <ScalarProperty Name="id_city" ColumnName="id_city" />
                 <ScalarProperty Name="title_city" ColumnName="title_city" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FoodDrinks">
+            <EntityTypeMapping TypeName="MovieTicketBookingModel.FoodDrink">
+              <MappingFragment StoreEntitySet="FoodDrink">
+                <ScalarProperty Name="fooddrink_id" ColumnName="fooddrink_id" />
+                <ScalarProperty Name="fooddrink_name" ColumnName="fooddrink_name" />
+                <ScalarProperty Name="fooddrink_description" ColumnName="fooddrink_description" />
+                <ScalarProperty Name="fooddrink_status" ColumnName="fooddrink_status" />
+                <ScalarProperty Name="price" ColumnName="price" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -694,6 +739,20 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Showtimes">
+            <EntityTypeMapping TypeName="MovieTicketBookingModel.Showtime">
+              <MappingFragment StoreEntitySet="Showtimes">
+                <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
+                <ScalarProperty Name="movie_id" ColumnName="movie_id" />
+                <ScalarProperty Name="theater_id" ColumnName="theater_id" />
+                <ScalarProperty Name="room_id" ColumnName="room_id" />
+                <ScalarProperty Name="show_date" ColumnName="show_date" />
+                <ScalarProperty Name="starttime" ColumnName="starttime" />
+                <ScalarProperty Name="endtime" ColumnName="endtime" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Theaters">
             <EntityTypeMapping TypeName="MovieTicketBookingModel.Theater">
               <MappingFragment StoreEntitySet="Theater">
@@ -715,61 +774,6 @@ warning 6013: The table/view 'MovieTicketBooking.dbo.Admin' does not have a prim
                 <ScalarProperty Name="birthday" ColumnName="birthday" />
                 <ScalarProperty Name="gender" ColumnName="gender" />
                 <ScalarProperty Name="password" ColumnName="password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Showtimes">
-            <EntityTypeMapping TypeName="MovieTicketBookingModel.Showtime">
-              <MappingFragment StoreEntitySet="Showtimes">
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="endtime" ColumnName="endtime" />
-                <ScalarProperty Name="starttime" ColumnName="starttime" />
-                <ScalarProperty Name="show_date" ColumnName="show_date" />
-                <ScalarProperty Name="room_id" ColumnName="room_id" />
-                <ScalarProperty Name="theater_id" ColumnName="theater_id" />
-                <ScalarProperty Name="movie_id" ColumnName="movie_id" />
-                <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="FoodDrinks">
-            <EntityTypeMapping TypeName="MovieTicketBookingModel.FoodDrink">
-              <MappingFragment StoreEntitySet="FoodDrink">
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="fooddrink_status" ColumnName="fooddrink_status" />
-                <ScalarProperty Name="fooddrink_description" ColumnName="fooddrink_description" />
-                <ScalarProperty Name="fooddrink_name" ColumnName="fooddrink_name" />
-                <ScalarProperty Name="fooddrink_id" ColumnName="fooddrink_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Bookings">
-            <EntityTypeMapping TypeName="MovieTicketBookingModel.Booking">
-              <MappingFragment StoreEntitySet="Booking">
-                <ScalarProperty Name="booking_time" ColumnName="booking_time" />
-                <ScalarProperty Name="total_price" ColumnName="total_price" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="showtime_id" ColumnName="showtime_id" />
-                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Bookingseats">
-            <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingseat">
-              <MappingFragment StoreEntitySet="Bookingseat">
-                <ScalarProperty Name="bookingseat_id" ColumnName="bookingseat_id" />
-                <ScalarProperty Name="nameseat" ColumnName="nameseat" />
-                <ScalarProperty Name="room_id" ColumnName="room_id" />
-                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Bookingcomboes">
-            <EntityTypeMapping TypeName="MovieTicketBookingModel.Bookingcombo">
-              <MappingFragment StoreEntitySet="Bookingcombo">
-                <ScalarProperty Name="bookingcombo_id" ColumnName="bookingcombo_id" />
-                <ScalarProperty Name="combo_id" ColumnName="combo_id" />
-                <ScalarProperty Name="booking_id" ColumnName="booking_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

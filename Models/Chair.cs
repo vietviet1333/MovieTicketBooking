@@ -15,7 +15,7 @@ namespace MovieTicketBooking.Models
     public partial class Chair
     {
         public int chair_id { get; set; }
-        public int room_id { get; set; }
+        public Nullable<int> room_id { get; set; }
         public string name_chair { get; set; }
     
         public virtual Room Room { get; set; }

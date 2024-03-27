@@ -21,18 +21,18 @@ namespace MovieTicketBooking.Models
         }
     
         public int showtime_id { get; set; }
-        public int movie_id { get; set; }
-        public int theater_id { get; set; }
-        public int room_id { get; set; }
-        public System.DateTime show_date { get; set; }
-        public System.DateTime starttime { get; set; }
-        public System.DateTime endtime { get; set; }
-        public int status { get; set; }
+        public Nullable<int> movie_id { get; set; }
+        public Nullable<int> theater_id { get; set; }
+        public Nullable<int> room_id { get; set; }
+        public Nullable<System.DateTime> show_date { get; set; }
+        public Nullable<System.DateTime> starttime { get; set; }
+        public Nullable<System.DateTime> endtime { get; set; }
+        public Nullable<int> status { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
         public virtual Movie Movie { get; set; }
         public virtual Room Room { get; set; }
         public virtual Theater Theater { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

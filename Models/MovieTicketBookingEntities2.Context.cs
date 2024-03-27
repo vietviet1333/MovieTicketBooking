@@ -25,16 +25,16 @@ namespace MovieTicketBooking.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Bookingcombo> Bookingcomboes { get; set; }
+        public virtual DbSet<Bookingseat> Bookingseats { get; set; }
         public virtual DbSet<Chair> Chairs { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<FoodDrink> FoodDrinks { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<Showtime> Showtimes { get; set; }
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Showtime> Showtimes { get; set; }
-        public virtual DbSet<FoodDrink> FoodDrinks { get; set; }
-        public virtual DbSet<Booking> Bookings { get; set; }
-        public virtual DbSet<Bookingseat> Bookingseats { get; set; }
-        public virtual DbSet<Bookingcombo> Bookingcomboes { get; set; }
     }
 }

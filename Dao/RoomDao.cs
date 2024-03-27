@@ -29,23 +29,26 @@ namespace MovieTicketBooking.Dao
             bool flagInsertroom = true;
             try
             {
-                var mv = new MovieTicketBookingEntities2();
-                Room r = new Room();
-                r.room_name = room_name;
-                r.theater_id = theater_id;
-                r.number_row = row;
-                r.number_column = column;
-                mv.Rooms.Add(r);
-                mv.SaveChanges();
-               for(int i = 0;i<row*column;i++)
+               
+                using (var mv = new MovieTicketBookingEntities2())
                 {
-                    var m = new MovieTicketBookingEntities2();
-                    Chair c = new Chair();
-                    c.name_chair = "A"+i;
-                    c.room_id = r.room_id;
-                    m.Chairs.Add(c);
-                    m.SaveChanges();
+                    Room r = new Room();
+                    r.room_name = room_name;
+                    r.theater_id = theater_id;
+                    r.number_row = row;
+                    r.number_column = column;
+                    mv.Rooms.Add(r);
+                    mv.SaveChanges();
+                    for (int i = 0; i < row * column; i++)
+                    {
+                       
+                        Chair c = new Chair();
+                        c.name_chair = "A" + i;
+                        c.room_id = r.room_id;
+                        mv.Chairs.Add(c);
+                        mv.SaveChanges();
 
+                    }
                 }
             }
             catch (Exception ex)
