@@ -27,7 +27,7 @@ namespace MovieTicketBooking.Models
         public Nullable<System.DateTime> show_date { get; set; }
         public Nullable<System.DateTime> starttime { get; set; }
         public Nullable<System.DateTime> endtime { get; set; }
-        public Nullable<int> status { get; set; }
+        public int status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Booking> Bookings { get; set; }

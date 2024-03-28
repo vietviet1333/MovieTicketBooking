@@ -41,6 +41,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
+                ShowtimeDao.Instance().AutoUpdateShowtime();
                 var mo = MovieDao.Instance().GetMovieById(movie_id);
                 return View(mo);
             }
@@ -49,5 +50,8 @@ namespace MovieTicketBooking.Controllers
                 return Redirect("Home");
             }
         }
-    }
+        public ActionResult ViewLogin() {
+        return View();
+        }
+     }
 }

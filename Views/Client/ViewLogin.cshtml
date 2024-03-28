@@ -1,0 +1,242 @@
+﻿
+@{
+    ViewBag.Title = "ViewLogin";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<link href="~/asset/assets/css/style.css" />
+<style>
+    body {
+        font-family: Arial, sans-serif;
+
+    }
+
+    .formviet {
+        width: 30%;
+        justify-content: start;
+        margin-top:20px
+    }
+
+    .tabs {
+        display: flex;
+        width: 100%;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        overflow: hidden;
+    }
+
+    .tab {
+        width: 50%;
+        padding: 10px 30px;
+        cursor: pointer;
+        background-color: #ffffff;
+        color: #ff6200;
+        transition: background-color 0.3s, color 0.3s;
+        text-align: center;
+    }
+
+        .tab.active {
+            background-color: #ff6200;
+            color: #fff;
+        }
+
+    .form-container {
+        width: 100%;
+        background-color: #fff;
+        padding: 40px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff6200;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            border: none;
+            box-shadow: rgba(255, 60, 0, 0.4) 0px 2px 4px, rgba(212, 149, 149, 0.3) 0px 7px 13px -3px, rgba(255, 0, 0, 0.2) 0px -3px 0px inset;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #ff6200;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .form-container button:hover {
+                background-color: #e65800;
+            }
+
+        .form-container form {
+            display: none;
+        }
+
+            .form-container form.active {
+                display: block;
+            }
+
+    *:focus {
+        outline: none;
+    }
+    .carousel {
+        position: relative;
+        width: 270px;
+        height: 350px;
+        overflow: hidden;
+        background-color: #cdcdcd;
+        margin-left:20px;
+        margin-top:20px
+    }
+
+    .carousel-item .slide-image {
+        width: 270px;
+        height: 350px;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .carousel-item {
+        position: absolute;
+        width: 100%;
+        height: 270px;
+        border: none;
+        top: 0;
+        left: 100%;
+    }
+
+        .carousel-item.active {
+            left: 0;
+            transition: all 0.3s ease-out;
+        }
+
+        .carousel-item div {
+            height: 100%;
+        }
+
+    .red {
+        background-color: red;
+    }
+
+    .green {
+        background-color: green;
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+
+    .violet {
+        background-color: violet;
+    }
+
+</style>
+
+<div style="display: flex;justify-content: center;align-items: center;height: auto">
+    <div class="formviet">
+        <div class="tabs">
+            <div class="tab active" onclick="openForm('login')">Login</div>
+            <div class="tab" onclick="openForm('register')">Register</div>
+        </div>
+
+        <div class="form-container">
+            <form id="loginForm" class="active">
+                <h2>Login</h2>
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Login <i class="fas fa-sign-in-alt"></i></button>
+            </form>
+
+            <form id="registerForm">
+                <h2>Register</h2>
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Confirm Password" required>
+                <button type="submit">Register <i class="fas fa-user-plus"></i></button>
+            </form>
+        </div>
+    </div>
+    <div class="carousel">
+        <div class="carousel-item">
+            <div class="slide-image"
+                 style="background-image: url('https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/ab3ffafce43fb595530b3252933d1660.jpg?alt=media&token=8badb8cb-3c57-4a0c-bd52-64cf5f3ce77f');">
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="slide-image"
+                 style="background-image: url('https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/081d9d1c00e3ad6316dd2baf00674520.jpg?alt=media&token=5833bc0e-741e-4d90-b78d-969e9a4a531a');">
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="slide-image"
+                 style="background-image: url('https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/c2a315ded319cb3ac4fea2bb3b8d4820.jpg?alt=media&token=93c03baf-5941-44ea-8428-1db0527bca2c');">
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="slide-image"
+                 style="background-image: url('https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/menuboard-combo1-2-2024-coonline-combo2_1710302669633.jpg?alt=media&token=4411c416-6a40-4b24-85ac-1dac89009ac8');">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  function openForm(formName) {
+    var forms = document.querySelectorAll('.form-container form');
+    var tabs = document.querySelectorAll('.tabs .tab');
+    for (var i = 0; i < forms.length; i++) {
+      if (forms[i].id === formName + 'Form') {
+        forms[i].classList.add('active');
+      } else {
+        forms[i].classList.remove('active');
+      }
+    }
+    for (var j = 0; j < tabs.length; j++) {
+      if (tabs[j].textContent.toLowerCase() === formName) {
+        tabs[j].classList.add('active');
+      } else {
+        tabs[j].classList.remove('active');
+      }
+    }
+    }
+    window.onload = function () {
+        let slides =
+            document.getElementsByClassName('carousel-item');
+
+        function addActive(slide) {
+            slide.classList.add('active');
+        }
+
+        function removeActive(slide) {
+            slide.classList.remove('active');
+        }
+
+        addActive(slides[0]);
+        setInterval(function () {
+            for (let i = 0; i < slides.length; i++) {
+                if (i + 1 == slides.length) {
+                    addActive(slides[0]);
+                    setTimeout(removeActive, 350, slides[i]);
+                    break;
+                }
+                if (slides[i].classList.contains('active')) {
+                    setTimeout(removeActive, 350, slides[i]);
+                    addActive(slides[i + 1]);
+                    break;
+                }
+            }
+        }, 1500);
+    };
+</script>

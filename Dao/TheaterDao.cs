@@ -138,7 +138,7 @@ namespace MovieTicketBooking.Dao
                     var result = (from th in mv.Theaters
                                   join st in mv.Showtimes on th.theater_id equals st.theater_id
                                   join mo in mv.Movies on st.movie_id equals mo.movie_id
-                                  where th.city_id == cityId && DbFunctions.TruncateTime(st.show_date) == showDate.Date && st.movie_id== movie_id
+                                  where th.city_id == cityId && DbFunctions.TruncateTime(st.show_date) == showDate.Date && st.movie_id== movie_id && st.status== 0
                                   select th).Distinct().ToList();
                     return result;
                 }
