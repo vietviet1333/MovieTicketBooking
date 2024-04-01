@@ -4,9 +4,10 @@
 }
 
 @model MovieTicketBooking.Models.Showtime
-@{ 
+@{
     var combo = MovieTicketBooking.Dao.FoodDrinkDao.Instance().GetFoodDrink();
     var seatselected = MovieTicketBooking.Dao.BookingseatDao.Instance().GetSeatsOfBooking(Model.showtime_id);
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -478,7 +479,7 @@
                         <img src="https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/menuboard-combo1-2-2024-coonline-combo2_1710302669633.jpg?alt=media&token=4411c416-6a40-4b24-85ac-1dac89009ac8"
                              alt="">
                         <div class="fooddescription">
-                            <input  id="P@(i)" value="@combo[i].price" hidden />
+                            <input id="P@(i)" value="@combo[i].price" hidden />
                             <input id="Idbookingcombo@(i)" class="idofcombo" value="@combo[i].fooddrink_id" hidden />
                             <div class="namecombo" id="N@(i)">@combo[i].fooddrink_name</div>
                             <div class="descombo">@combo[i].fooddrink_description </div>
@@ -564,17 +565,18 @@
     </div>
 </div>
 <div id="checkcountbtngroup">
-    <form method="post" action="/Showtime/BookingCheckcount" >
+    <form method="post" action="/Showtime/BookingCheckcount" id="myForm">
+
         <input value="@Model.Room.room_id" name="room_id" hidden />
-        <input id="listseat" name="nameseats"hidden /> 
-        <input name="showtime_id" value="@Model.showtime_id" hidden />
+        <input id="listseat" name="nameseats" hidden />
+        <input name="showtime_id" id="sh" value="@Model.showtime_id" hidden />
         <input id="listidcombo" name="idcombos" hidden />
         <input id="listquantitycombo" name="quantitycombos" hidden />
-        <input name="totalofbooking" id="total_of_booking" hidden/>
+        <input name="totalofbooking" id="total_of_booking" hidden />
 
 
         <button id="btncomback" onclick="combodrink()">Come Back</button>
-        <button id="btncheckcount" type="submit">Checkcount</button>
+        <button id="btncheckcount" type="button" onclick="checkseats()">Checkcount</button>
     </form>
 </div>
 
@@ -634,7 +636,7 @@
                     gridItem.style.color = "white";
                     gridItem.style.border = '2px solid rgb(169, 0, 0)';
                     selectedData.push(gridItem.textContent);
-                   
+
 
                 } else {
                     gridItem.style.backgroundColor = 'white';
@@ -648,7 +650,7 @@
                 }
                 updateList();
             });
-            
+
             gridcontainek.appendChild(gridItem);
         }
         function updateList() {
@@ -687,6 +689,8 @@
 
     createGrid();
 </script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
     var totalPriceOfCombo = 0;
 
@@ -736,7 +740,7 @@
 
 
     function increment(index) {
-       
+
         var selectcombo = document.getElementById("selectcombo");
         var selectcombocheckcount = document.getElementById("selectcombocheckcount");
         var combo = document.createElement("div");
@@ -757,7 +761,7 @@
         // Check current value
         if (currentValue < 4) {
             inputField.value = currentValue + 1;
-           
+
             // Update total price
             var pri = price.value * 1;
             totalPriceOfCombo += pri;
@@ -766,8 +770,8 @@
             alert("Maximum is 4");
         }
 
-       
-        
+
+
         // Display combo
         combo.innerHTML = 'x' + inputField.value + namecombo.innerHTML;
         combo.id = 'C' + index;
@@ -799,7 +803,7 @@
         // Check current value
         if (currentValue > 0) {
             inputField.value = currentValue - 1;
-           
+
             // Update total price
             if (inputField.value > 0) {
                 var price = document.getElementById("P" + index);
@@ -858,5 +862,49 @@
         total.textContent = priceseat + totalPriceOfCombo;
         totalcheckcount.textContent = priceseat + totalPriceOfCombo;
         totalofbooking.value = priceseat + totalPriceOfCombo;
+    }
+
+</script>
+
+<script>
+    function checkseats() {
+        debugger
+        var listseat = document.getElementById("listseat").value;
+        var showtime_id = document.getElementById("sh").value;
+        $.ajax({
+            url: '/Booking/CheckBooking',
+            type: 'POST',
+            data: {
+                seats: listseat,
+                showtime: showtime_id
+            },
+            success: function (response) {
+
+                if (response == "True") {
+                    swal({
+                        title: "Success booking",
+                        text: "You can see it in your profile",
+                        timer: 2000,
+                        buttons: false,
+                    });
+
+                    $("#myForm").submit();
+
+
+
+                } else {
+                    swal({
+                        title: "Error to booking",
+                        text: "The seats you selected have been booked",
+                        icon: "error",
+
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+
     }
 </script>

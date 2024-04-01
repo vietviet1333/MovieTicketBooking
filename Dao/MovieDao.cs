@@ -82,7 +82,32 @@ namespace MovieTicketBooking.Dao
                 return null;
             }
         }
-
+        public List<Movie> GetMovieNowPlaying()
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from mo in mv.Movies where mo.status==1 && mo.release_date <DateTime.Now select mo).ToList();
+                return result;
+            }catch(Exception ex) { 
+            Console.WriteLine(ex.Message);
+            
+            return null;
+            }
+        }
+        public List<Movie> GetMovieCommingSoon()
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from mo in mv.Movies where mo.status==1 && mo.release_date>DateTime.Now select mo).ToList();
+                return result;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 
 }

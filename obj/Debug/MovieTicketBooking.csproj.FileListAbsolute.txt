@@ -81,3 +81,5 @@ D:\Vietcv\MovieTicketBooking\bin\EntityFramework.dll
 D:\Vietcv\MovieTicketBooking\bin\EntityFramework.SqlServer.dll
 D:\Vietcv\MovieTicketBooking\bin\EntityFramework.xml
 D:\Vietcv\MovieTicketBooking\bin\EntityFramework.SqlServer.xml
+D:\Vietcv\MovieTicketBooking\bin\BCrypt.Net.dll
+D:\Vietcv\MovieTicketBooking\bin\BCrypt.Net.xml

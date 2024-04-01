@@ -33,7 +33,7 @@ namespace MovieTicketBooking.Dao
                 b.booking_time = DateTime.Now;
                 mv.Bookings.Add(b);
                 mv.SaveChanges();
-                //slip string
+
                 string[] nameseatss = nameseats.Split(',');
                 foreach (var nameseat in nameseatss)
                 {
@@ -45,9 +45,6 @@ namespace MovieTicketBooking.Dao
                 {
                     int combo_id = int.Parse(bookingcombos[i]);
                     int quantity = int.Parse(quantities[i]);
-
-                    // Now you can use bookingcombo and quantity as needed
-                    // For example:
                     BookingcomboDao.Instance().InsertBookingcombo(combo_id, quantity, b.booking_id);
                 }
                 return flagInsert;
@@ -59,6 +56,53 @@ namespace MovieTicketBooking.Dao
                 return flagInsert;
             }
         }
-
+        public bool CheckBooking(int showtime_id ,string nameseats)
+        { bool flagCheck = true;
+            try
+            {
+              var check=   BookingseatDao.Instance().GetSeatsOfBooking(showtime_id);
+                string[] seatsselected = check.Split(',');
+                string[] seatsnow = nameseats.Split(',');
+                foreach (string seat in seatsnow)
+                {
+                    if (seatsselected.Contains(seat))
+                    {
+                        // Seat is already booked
+                        flagCheck = false;
+                        break; // No need to check further
+                    }
+                }
+                return flagCheck;
+            }catch
+            {
+                return flagCheck;
+            }
+        }
+        public List<Booking> GetAllBooking()
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from bk in mv.Bookings select bk).ToList();
+                return result;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+        public List<Booking> GetBookingOfShowtime(int showtime_id)
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from bk in mv.Bookings where bk.showtime_id == showtime_id select bk).ToList();
+                return result;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }

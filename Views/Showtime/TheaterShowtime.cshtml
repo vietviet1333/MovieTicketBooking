@@ -20,30 +20,35 @@
         font-size: 20px;
         font-weight: bold
     }
-
-    
 </style>
-@for (int i = 0; i < Model.Count; i++)
+@if (Model.Count != 0)
 {
-    <div class="theatershowtime">
-        <div class="name" data-theaterid="@Model[i].theater_id">@Model[i].name</div>
-        <div class="showdate" data-showdate="@showtimedate" hidden></div>
-        <div class="showtimee"></div>
-    </div>
-}
+    for (int i = 0; i < Model.Count; i++)
+    {
+        <div class="theatershowtime">
+            <div class="name" data-theaterid="@Model[i].theater_id">@Model[i].name</div>
+            <div class="showdate" data-showdate="@showtimedate" hidden></div>
+            <div class="showtimee"></div>
+        </div>
+    }
 
+}
+else
+            {
+                <div style="margin:20px 20px; font-size:18px;font-weight:bold">Sorry, don't have showtimes in this date</div>
+            }
 <script>
     $(document).ready(function () {
         $(".name").each(function () {
             var theaterId = $(this).data("theaterid");
             var showtimeDate = $(".showdate").data("showdate");
             getShowtime(theaterId, showtimeDate, $(this).siblings('.showtimee'));
-            
+
         });
     });
 
-    function getShowtime(theaterId,showtimeDate, container) {
-    
+    function getShowtime(theaterId, showtimeDate, container) {
+
         $.ajax({
             url: '/Showtime/ShowtimeofTheater',
             type: 'POST',
@@ -58,6 +63,6 @@
                 console.error(xhr.responseText);
             }
         });
- 
+
     }
 </script>

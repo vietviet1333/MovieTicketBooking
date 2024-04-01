@@ -142,11 +142,11 @@ namespace MovieTicketBooking.Controllers
             try
             {
                 BookingDao.Instance().InsertBooking(nameseats, idcombos, quantitycombos, showtime_id, totalofbooking, room_id);
-                return RedirectToAction("Client/Home");
+                return Redirect("/Client/Home");
             }
             catch
             {
-                return RedirectToAction("Client/Home");
+                return Redirect("/Client/Home");
             }
         }
     }

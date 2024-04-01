@@ -31,7 +31,6 @@
             align-items: center;
             justify-content: end;
             position: fixed;
-   
             z-index: 9999;
         }
 
@@ -71,8 +70,17 @@
     <div class="heade">
 
         <span class="he">
-            <a href="/Client/ViewLogin" class="login"><i class="fa-solid fa-user"></i> Login / Register</a>
-           
+            @if (HttpContext.Current.Session["UserName"] != null)
+            {
+
+
+                <a> <i class="fa-solid fa-user"></i> Hello @HttpContext.Current.Session["UserName"]</a>
+            }
+            else
+            {
+                <a href="/Client/ViewLogin" class="login"><i class="fa-solid fa-user"></i> Login / Register</a>
+            }
+
         </span>
 
     </div>
@@ -438,9 +446,9 @@
         </div>
     </div>
 
-    
-   
 
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </body>
 
 </html>
