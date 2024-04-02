@@ -27,6 +27,7 @@
         <AssociationConnector Association="MovieTicketBookingModel.FK__Room__theater_id__403A8C7D" ManuallyRouted="false" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__room___4BAC3F29" ManuallyRouted="false" />
         <AssociationConnector Association="MovieTicketBookingModel.FK__Showtimes__theat__4AB81AF0" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MovieTicketBookingModel.Admin" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

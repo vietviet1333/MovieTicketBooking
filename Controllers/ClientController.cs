@@ -54,7 +54,14 @@ namespace MovieTicketBooking.Controllers
         }
         public ActionResult ViewLogin()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch
+            {
+                return Redirect("/Client/Home");
+            }
         }
         [HttpPost]
         public int Register(User us)
@@ -110,6 +117,19 @@ namespace MovieTicketBooking.Controllers
             {
                 Console.WriteLine(ex.Message);
                 return false;
+            }
+        }
+        [HttpGet]
+        [CheckLogin]
+        public ActionResult AccountUser(int userid)
+        {
+            try
+            {
+                return View();
+            }
+            catch
+            {
+                return Redirect("/Client/Home");
             }
         }
     }

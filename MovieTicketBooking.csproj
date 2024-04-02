@@ -131,14 +131,17 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Bcrypt\CheckAdminLoginAttribute.cs" />
     <Compile Include="Bcrypt\CheckLoginAttribute .cs" />
     <Compile Include="Bcrypt\PasswordHashingService.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ShowtimeController.cs" />
     <Compile Include="Controllers\TheaterController.cs" />
+    <Compile Include="Dao\AdminDao.cs" />
     <Compile Include="Dao\BookingcomboDao.cs" />
     <Compile Include="Dao\BookingDao.cs" />
     <Compile Include="Dao\BookingseatDao.cs" />
@@ -150,6 +153,9 @@
     <Compile Include="Dao\UserDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Admin.cs">
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Booking.cs">
       <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
@@ -1198,6 +1204,9 @@
     <Content Include="Views\Showtime\ShowtimeofTheater.cshtml" />
     <Content Include="Views\Showtime\ShowtimeBooking.cshtml" />
     <Content Include="Views\Client\ViewLogin.cshtml" />
+    <Content Include="Views\Client\AccountUser.cshtml" />
+    <Content Include="Views\Admin\AdminLoginPage.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

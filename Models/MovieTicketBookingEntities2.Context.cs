@@ -36,5 +36,6 @@ namespace MovieTicketBooking.Models
         public virtual DbSet<Showtime> Showtimes { get; set; }
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Admin> Admins { get; set; }
     }
 }
