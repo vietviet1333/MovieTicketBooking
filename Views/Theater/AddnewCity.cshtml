@@ -5,12 +5,45 @@
 }
 @model List<MovieTicketBooking.Models.City>
 
-<button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px;" onclick="myFunction()">Add City </button>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        background-color: #0F021B;
+        border: 1px solid #640EA1;
+    }
+
+    tr {
+        border: 1px solid #640EA1;
+    }
+
+    thead th {
+        background-color: #492173;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+        background-color: #1A042D;
+    }
+</style>
+<button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; background-color: #8f56cc;border:none" onclick="myFunction()">Add City </button>
 
 <div class="col-md-6 col-12" id="myDIV" style="display: none;">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Add Category</h4>
+            <h4 class="card-title">Add City</h4>
 
         </div>
         <div class="card-content">
@@ -19,7 +52,7 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <label> Name City</label>
+                                <label style="color:white"> Name City</label>
                             </div>
                             <div class="col-md-8 form-group">
                                 <input type="text" id="first-name" class="form-control" name="name"
@@ -28,7 +61,7 @@
 
 
                             <div class="col-sm-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                <button type="submit" style="background-color: #8f56cc;border:none" class="btn btn-primary me-1 mb-1">Submit</button>
                                 <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                             </div>
                         </div>
@@ -38,43 +71,37 @@
         </div>
     </div>
 </div>
-<div class="col-12">
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">List City</h4>
-        </div>
-        <div class="card-content">
+<div style="height:50px"></div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:100px;text-align:center">No</th>
+                <th style="width:250px;text-align:center">Name</th>
+                <th style="width:100px;text-align:center">Edit</th>
 
-            <!-- table bordered -->
-            <div class="table-responsive">
-                <table class="table table-bordered mb-0">
-                    <thead>
-                        <tr>
-                            <th>NO</th>
-                            <th>NAME</th>
-                            <th>EDIT</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
 
 
-                            <tr>
-                                <td>@(i+1)</td>
-                                <td> <i class="fa-solid fa-caret-down"></i> @Model[i].title_city</td>
+                <tr>
+                    <td style="width:100px;text-align:center">@(i+1)</td>
+                    <td style="width:250px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @Model[i].title_city</div></td>
 
-                                <td style="text-align: center;">
-                                    <a href="@Url.Action("Editc","Admin")?idc=@Model[i].id_city" style="color: rgb(220, 227, 15);"><i class="fa-regular fa-pen-to-square" style="font-size: initial;"></i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+
+                    <td style="text-align: center;">
+                        <a href="@Url.Action("Editc","Admin")?idc=@Model[i].id_city" style="color: rgb(220, 227, 15);"><i class="fa-regular fa-pen-to-square" style="font-size: initial;"></i></a>
+                    </td>
+                </tr>
+
+            }
+
+
+        </tbody>
+    </table>
 </div>
 <script>
     function myFunction() {
