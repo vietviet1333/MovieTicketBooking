@@ -15,7 +15,18 @@ namespace MovieTicketBooking.Controllers
             bool check = BookingDao.Instance().CheckBooking(showtime,seats);
             return check;
         }
-
+        [HttpPost]
+        public ActionResult HistoryTransaction( int id_booking)
+        {
+            try
+            {
+                var result = BookingDao.Instance().GetHistorySeatCombo(id_booking);
+                return PartialView("Historytransaction", result);
+            }catch
+            {
+                return PartialView("Errors");
+            }
+        }
 
     }
 }

@@ -125,7 +125,9 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                return View();
+                TempData["totalofuser"]= BookingDao.Instance().GetTotalPriceBookingOfUser(userid);
+                var u = UserDao.Instance().GetUserById(userid);
+                return View(u);
             }
             catch
             {

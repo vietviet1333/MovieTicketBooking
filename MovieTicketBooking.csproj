@@ -1207,10 +1207,10 @@
     <Content Include="Views\Client\AccountUser.cshtml" />
     <Content Include="Views\Admin\AdminLoginPage.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Booking\Historytransaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

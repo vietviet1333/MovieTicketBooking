@@ -2,7 +2,387 @@
 @{
     ViewBag.Title = "AccountUser";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
+
 }
+@model MovieTicketBooking.Models.User
+@{
+    var bkv = MovieTicketBooking.Dao.BookingDao.Instance().GetBookingOfUser(Model.user_id);
+}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
-<h2>AccountUser</h2>
+<body>
+    <style>
+        .mainprofile {
+            width: 90%;
+            height: auto;
+            display: flex;
+            margin: auto;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgb(255, 255, 255);
+            padding: 2% 2%;
+            overflow-y: scroll;
+        }
 
+        .proleft {
+            width: 27%;
+            height: 500px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        }
+
+        .proright {
+            width: 70%;
+            height: 500px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 8px;
+        }
+
+        .prolefthead {
+            width: 90%;
+            height: 150px;
+            border-bottom: 1px solid gainsboro;
+            margin: auto;
+            padding: auto;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .avatarpro {
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .namepro {
+            color: rgb(255, 122, 65);
+            font-weight: bold;
+        }
+
+        .probo {
+            width: 90%;
+            height: 30%;
+            margin: auto;
+            padding: auto;
+            border-bottom: 1px solid gainsboro;
+        }
+
+        .probohead {
+            margin: 20px 0px;
+        }
+
+        .probot {
+            width: 90%;
+            margin: auto;
+            padding: auto;
+        }
+
+            .probot div {
+                height: 50px;
+                font-weight: bold;
+            }
+
+        .prorighthead {
+            width: 90%;
+            margin: auto;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 60px;
+            border-bottom: 1px solid gainsboro;
+        }
+
+        .tablinks {
+            background-color: rgb(255, 255, 255);
+            border: none;
+            font-weight: bold;
+            color: rgb(141, 141, 141);
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .selected {
+            color: rgb(255, 122, 65);
+            border-bottom: 2px solid rgb(255, 122, 65);
+        }
+
+        .prorightbo > div {
+            display: none;
+        }
+
+
+        .tab {
+            width: 90%;
+            height: auto;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+            margin: auto;
+            border-radius: 8px;
+            padding: 20px 20px;
+        }
+
+        .iteminfo {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0px;
+        }
+
+        .iteminfochild {
+            width: 100%;
+        }
+
+        .itemdata {
+            height: 50px;
+            width: 90%;
+            background-color: rgb(240, 240, 240);
+            margin: auto;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            padding-left: 20px;
+            border-radius: 8px;
+        }
+
+        .btneditprofile {
+            border: none;
+            background-color: rgb(255, 122, 65);
+            color: white;
+            height: 30px;
+            width: 80px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .tickethistory {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        #checkcount {
+            height: auto;
+            width: 27%;
+            background-color: white;
+            margin: auto;
+           border-radius:8px;
+            border-top: 9px solid #ff9900;
+           
+        }
+
+         
+
+        #modalhistory {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 99999; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5);
+            justify-content:center;
+            align-items:center
+        }
+
+        #tabchild {
+            width: 100%;
+            height: auto;
+            background-color: white;
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+            margin: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+            padding: 20px 20px;
+        }
+    </style>
+    <div class="mainprofile">
+        <div class="proleft">
+            <div class="prolefthead">
+                <img class="avatarpro"
+                     src="https://firebasestorage.googleapis.com/v0/b/movieticketbooking-7da83.appspot.com/o/c5ec52d3afb7835851bf583481a731ba.jpg?alt=media&token=0e54a6a4-3cbb-4be4-bb79-2568a2b6c765">
+                <div class="namepro">
+                    <i class="fa-solid fa-user"></i> <span style="color: rgb(63, 63, 63);">
+                        @Model.user_name
+                    </span>
+                </div>
+            </div>
+            <div class="probo">
+                <div>
+                    <div class="probohead">
+                        Total Spending 2024:<span style="color:orangered;font-weight:bold;margin-left:50px;font-size:20px"> @TempData["totalofuser"] $</span>
+                    </div>
+                    <div class="probohead">
+                        Point:<span style="color:orangered;font-weight:bold;margin-left:150px;font-size:20px"> @TempData["totalofuser"] </span>
+                    </div>
+                </div>
+            </div>
+            <div class="probot">
+                <div>
+                    Hotline: 0393035090
+                </div>
+                <div>
+                    Email: ntviet1333@gmail.com
+                </div>
+            </div>
+        </div>
+        <div class="proright">
+            <div class="prorighthead">
+                <button class="tablinks">Transaction history</button>
+                <button class="tablinks">Your information</button>
+                <button class="tablinks">Notification</button>
+                <button class="tablinks">Gift</button>
+                <button class="tablinks">Policy</button>
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="prorightbo">
+                <div class="tab" style="height:25px;text-align:center;padding:unset">
+                    Note: only displays the 20 most recent transactions
+
+                    @foreach (var bookingView in bkv)
+                    {
+
+                        var da = bookingView.booking.booking_time?.ToString("yyyy-MM-dd");
+
+                        <div id="tabchild">
+                            <div class="tickethistory">
+                                <img style="height: 80px;" src="@bookingView.movie.poster_image" alt="">
+                                <div class="film">
+                                    <div style="color: rgb(255, 102, 0);font-weight: bold;height: 50px;font-size:18px">@bookingView.movie.title</div>
+                                    <div style="color: rgb(90, 90, 90);font-size: 14px;font-weight: 700;width:300px">Cast: @bookingView.movie.cast</div>
+                                </div>
+                                <div class="historyshowtime">
+                                    <div style="font-size:17px;font-weight:bold">@bookingView.theater.name</div>
+                                    <div style="height:20px"></div>
+                                    <div>Date: @da </div>
+                                </div>
+                                <button type="button" onclick="HistoryTransaction(@bookingView.booking.booking_id)" style="border: none;background-color: rgb(255, 255, 255);color: rgb(255, 111, 0);height: 40px;width: 80px;border-radius: 7px;cursor: pointer;">Detail</button>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="tab">
+                    <div class="iteminfo">
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;"> Name </div>
+                            <div class="itemdata">
+                                <i class="fa-solid fa-user" style="margin-right: 20px;"></i>@Model.user_name
+                            </div>
+                        </div>
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;">
+                                Birthday
+                            </div>
+                            <div class="itemdata">
+                                @{ var a = Model.birthday?.ToString("yyyy-MM-dd");}
+                                <i class="fa-solid fa-calendar-days"
+                                   style="margin-right: 20px;"></i>@a
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iteminfo">
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;"> Email </div>
+                            <div class="itemdata"><i class="fa-solid fa-envelope" style="margin-right: 20px;"></i>@Model.email</div>
+                        </div>
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;">
+                                Phone
+                            </div>
+                            <div class="itemdata">
+                                <i class="fa-solid fa-phone"
+                                   style="margin-right: 20px;"></i>039303500
+                            </div>
+                        </div>
+                    </div>
+                    <div class="iteminfo">
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;"> Gender </div>
+                            @if (Model.gender == 0)
+                            {
+
+
+                                <div class="itemdata"><i class="fa-solid fa-venus-mars" style="margin-right: 20px;"></i>Female</div>
+                            }
+                            else
+                            {
+                                <div class="itemdata"><i class="fa-solid fa-venus-mars" style="margin-right: 20px;"></i>Male</div>
+                            }
+                        </div>
+                        <div class="iteminfochild">
+                            <div style="font-weight: bold;color: rgb(119, 119, 119);margin-bottom: 10px;">
+                                Password
+                            </div>
+                            <div class="itemdata">
+                                <i class="fa-solid fa-lock"
+                                   style="margin-right: 20px;"></i>..............
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 98%;text-align: end;">  <button class="btneditprofile">Edit</button></div>
+                </div>
+                <div class="tab">3</div>
+                <div class="tab">4</div>
+                <div class="tab">5</div>
+
+            </div>
+        </div>
+    </div>
+    <div id="modalhistory">
+        <div id="checkcount">
+            <div id="historyseatcombo">
+
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var btnTabs = document.querySelectorAll(".tablinks");
+    btnTabs.forEach(function (btn, index) {
+        btn.addEventListener('click', function () {
+            btnTabs.forEach(function (tab) {
+                tab.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            var tabContent = document.querySelectorAll('.prorightbo > div');
+            tabContent.forEach(function (tab, tabIndex) {
+                if (tabIndex === index) {
+                    tab.style.display = 'block';
+                } else {
+                    tab.style.display = 'none';
+                }
+            });
+        });
+    });
+    btnTabs[1].click();
+</script>
+
+<script>
+    function HistoryTransaction(booking_id) {
+        var modalshowtime = document.getElementById("modalhistory");
+        modalshowtime.style.display = "flex";
+        window.onclick = function (event) {
+            if (event.target == modalshowtime) {
+                modalshowtime.style.display = "none";
+            }
+        }
+        $.ajax({
+            url: '/Booking/HistoryTransaction',
+            type: 'POST',
+            data: {
+                id_booking: booking_id
+
+            },
+            success: function (response) {
+                $('#historyseatcombo').html(response);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+</script>

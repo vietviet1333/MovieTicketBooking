@@ -573,7 +573,7 @@
         <input id="listidcombo" name="idcombos" hidden />
         <input id="listquantitycombo" name="quantitycombos" hidden />
         <input name="totalofbooking" id="total_of_booking" hidden />
-
+        <input name="id_user" value="@HttpContext.Current.Session["LoggedInUserID"]" hidden />
 
         <button id="btncomback" onclick="combodrink()">Come Back</button>
         <button id="btncheckcount" type="button" onclick="checkseats()">Checkcount</button>

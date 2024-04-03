@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Historytransaction";
+}
+
+@model MovieTicketBooking.ModelView.BookingView
+<div style="width:90%;text-align:center;font-size:18px;font-weight:bold;margin:20px 20px;color:orangered;border-bottom:1px solid grey">Detail History Booking</div>
+<div style="display: flex; height: auto; width: 100%; justify-content: start; align-items: center; padding: 0px 20px">
+    <div style="font-weight:bold;color:orange;margin:5px 5px">Seats Of Booking:</div>
+    @foreach (var seat in Model.bookingseats)
+    {
+        <span style="color:dimgrey;margin:10px 10px">@seat.nameseat</span>
+    }
+</div>
+
+<div style="display:flex;height:auto;width:100%;justify-content:start;align-items:center;padding:0px 20px">
+    <div style="font-weight:bold;color:orange;margin:5px 5px">Total Of Booking:</div>
+
+    <span style="color:dimgrey;margin:10px 10px">@Model.booking.total_price $</span>
+
+</div>
+<div style="display: flex; height: auto; width: 100%; justify-content: start; align-items: center; padding: 0px 20px">
+    <div style="font-weight:bold;color:orange;margin:5px 5px">Date Of Booking:</div>
+    @{ 
+        var d = Model.booking.booking_time?.ToString("yyyy-MM-dd");
+    }
+    <span style="color:dimgrey;margin:10px 10px">@d</span>
+
+</div>
+
+

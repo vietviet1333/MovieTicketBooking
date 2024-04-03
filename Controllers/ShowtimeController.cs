@@ -1,4 +1,5 @@
-﻿using MovieTicketBooking.Dao;
+﻿using MovieTicketBooking.Bcrypt;
+using MovieTicketBooking.Dao;
 using MovieTicketBooking.Models;
 using MovieTicketBooking.ModelView;
 using System;
@@ -12,6 +13,7 @@ namespace MovieTicketBooking.Controllers
     public class ShowtimeController : Controller
     {
         // GET: Showtime
+        [CheckAdminLogin]
         public ActionResult Showtimes()
         {
             try
@@ -24,6 +26,7 @@ namespace MovieTicketBooking.Controllers
                 return Redirect("Dashboard");
             }
         }
+        [CheckAdminLogin]
         public ActionResult Addshowtime(int id_movie)
         {
             try
@@ -125,6 +128,7 @@ namespace MovieTicketBooking.Controllers
             }
         }
         [HttpGet]
+        [CheckLogin]
         public ActionResult ShowtimeBooking(int showtimeid)
         {
             try
@@ -138,10 +142,12 @@ namespace MovieTicketBooking.Controllers
             }
         }
         [HttpPost]
-        public ActionResult BookingCheckcount(string nameseats , string idcombos,string quantitycombos , int showtime_id, decimal totalofbooking, int room_id) {
+        
+        public ActionResult BookingCheckcount(string nameseats , string idcombos,string quantitycombos , int showtime_id, decimal totalofbooking, int room_id,int id_user) {
             try
             {
-                BookingDao.Instance().InsertBooking(nameseats, idcombos, quantitycombos, showtime_id, totalofbooking, room_id);
+                
+                BookingDao.Instance().InsertBooking(nameseats, idcombos, quantitycombos, showtime_id, totalofbooking, room_id,id_user);
                 return Redirect("/Client/Home");
             }
             catch

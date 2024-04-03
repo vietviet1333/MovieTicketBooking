@@ -138,5 +138,18 @@ namespace MovieTicketBooking.Dao
                 return null;
             }
         }
+   public User GetUserById(int id)
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var user = (from u in mv.Users where u.user_id .Equals(id) select u).FirstOrDefault();
+                return user;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MovieTicketBooking.Dao;
+﻿using MovieTicketBooking.Bcrypt;
+using MovieTicketBooking.Dao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace MovieTicketBooking.Controllers
     public class TheaterController : Controller
     {
         // GET: Theater
+        [CheckAdminLogin]
         public ActionResult Addnewtheater()
         {
             return View(TheaterDao.Instance().getAllCity());
         }
+        [CheckAdminLogin]
         public ActionResult AddnewCity()
         {
             return View(TheaterDao.Instance().getAllCity());
@@ -25,14 +28,14 @@ namespace MovieTicketBooking.Controllers
             TheaterDao.Instance().Insertcity(name);
             return Redirect("AddnewCity");
         }
-
+        [ HttpPost]
         public ActionResult Inserttheate(string theatername, string location, int city, string urlimag)
         {
             TheaterDao.Instance().Inserttheater(theatername, location, city, urlimag);
             return Redirect("Addnewtheater");
 
         }
-        [HttpGet]
+        [HttpGet,CheckAdminLogin]
         public ActionResult Theater_detail(int id)
         {
             

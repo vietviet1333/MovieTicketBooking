@@ -10,6 +10,9 @@ namespace MovieTicketBooking.ModelView
     {
         public List<Bookingseat> bookingseats { get; set; }
         public List<Bookingcombo> bookingcombos { get; set; }
-        public Booking booking { get; set; }
+        public virtual Showtime showtime { get; set; }
+        public virtual Movie movie { get; set; }
+        public virtual Theater theater { get; set; }
+        public virtual Booking booking { get; set; }
     }
 }
