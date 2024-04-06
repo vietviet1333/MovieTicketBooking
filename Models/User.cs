@@ -21,5 +21,6 @@ namespace MovieTicketBooking.Models
         public Nullable<System.DateTime> birthday { get; set; }
         public Nullable<int> gender { get; set; }
         public string password { get; set; }
+        public Nullable<int> verificationCode { get; set; }
     }
 }

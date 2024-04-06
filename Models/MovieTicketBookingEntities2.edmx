@@ -14,6 +14,7 @@
           <Property Name="phone_number" Type="nvarchar" MaxLength="50" />
           <Property Name="password" Type="nvarchar(max)" />
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="verificationCode" Type="int" />
         </EntityType>
         <EntityType Name="Booking">
           <Key>
@@ -128,6 +129,7 @@
           <Property Name="birthday" Type="date" />
           <Property Name="gender" Type="int" />
           <Property Name="password" Type="varchar" MaxLength="400" />
+          <Property Name="verificationCode" Type="int" />
         </EntityType>
         <Association Name="FK__Booking__showtim__4E88ABD4">
           <End Role="Showtimes" Type="Self.Showtimes" Multiplicity="0..1" />
@@ -458,6 +460,7 @@
           <Property Name="birthday" Type="DateTime" Precision="0" />
           <Property Name="gender" Type="Int32" />
           <Property Name="password" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <Property Name="verificationCode" Type="Int32" />
         </EntityType>
         <Association Name="FK__Booking__showtim__4E88ABD4">
           <End Role="Showtimes" Type="Self.Showtime" Multiplicity="0..1" />
@@ -658,6 +661,7 @@
           <Property Name="phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="verificationCode" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -780,6 +784,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MovieTicketBookingModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="verificationCode" ColumnName="verificationCode" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="user_name" ColumnName="user_name" />
                 <ScalarProperty Name="email" ColumnName="email" />
@@ -793,6 +798,7 @@
           <EntitySetMapping Name="Admins">
             <EntityTypeMapping TypeName="MovieTicketBookingModel.Admin">
               <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="verificationCode" ColumnName="verificationCode" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="phone_number" ColumnName="phone_number" />

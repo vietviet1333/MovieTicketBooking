@@ -133,6 +133,107 @@ namespace MovieTicketBooking.Dao
                 return "0";
             }
         }
+        public int RevenueByYear()
+        {
+            try
+            {
+                var y = DateTime.Now;
+                int year = y.Year;
+                var mv = new MovieTicketBookingEntities2();
+                var sumTotal = mv.Bookings.Where(booking => booking.booking_time.HasValue && booking.booking_time.Value.Year == year).Sum(booking => booking.total_price);
+                if (sumTotal > 0)
+                {
+
+                    return int.Parse(sumTotal.ToString());
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+        }
+        public decimal RevenueByYearGrow()
+        {
+            try
+            {
+                var yn = RevenueByYear();
+                var y = DateTime.Now;
+                int year = y.Year - 1;
+                var mv = new MovieTicketBookingEntities2();
+                var sumTotal = mv.Bookings.Where(booking => booking.booking_time.HasValue && booking.booking_time.Value.Year == year).Sum(booking => booking.total_price);
+                if (sumTotal > 0)
+                {
+                    var percent = (yn - sumTotal) / 100;
+                    return decimal.Parse(percent.ToString());
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 100;
+            }
+        }
+        public int RevenueByMonth()
+        {
+            try
+            {
+                var y = DateTime.Now;
+                int year = y.Year;
+                int month = y.Month;
+                var mv = new MovieTicketBookingEntities2();
+                var sumTotal = mv.Bookings.Where(booking => booking.booking_time.HasValue && booking.booking_time.Value.Month == month && booking.booking_time.Value.Year == year).Sum(booking => booking.total_price);
+                if (sumTotal > 0)
+                {
+
+                    return int.Parse(sumTotal.ToString());
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 0;
+            }
+        }
+        public decimal RevenueByMonthGrow()
+        {
+            try
+            {
+                var yn = RevenueByMonth();
+
+                var y = DateTime.Now;
+                int year = y.Year;
+                int month = y.Month - 1;
+                var mv = new MovieTicketBookingEntities2();
+                var sumTotal = mv.Bookings.Where(booking => booking.booking_time.HasValue && booking.booking_time.Value.Month == month && booking.booking_time.Value.Year == year).Sum(booking => booking.total_price);
+                if (sumTotal > 0)
+                {
+                    var percent = (yn - sumTotal) / 100;
+                    return decimal.Parse(percent.ToString());
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 100;
+            }
+        }
         public List<BookingView> GetBookingOfUser(int user_id)
         {
             try
@@ -184,5 +285,90 @@ namespace MovieTicketBooking.Dao
                 return result;
             }
         }
+        public int EmptySeatOfShowtime(int showtime_id)
+        {
+            var countseat = 0;
+            try
+            {
+                using (var mv = new MovieTicketBookingEntities2())
+                {
+                    var bookingofshowtime = (from bk in mv.Bookings where bk.showtime_id == showtime_id select bk.booking_id).ToList();
+                    if (bookingofshowtime != null)
+                    {
+                        foreach (var bkst in bookingofshowtime)
+                        {
+                            var count = mv.Bookingseats.Count(bs => bs.booking_id == bkst);
+                            countseat += count;
+                        }
+                    }
+                    else
+                    {
+                        countseat = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                countseat = 0;
+            }
+            return countseat;
+        }
+        public List<decimal> ChartByYear(int year)
+        {
+            List<decimal> monthlyTotals = new List<decimal>();
+
+            try
+            {
+                using (var mv = new MovieTicketBookingEntities2())
+                {
+              
+                    if (year == DateTime.Now.Year)
+                    {
+                        for (int i = 1; i < DateTime.Now.Month +1; i++)
+                        {
+                            var totalOfMonth = mv.Bookings
+                                .Where(x => x.booking_time.HasValue && x.booking_time.Value.Year == year && x.booking_time.Value.Month == i)
+                                .Sum(x => x.total_price);
+
+                            if (totalOfMonth != null)
+                            {
+                                monthlyTotals.Add(decimal.Parse(totalOfMonth.ToString()));
+                            }
+                            else
+                            {
+                                monthlyTotals.Add(0);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 1; i < 13; i++)
+                        {
+                            var totalOfMonth = mv.Bookings
+                                .Where(x => x.booking_time.HasValue && x.booking_time.Value.Year == year && x.booking_time.Value.Month == i)
+                                .Sum(x => x.total_price);
+
+                            if (totalOfMonth != null)
+                            {
+                                monthlyTotals.Add(decimal.Parse(totalOfMonth.ToString()));
+                            }
+                            else
+                            {
+                                monthlyTotals.Add(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                Console.WriteLine("Error: " + ex.Message);
+            }
+
+            return monthlyTotals;
+        }
+
     }
 }

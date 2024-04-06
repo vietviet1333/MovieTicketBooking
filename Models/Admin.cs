@@ -19,5 +19,6 @@ namespace MovieTicketBooking.Models
         public string phone_number { get; set; }
         public string password { get; set; }
         public int id { get; set; }
+        public Nullable<int> verificationCode { get; set; }
     }
 }

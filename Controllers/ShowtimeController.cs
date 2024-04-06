@@ -2,6 +2,7 @@
 using MovieTicketBooking.Dao;
 using MovieTicketBooking.Models;
 using MovieTicketBooking.ModelView;
+using MovieTicketBooking.Others;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,6 +149,11 @@ namespace MovieTicketBooking.Controllers
             {
                 
                 BookingDao.Instance().InsertBooking(nameseats, idcombos, quantitycombos, showtime_id, totalofbooking, room_id,id_user);
+                var emailuser = UserDao.Instance().GetUserById(id_user);
+               if(emailuser != null)
+                {
+                    Sendmail.Instance().SendmailCheckCount(emailuser.email);
+                }
                 return Redirect("/Client/Home");
             }
             catch

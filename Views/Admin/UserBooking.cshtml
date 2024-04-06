@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "UserBooking";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model List<MovieTicketBooking.ModelView.BookingView>
+<style>
+
+    #tabchild {
+        width: 100%;
+        height: auto;
+        background-color: #191c24;
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+        margin: auto;
+        margin-top: 20px;
+        border-radius: 8px;
+        padding: 20px 20px;
+    }
+
+    .tickethistory {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+</style>
+<div style="overflow-y:scroll">
+    @if (Model != null)
+    {
+        foreach (var bookingView in Model)
+        {
+
+            var da = bookingView.booking.booking_time?.ToString("yyyy-MM-dd");
+
+            <div id="tabchild">
+                <div class="tickethistory">
+                    <img style="height: 80px;" src="@bookingView.movie.poster_image" alt="">
+                    <div class="film">
+                        <div style="color: rgb(255, 102, 0);font-weight: bold;height: 50px;font-size:18px">@bookingView.movie.title</div>
+                        <div style="color: rgb(90, 90, 90);font-size: 14px;font-weight: 700;width:300px">Cast: @bookingView.movie.cast</div>
+                    </div>
+                    <div class="historyshowtime">
+                        <div style="font-size:17px;font-weight:bold">@bookingView.theater.name</div>
+                        <div style="height:20px"></div>
+                        <div>Date: @da </div>
+                    </div>
+                  <div  style="color: rgb(255, 102, 0);font-weight: bold;height: 50px;font-size:18px" >Total price: @bookingView.booking.total_price $</div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div style="width:100%;text-align:center">Don't Have Booking</div>
+    }
+</div>
+

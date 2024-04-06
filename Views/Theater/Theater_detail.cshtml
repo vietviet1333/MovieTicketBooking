@@ -285,12 +285,12 @@
                 {
 
 
-                    <tr>
+                    <tr style="height:100px">
                         <td style="width:100px;text-align:center">@(i+1)</td>
                         <td style="width:250px  "><div style="width: 100%; word-wrap: break-word; text-align: center">@listroom[i].room_name</div></td>
                         <td style="width:150px;text-align:center">@(listroom[i].number_column * listroom[i].number_row)</td>
 
-                        <td style="width:100px;text-align:center"><a href="#">Detail</a></td>
+                        <td style="width:100px;text-align:center"><a href="#" style="color: #00a008; font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; border: 1px solid #00a008; border-radius: 5px ">Detail</a></td>
 
                     </tr>
 
@@ -344,8 +344,13 @@
         for (let i = 0; i < totalSquares; i++) {
             const gridItem = document.createElement('input');
             gridItem.style.textAlign = "center";
-            gridItem.style.width = "50px";
-            gridItem.style.height = "50px";
+            gridItem.style.backgroundColor = "#191c24";
+            gridItem.style.color = "red";
+            gridItem.style.border = " 1px solid red";
+            gridItem.style.borderRadius = "5px";
+            gridItem.style.fontSize = "10px";
+            gridItem.style.width = "30px";
+            gridItem.style.height = "30px";
             gridItem.value = "A" + i;
             gridItem.id = "A" + i;
             gridItem.readOnly = true;
@@ -392,8 +397,8 @@
             contentType: inp.type
         };
 
-
-        const name = inp.name;
+        const uuid = generateUUID();
+        const name = uuid+inp.name;
         const uploadImage = ref.child(name).put(inp, metadata);
 
         await uploadImage.then(snapshot => snapshot.ref.getDownloadURL())

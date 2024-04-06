@@ -1,6 +1,7 @@
 ﻿using MovieTicketBooking.Bcrypt;
 using MovieTicketBooking.Dao;
 using MovieTicketBooking.Models;
+using MovieTicketBooking.Others;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
+             var a=   BookingDao.Instance().ChartByYear(2024);
                 List<Movie> list = MovieDao.Instance().GetAllMovies();
                 List<Movie> listMovie = new List<Movie>();
                 if (list.Count < 6)
@@ -55,8 +57,15 @@ namespace MovieTicketBooking.Controllers
         public ActionResult ViewLogin()
         {
             try
-            {
-                return View();
+            {if(Session["LoggedInUserID"] == null)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("AccountUser", new { userid= Session["LoggedInUserID"] });
+                }
+               
             }
             catch
             {
@@ -125,7 +134,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                TempData["totalofuser"]= BookingDao.Instance().GetTotalPriceBookingOfUser(userid);
+                TempData["totalofuser"] = BookingDao.Instance().GetTotalPriceBookingOfUser(userid);
                 var u = UserDao.Instance().GetUserById(userid);
                 return View(u);
             }
@@ -134,5 +143,64 @@ namespace MovieTicketBooking.Controllers
                 return Redirect("/Client/Home");
             }
         }
+        [HttpPost]
+        public int UserSendMail(string email)
+        {//0 is success , 1 is email k tim thay, 2 is error
+
+            int flagChange = 0;
+            try
+            {
+                bool checkemail = UserDao.Instance().GetEmailExists(email);
+                if(checkemail == false)
+                {
+                    Random random = new Random();
+                    int randomNumber = random.Next(100000, 999999);
+                    UserDao.Instance().InsertCode(randomNumber,email);
+                    Sendmail.Instance().SendmailChangePassUser(email,randomNumber);
+
+                }
+                else
+                {
+                    flagChange = 1;
+                }
+
+
+            }
+            catch
+            {
+                flagChange = 2;
+            }
+            return flagChange;
+
+        }
+        [HttpPost]
+        public ActionResult Changepass()
+        {
+            try
+            {
+                string email = Request.Form["email"];
+                int verificationCode = int.Parse(Request.Form["verificationCode"]);
+                string newpass = Request.Form["newPassword"];
+                bool c = UserDao.Instance().UserChangePasswordByEmail(email, verificationCode, newpass);
+                if (c == true)
+                {
+                    TempData["changepass"] = "Change Password Success";
+                    return Redirect("/Client/ViewLogin");
+                }
+                else
+                {
+                    TempData["changepass"] = "Change Password Failed";
+                    return Redirect("/Client/ViewLogin");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                TempData["changepass"] = "Change Password Failed";
+                return Redirect("/Client/ViewLogin");
+            }
+
+        }
+
     }
 }

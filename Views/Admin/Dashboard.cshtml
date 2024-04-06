@@ -2,6 +2,301 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@{
+    var revenuebyyear = MovieTicketBooking.Dao.BookingDao.Instance().RevenueByYear();
+    var growbyyear = MovieTicketBooking.Dao.BookingDao.Instance().RevenueByYearGrow();
+    var revenuebymonth = MovieTicketBooking.Dao.BookingDao.Instance().RevenueByMonth();
+    var growbymonth = MovieTicketBooking.Dao.BookingDao.Instance().RevenueByMonthGrow();
 
-<h2>Dashboard</h2>
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<div class="row">
+
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                            <h3 class="mb-0" style="color:white">$ @revenuebyyear</h3>
+                            @if (growbyyear > 0)
+                            {
+                                <p class="text-success ms-2 mb-0 font-weight-medium">@growbyyear %</p>
+                            }
+                            else
+                            {
+                                <p class="text-danger ms-2 mb-0 font-weight-medium">@growbyyear %</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        @if (growbyyear > 0)
+                        {
+
+
+                            <div class="icon icon-box-success ">
+                                <span class="mdi mdi-arrow-top-right icon-item"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="icon icon-box-danger">
+                                <span class="mdi mdi-arrow-bottom-left icon-item"></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Revenue by year</h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                            <h3 class="mb-0" style="color:white">$ @revenuebymonth</h3>
+                            @if (growbymonth > 0)
+                            {
+                                <p class="text-success ms-2 mb-0 font-weight-medium">@growbymonth %</p>
+                            }
+                            else
+                            {
+                                <p class="text-danger ms-2 mb-0 font-weight-medium">@growbymonth %</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        @if (growbymonth > 0)
+                        {
+
+
+                            <div class="icon icon-box-success ">
+                                <span class="mdi mdi-arrow-top-right icon-item"></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="icon icon-box-danger">
+                                <span class="mdi mdi-arrow-bottom-left icon-item"></span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Revenue by month</h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                            <h3 class="mb-0" style="color:white">$12.34</h3>
+                            <p class="text-danger ms-2 mb-0 font-weight-medium">-2.4%</p>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="icon icon-box-danger">
+                            <span class="mdi mdi-arrow-bottom-left icon-item"></span>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Daily Income</h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="d-flex align-items-center align-self-start">
+                            <h3 class="mb-0" style="color:white">$31.53</h3>
+                            <p class="text-success ms-2 mb-0 font-weight-medium">+3.5%</p>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="icon icon-box-success ">
+                            <span class="mdi mdi-arrow-top-right icon-item"></span>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="text-muted font-weight-normal">Expense current</h6>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display: block; background-color: rgba(30, 30, 39, 0.89); border-radius: 10px; padding: 10px;">
+
+    <form>
+        <div data-select2-id="select2-data-6-55m6">
+
+            <div style="color:aliceblue; font-size:20px;font-weight:bold;margin-bottom:30px">Revenue of Group Cinemas</div>
+
+            <div style="display:flex;justify-content:center ">
+
+
+                <div id="roomContainer" style="width:30%;padding:10px 10px">
+                    <div class="form-group">
+                        <label for="date" class="form-label">Year</label>
+                        <select class="form-control" id="yearofrevenue" name="yearofrevenue" style="color:aliceblue">
+                            @{
+                                int currentYear = DateTime.Now.Year;
+                                int threeYearsAgo = currentYear - 3;
+                            }
+                            @for (int year = threeYearsAgo; year < currentYear + 1; year++)
+                            {
+
+                                <option value="@year" @(year == currentYear ? "selected" : "")>@year</option>
+                            }
+
+                        </select>
+
+                    </div>
+                </div>
+                <button class="upload btn btn-primary btn-icon-text" type="button" onclick="showchart()" style="margin-top: 40px; background-color: #8f56cc;border:none;height:50px;padding:10px 10px" id="btnsubmit"> <i class="mdi mdi-file-check btn-icon-prepend"></i>Show Chart</button>
+                <button class="upload btn btn-primary btn-icon-text" type="button"  style="margin-top: 40px; background-color: #8f56cc;border:none;height:50px;padding:10px 10px"> <i class="mdi mdi-file-check btn-icon-prepend"></i><a href="/Admin/CreateExcelAndPdf">Print</a></button>
+
+
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Chart Revenue</h4>
+                    <canvas id="myChart" width="400" height="500"></canvas>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+
+
+<script>
+    function showchart() {
+        var yearofrevenue = document.getElementById("yearofrevenue").value;
+        debugger
+        $.ajax({
+            url: "/Admin/RevenueByYear",
+            type: "post",
+            data: {
+                year: yearofrevenue
+            },
+            success: function (response) {
+                const startMonth = 1; // Assuming January is the starting month
+                const numberOfMonths = response.length;
+                const labels = generateMonthLabels(startMonth, numberOfMonths);
+              
+                // Chart setup
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Price',
+                            data: response,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    
+                                }
+                            }]
+                        }
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+
+
+        });
+       
+      
+    }
+    function showchartdefauld() {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        debugger
+        $.ajax({
+            url: "/Admin/RevenueByYear",
+            type: "post",
+            data: {
+                year: currentYear
+            },
+            success: function (response) {
+                const startMonth = 1; // Assuming January is the starting month
+                const numberOfMonths = response.length;
+                const labels = generateMonthLabels(startMonth, numberOfMonths);
+
+                // Chart setup
+                const ctx = document.getElementById('myChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Price',
+                            data: response,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+
+                                }
+                            }]
+                        }
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+
+
+        });
+        function generateMonthLabels(startMonth, numberOfMonths) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const labels = [];
+            for (let i = 0; i < numberOfMonths; i++) {
+                const index = (startMonth + i - 1) % 12; // To account for the zero-based indexing
+                labels.push(months[index]);
+            }
+            return labels;
+        }
+
+    }
+    function generateMonthLabels(startMonth, numberOfMonths) {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const labels = [];
+        for (let i = 0; i < numberOfMonths; i++) {
+            const index = (startMonth + i - 1) % 12; // To account for the zero-based indexing
+            labels.push(months[index]);
+        }
+        return labels;
+    }
+    showchartdefauld();
+</script>

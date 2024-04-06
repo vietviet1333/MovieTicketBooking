@@ -181,12 +181,82 @@
         input[type="radio"] + label:hover:before {
             border-color: orangered; /* Adjust according to your design */
         }
+
+    .ll {
+        height: 15px;
+        aspect-ratio: 5;
+        display: grid;
+        animation: l39-0 1s infinite linear;
+    }
+
+        .ll:before,
+        .ll:after {
+            content: "";
+            width: calc(140%/3);
+            grid-area: 1/1;
+            --_g: no-repeat radial-gradient(farthest-side,#000 94%,#0000);
+            background: var(--_g) left, var(--_g) right;
+            background-size: calc(300%/7) 100%;
+            animation: l39-1 1s infinite linear;
+        }
+
+        .ll:after {
+            margin-left: auto;
+            --s: -1;
+        }
+
+    @@keyframes l39-0 {
+        0%, 30% {
+            transform: rotate(0)
+        }
+
+        50%, 100% {
+            transform: rotate(.5turn)
+        }
+    }
+
+    @@keyframes l39-1 {
+        30%, 70% {
+            transform: translate(calc(var(--s,1)*400%/14))
+        }
+    }
+
+    .l {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0,0,0,0.5);
+        height: 700px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        z-index: 9999;
+    }
 </style>
+@if (TempData["changepass"] != null)
+{
+    <div style=" height: 40px; width: 20%; background-color: #d5d507; margin: 10px 10px; display: flex; justify-content: center; align-items: center; color: white; border-radius: 8px; }">@TempData["changepass"]</div>
+
+}
+else
+{
+    <div></div>
+}
 <div style="width:60%;margin:auto;margin-top:120px; height: 40px; align-items: center; display: flex; border-bottom: 2px solid #ff6200;font-size:18px;">
     <a href="/Client/Home" style="font-size:15px">Home</a>  /  Login/Register
 </div>
 <div style="display: flex;justify-content: center;align-items: center;height: auto">
-    <div class="formviet">
+    <div id="formforgot" class="form-container" style="display:none;width:30%">
+
+        <form class="active">
+            <h2>You want to find the password?</h2>
+            <input type="text" placeholder="Email" id="emailofforgot" required>
+            <button type="button" style="background-color: white; color: #ff6200" onclick="Back()"><i class="fa-solid fa-arrow-left"></i> Login</button>
+            <button type="button" id="forgotPasswordLink">Send <i class="fas fa-sign-in-alt"></i></button>
+
+        </form>
+    </div>
+    <div class="formviet" id="formremem">
         <div class="tabs">
             <div class="tab active" onclick="openForm('login')">Login</div>
             <div class="tab" onclick="openForm('register')">Register</div>
@@ -198,6 +268,7 @@
                 <input type="text" placeholder="Email" id="email" required>
                 <input type="password" placeholder="Password" id="password" required>
                 <button type="button" onclick="Login()">Login <i class="fas fa-sign-in-alt"></i></button>
+                <button type="button" style="background-color: white; color: #ff6200" onclick="Forgotpassword()">Forgot password ?</button>
             </form>
 
             <form id="registerForm" method="Post" action="/Client/Register">
@@ -221,7 +292,7 @@
                 <input type="text" placeholder="Phone" name="user_phone" id="phoneregister" required>
                 <input type="password" placeholder="Password" name="password" id="password" required>
                 <input type="password" placeholder="Confirm Password" id="passwordconfirm" required>
-                <button type="button" onclick="Register()" >Register <i class="fas fa-user-plus"></i></button>
+                <button type="button" onclick="Register()">Register <i class="fas fa-user-plus"></i></button>
             </form>
         </div>
     </div>
@@ -248,8 +319,11 @@
         </div>
     </div>
 </div>
-
+<div class="l" id="l">
+    <div class="ll"></div>
+</div>
 <script>
+
     function openForm(formName) {
         var forms = document.querySelectorAll('.form-container form');
         var tabs = document.querySelectorAll('.tabs .tab');
@@ -298,8 +372,18 @@
     };
 </script>
 <script>
-  
-
+    function Forgotpassword() {
+        var formremem = document.getElementById("formremem");
+        var formforgot = document.getElementById("formforgot");
+        formremem.style.display = "none";
+        formforgot.style.display = "block";
+    }
+    function Back() {
+        var formremem = document.getElementById("formremem");
+        var formforgot = document.getElementById("formforgot");
+        formremem.style.display = "block";
+        formforgot.style.display = "none";
+    }
     function Register() {
         debugger
         const option1 = document.getElementById('option1');
@@ -335,8 +419,8 @@
                         swal({
                             title: "Register Success",
                             text: "Login now",
-                           
-                           
+
+
                         }).then((value) => {
                             if (value) {
                                 window.location.replace("https://localhost:44351/Client/ViewLogin");
@@ -387,13 +471,14 @@
                 text: "Try again",
                 icon: "error",
 
-            }); 
+            });
         }
     }
 
     function Login() {
         var email_user = document.getElementById("email").value;
         var password_user = document.getElementById("password").value;
+        document.getElementById('l').style.display = 'flex';
         $.ajax({
             url: '/Client/Login',
             type: 'POST',
@@ -410,15 +495,18 @@
 
                     }).then((value) => {
                         if (value) {
+                            document.getElementById('l').style.display = 'none';
                             window.location.replace("https://localhost:44351/Client/Home");
                         }
                     });
-                }else {
+                } else {
                     swal({
                         title: "Login Failed",
                         text: "Try again",
                         icon: "error",
 
+                    }).then(() => {
+                        document.getElementById('l').style.display = 'none';
                     });
                 }
             },
@@ -428,4 +516,83 @@
         });
     }
 
+</script>
+<script>
+    document.getElementById('forgotPasswordLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default behavior of the link
+        var emailofforgot = document.getElementById("emailofforgot").value;
+
+        if (emailofforgot != "") {
+            document.getElementById('l').style.display = 'flex';
+            $.ajax({
+
+                url: "/Client/UserSendMail",
+                type: "Post",
+                data: {
+                    email: emailofforgot
+                },
+                success: function (response) {
+                    if (response == 0) {
+                        swal({
+                            title: "Please check your email",
+                            text: "",
+                            timer: 2000,
+                            buttons: false,
+
+                        }).then(() => {
+                            window.location.replace("https://localhost:44351/Client/ViewLogin");
+                        })
+                    }
+                    else if (response == 1) {
+                        swal({
+                            title: "Email doesn't exist",
+                            text: "Try again",
+                            icon: "error",
+                            timer: 2000,
+                            buttons: false,
+
+                        });
+                    }
+                    else if (response == 2) {
+                        swal({
+                            title: "Has Error",
+                            text: "Try again",
+                            icon: "error",
+                            timer: 2000,
+                            buttons: false,
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "It Has Error",
+                            text: "Error",
+                            icon: "error",
+                            timer: 2000,
+                            buttons: false,
+                        })
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+                complete: function () {
+                    // Hide loading overlay after AJAX call is complete
+                    document.getElementById('l').style.display = 'none';
+                }
+
+
+            })
+
+        } else {
+            swal({
+                title: "Please Enter Your Mail",
+                text: ":))))",
+                timer: 2000,
+                buttons: false,
+            })
+        }
+
+
+
+    });
 </script>

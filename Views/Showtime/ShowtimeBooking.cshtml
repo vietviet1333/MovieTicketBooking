@@ -7,6 +7,7 @@
 @{
     var combo = MovieTicketBooking.Dao.FoodDrinkDao.Instance().GetFoodDrink();
     var seatselected = MovieTicketBooking.Dao.BookingseatDao.Instance().GetSeatsOfBooking(Model.showtime_id);
+    var emtyseat = MovieTicketBooking.Dao.BookingDao.Instance().EmptySeatOfShowtime(Model.showtime_id);
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 }
@@ -435,7 +436,7 @@
                         <div style="display: flex;justify-content: space-evenly;">
                             <div class="rap"><span>@Model.Theater.name</span></div>
                             <div class="rap"><span>@Model.Room.room_name</span></div>
-                            <div class="rap"><span>Empty seat: 85/200</span></div>
+                            <div class="rap"><span>Empty seat: @emtyseat/@(Model.Room.number_row * Model.Room.number_column)</span></div>
                         </div>
                         <div style="display: flex;justify-content: space-evenly;">
                             @{

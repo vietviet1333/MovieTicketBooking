@@ -135,6 +135,7 @@
     <Property Name="birthday" Type="DateTime" Precision="0" />
     <Property Name="gender" Type="Int32" />
     <Property Name="password" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+    <Property Name="verificationCode" Type="Int32" />
   </EntityType>
   <Association Name="FK__Booking__showtim__4E88ABD4">
     <End Role="Showtimes" Type="Self.Showtime" Multiplicity="0..1" />
@@ -335,5 +336,6 @@
     <Property Name="phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="verificationCode" Type="Int32" />
   </EntityType>
 </Schema>

@@ -140,9 +140,97 @@
         .social i {
             margin-right: 4px;
         }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity here */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        /* Ensure the loading overlay stays on top */
+    }
+
+    .loader {
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+    }
+
+
+
+
+        .loader.active {
+            display: block;
+        }
+    .ll {
+        height: 15px;
+        aspect-ratio: 5;
+        display: grid;
+        animation: l39-0 1s infinite linear;
+    }
+
+        .ll:before,
+        .ll:after {
+            content: "";
+            width: calc(140%/3);
+            grid-area: 1/1;
+            --_g: no-repeat radial-gradient(farthest-side,#000 94%,#0000);
+            background: var(--_g) left, var(--_g) right;
+            background-size: calc(300%/7) 100%;
+            animation: l39-1 1s infinite linear;
+        }
+
+        .ll:after {
+            margin-left: auto;
+            --s: -1;
+        }
+
+    @@keyframes l39-0 {
+        0%, 30% {
+            transform: rotate(0)
+        }
+
+        50%, 100% {
+            transform: rotate(.5turn)
+        }
+    }
+
+    @@keyframes l39-1 {
+        30%, 70% {
+            transform: translate(calc(var(--s,1)*400%/14))
+        }
+    }
+
+    .l {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0,0,0,0.5);
+        height: 700px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        z-index: 9999;
+    }
 </style>
 
 <body>
+    @if (TempData["changepass"] != null)
+    {
+        <div style=" height: 40px; width: 20%; background-color: #d5d507; margin: 10px 10px; display: flex; justify-content: center; align-items: center; color: white; border-radius: 8px; }">@TempData["changepass"]</div>
+
+}
+else
+            {
+                <div></div>
+            }
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
@@ -157,14 +245,22 @@
         <input type="password" placeholder="Password" id="password">
 
         <button type="button" onclick="Adminlogin()">Log In</button>
-        <a>Forgot Password</a>
+        <div style="width:100%;text-align:center;font-size:15px;margin-top:20px">  <a href="#" id="forgotPasswordLink" style="text-decoration:none">Forgot Password? </a></div>
     </form>
 </body>
-
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="loader"></div>
+</div>
+<div class="l" id="l">
+    <div class="ll"></div>
+</div>
 <script>
     function Adminlogin() {
         var usernamee = document.getElementById("username").value;
         var passwordd = document.getElementById("password").value;
+        debugger
+        document.getElementById('loadingOverlay').style.display = 'flex';
+
         $.ajax({
             url: "/Admin/login",
             type: "post",
@@ -172,12 +268,13 @@
                 username: usernamee,
                 password: passwordd
             },
+
             success: function (response) {
                 if (response == "True") {
                     swal({
                         title: "Login",
                         text: "Login Success",
-
+                        allowOutsideClick: false,
 
                     }).then((value) => {
                         if (value) {
@@ -195,7 +292,42 @@
             },
             error: function (xhr, status, error) {
                 console.error(xhr.responseText);
+            },
+            complete: function () {
+                // Hide loading overlay after AJAX call is complete
+                document.getElementById('loadingOverlay').style.display = 'none';
             }
         })
+
     }
+</script>
+<script>
+    document.getElementById('forgotPasswordLink').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default behavior of the link
+
+        swal({
+            title: "Are you forgot password?",
+            text: "You can change password in your mail",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willProceed) => {
+                if (willProceed) {
+                    swal({
+                        title: "Change password in your mail",
+                        text: ":))))",
+                        timer: 2000,
+                        buttons: false,
+                    }).then(() => {
+                        document.getElementById('l').style.display = 'flex';
+                        window.location.href = "/Admin/ForgotPassword";
+
+                    })
+                   
+                } else {
+                    
+                }
+            });
+    });
 </script>

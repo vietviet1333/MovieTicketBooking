@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "UserManagement";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model List<MovieTicketBooking.Models.User>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        background-color: #0F021B;
+        border: 1px solid #640EA1;
+    }
+
+    tr {
+        border: 1px solid #640EA1;
+    }
+
+    thead th {
+        background-color: #492173;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+        background-color: #1A042D;
+    }
+</style>
+
+<div style="height:50px"></div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th style="width:100px;text-align:center">No</th>
+                <th style="width:100px;text-align:center">UserName</th>
+                <th style="width:100px;text-align:center">Email</th>
+                <th style="width:100px;text-align:center">Phone</th>
+                <th style="width:100px;text-align:center">Birthday</th>
+                <th style="width:100px;text-align:center">Gender</th>
+                <th style="width:100px;text-align:center">Booking</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var birthday = Model[i].birthday?.ToString("yyyy-MM-dd");
+
+                <tr style="height:100px">
+                    <td style="width:100px;text-align:center">@(i+1)</td>
+                    <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @Model[i].user_name</div></td>
+                    <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @Model[i].email</div></td>
+                    <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @Model[i].user_phone</div></td>
+                    <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @birthday</div></td>
+                    @if (Model[i].gender == 1)
+                    {
+
+
+                        <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> Male</div></td>
+                    }
+                    else
+                    {
+                        <td style="width:100px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> Female</div></td>
+                    }
+                    <td style="text-align: center;">
+                        <a href="@Url.Action("UserBooking","Admin")?id_user=@Model[i].user_id" style="color: #00a008; font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; border: 1px solid #00a008; border-radius: 5px ">Detail</a>
+                    </td>
+                </tr>
+
+            }
+
+
+        </tbody>
+    </table>
+</div>

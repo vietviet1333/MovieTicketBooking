@@ -28,6 +28,8 @@ namespace MovieTicketBooking.Dao
                 var admin = (from ad in mv.Admins where ad.username == username select ad).First();
                 if (admin != null)
                 {
+                    admin.verificationCode = 0;// reset verificationCode to 0 
+                    mv.SaveChanges();
                     bool verifyPassword = PasswordHashingService.Instance().VerifyPassword(password, admin.password);
                     if (verifyPassword)
                     {
@@ -50,6 +52,56 @@ namespace MovieTicketBooking.Dao
                 Console.WriteLine(ex.Message);
             }
             return flagLogin;
+        }
+        public bool AdminChangePassword(string email, int verificationCode, string newpassword)
+        {
+            bool flagChangePassword = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var ad = mv.Admins.SingleOrDefault(x => x.email == email && x.verificationCode.HasValue);
+                if (ad != null && ad.verificationCode == verificationCode)
+                {
+                    string hashedPassword = PasswordHashingService.Instance().HashPassword(newpassword);
+                    ad.password = hashedPassword;
+                    ad.verificationCode = 0;
+                    mv.SaveChanges();
+                    flagChangePassword = true;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                flagChangePassword = false;
+                Console.WriteLine(ex.Message);
+            }
+            return flagChangePassword;
+        }
+        public bool InsertCode(int verificationCode, string email)
+        {
+            bool flagInsert = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = mv.Admins.SingleOrDefault(x => x.email == email);
+                if (result != null)
+                {
+                    result.verificationCode = verificationCode;
+                    mv.SaveChanges();
+                    flagInsert = true;
+                }
+                else
+                {
+                    flagInsert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                flagInsert = false;
+                Console.WriteLine(ex.Message);
+            }
+            return flagInsert;
         }
     }
 }

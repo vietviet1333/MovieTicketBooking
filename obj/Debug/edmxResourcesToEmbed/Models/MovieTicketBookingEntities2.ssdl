@@ -9,6 +9,7 @@
     <Property Name="phone_number" Type="nvarchar" MaxLength="50" />
     <Property Name="password" Type="nvarchar(max)" />
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="verificationCode" Type="int" />
   </EntityType>
   <EntityType Name="Booking">
     <Key>
@@ -123,6 +124,7 @@
     <Property Name="birthday" Type="date" />
     <Property Name="gender" Type="int" />
     <Property Name="password" Type="varchar" MaxLength="400" />
+    <Property Name="verificationCode" Type="int" />
   </EntityType>
   <Association Name="FK__Booking__showtim__4E88ABD4">
     <End Role="Showtimes" Type="Self.Showtimes" Multiplicity="0..1" />

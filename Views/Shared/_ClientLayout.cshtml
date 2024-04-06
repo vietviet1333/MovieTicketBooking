@@ -14,13 +14,131 @@
     <link rel="stylesheet" href="~/asset/assets/css/vendor/slick-theme.css">
     <link rel="stylesheet" href="~/asset/assets/css/vendor/slick.css">
     <link rel="stylesheet" href="~/asset/assets/css/vendor/tooltipster.bundle.css">
+    <link href="~/asset/assets/css/loadinganimation.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <meta name='robots' content='max-image-preview:large' />
+    <style>
+        .loa {
+            background: #000;
+            background: radial-gradient(#222, #000);
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 99999999;
+        }
+
+        .loa-inner {
+            bottom: 0;
+            height: 60px;
+            left: 0;
+            margin: auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100px;
+        }
+
+        .loa-line-wrap {
+            animation: spin 2000ms cubic-bezier(.175, .885, .32, 1.275) infinite;
+            box-sizing: border-box;
+            height: 50px;
+            left: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            transform-origin: 50% 100%;
+            width: 100px;
+        }
+
+        .loa-line {
+            border: 4px solid transparent;
+            border-radius: 100%;
+            box-sizing: border-box;
+            height: 100px;
+            left: 0;
+            margin: 0 auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 100px;
+        }
+
+        .loa-line-wrap:nth-child(1) {
+            animation-delay: -50ms;
+        }
+
+        .loa-line-wrap:nth-child(2) {
+            animation-delay: -100ms;
+        }
+
+        .loa-line-wrap:nth-child(3) {
+            animation-delay: -150ms;
+        }
+
+        .loa-line-wrap:nth-child(4) {
+            animation-delay: -200ms;
+        }
+
+        .loa-line-wrap:nth-child(5) {
+            animation-delay: -250ms;
+        }
+
+        .loa-line-wrap:nth-child(1) .loa-line {
+            border-color: hsl(0, 80%, 60%);
+            height: 90px;
+            width: 90px;
+            top: 7px;
+        }
+
+        .loa-line-wrap:nth-child(2) .loa-line {
+            border-color: hsl(60, 80%, 60%);
+            height: 76px;
+            width: 76px;
+            top: 14px;
+        }
+
+        .loa-line-wrap:nth-child(3) .loa-line {
+            border-color: hsl(120, 80%, 60%);
+            height: 62px;
+            width: 62px;
+            top: 21px;
+        }
+
+        .loa-line-wrap:nth-child(4) .loa-line {
+            border-color: hsl(180, 80%, 60%);
+            height: 48px;
+            width: 48px;
+            top: 28px;
+        }
+
+        .loa-line-wrap:nth-child(5) .loa-line {
+            border-color: hsl(240, 80%, 60%);
+            height: 34px;
+            width: 34px;
+            top: 35px;
+        }
+        ::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+        }
+        @@keyframes spin {
+            0%, 15% {
+                transform: rotate(0);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
 <body class="home page-template page-template-elementor_header_footer page page-id-84 amy-header-default  single-author elementor-default elementor-template-full-width elementor-kit-5 elementor-page elementor-page-84">
     <style>
+
         .heade {
             background-color: black;
             height: 30px;
@@ -33,9 +151,11 @@
             position: fixed;
             z-index: 9999;
         }
+
         ::-webkit-scrollbar {
             display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
         }
+
         .login {
             margin-right: 10px;
             color: aliceblue;
@@ -448,8 +568,32 @@
         </div>
     </div>
 
-
-
+    <div class="loa" id="loa">
+        <div class="loa-inner">
+            <div class="loa-line-wrap">
+                <div class="loa-line"></div>
+            </div>
+            <div class="loa-line-wrap">
+                <div class="loa-line"></div>
+            </div>
+            <div class="loa-line-wrap">
+                <div class="loa-line"></div>
+            </div>
+            <div class="loa-line-wrap">
+                <div class="loa-line"></div>
+            </div>
+            <div class="loa-line-wrap">
+                <div class="loa-line"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        debugger
+        window.addEventListener("load", function () {
+            const loader = document.getElementById("loa");
+            loader.style.display = "none";
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </body>
 

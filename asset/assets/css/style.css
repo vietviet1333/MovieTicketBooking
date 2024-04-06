@@ -1,4 +1,4 @@
-@charset "UTF-8";
+
 /**
  * ****************************************************************************
  * CSS SITEMAP
@@ -250,7 +250,7 @@ th {
  * 2.1. BOOTSTRAP BASE
  * ---------------------------------------------
  */
-/*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+/*! Source:  */
 @media print {
   *,
   *:before,

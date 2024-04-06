@@ -239,9 +239,10 @@
     <table>
         <thead>
             <tr>
-                <th style="width:100px;text-align:center">NO</th>
-                <th style="width:250px;text-align:center">MOVIE</th>
+                <th style="width:50px;text-align:center">NO</th>
+                <th style="width:200px;text-align:center">MOVIE</th>
                 <th style="width:250px;text-align:center">THEATER</th>
+                <th style="width:100px;text-align:center">BOOKED</th>
                 <th style="width:150px;text-align:center">SHOW DATE</th>
                 <th style="width:150px;text-align:center">START TIME</th>
                 <th style="width:150px;text-align:center">END TIME</th>
@@ -257,25 +258,26 @@
                 String post = showtimes[i].show_date?.ToString("yyyy-MM-dd");
                 String st = showtimes[i].starttime?.ToString("hh:mm tt");
                 String et = showtimes[i].endtime?.ToString("hh:mm tt");
-                int sta = showtimes[i].status;
-                String stat = "";
-                if (sta == 0)
-                {
-                    stat = "Comming";
-                }
-                else
-                {
-                    stat = "Ended";
-                }
+                var emtyseat = MovieTicketBooking.Dao.BookingDao.Instance().EmptySeatOfShowtime(showtimes[i].showtime_id);
 
                 <tr>
-                    <td style="width:100px;text-align:center">@(i+1)</td>
-                    <td><div style="width: 250px; word-wrap: break-word; text-align: center">@showtimes[i].Movie.title</div></td>
+                    <td style="width:50px;text-align:center">@(i+1)</td>
+                    <td><div style="width: 200px; word-wrap: break-word; text-align: center">@showtimes[i].Movie.title</div></td>
                     <td style="display:flex;justify-content:center;align-items:center"><div style="width: 250px; word-wrap: break-word; text-align: center">@showtimes[i].Theater.name <br />(@showtimes[i].Room.room_name)</div></td>
+                    <td style="width:100px;text-align:center">@emtyseat/@(showtimes[i].Room.number_column * showtimes[i].Room.number_row)</td>
                     <td style="width:150px;text-align:center">@post</td>
                     <td style="width:150px;text-align:center">@st</td>
                     <td style="width:150px;text-align:center">@et</td>
-                    <td style="width:150px;text-align:center">@stat</td>
+                    @if (showtimes[i].status == 0)
+                    {
+
+
+                        <td style="width: 150px; text-align: center; color: #00a008">Comming</td>
+                    }
+                    else
+                    {
+                        <td style="width: 150px; text-align: center; color: #d0b400">Ended</td>
+                    }
                     <td style="width:100px;text-align:center"><button type="button" style="height: 40px; border: none; border-radius: 10px; background-color: #9a17e6; color: white; font-weight: bold;">Delete</button></td>
                 </tr>
 

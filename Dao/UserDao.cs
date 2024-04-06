@@ -102,6 +102,8 @@ namespace MovieTicketBooking.Dao
                 var user = (from u in mv.Users where u.email.Equals(email) select u).FirstOrDefault();
                 if (user != null)
                 {
+                    user.verificationCode = 0;
+                    mv.SaveChanges();
                     bool verifyPassword = PasswordHashingService.Instance().VerifyPassword(password, user.password);
                     if (verifyPassword)
                     {
@@ -138,18 +140,131 @@ namespace MovieTicketBooking.Dao
                 return null;
             }
         }
-   public User GetUserById(int id)
+        public User GetUserById(int id)
         {
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var user = (from u in mv.Users where u.user_id .Equals(id) select u).FirstOrDefault();
+                var user = (from u in mv.Users where u.user_id.Equals(id) select u).FirstOrDefault();
                 return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+        public List<User> GetAllUser()
+        {
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from u in mv.Users select u).ToList();
+                return result;
             }catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;
             }
         }
+        public bool EditUser(User user)
+        {
+            bool flagEdit = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var u = mv.Users.SingleOrDefault(x=> x.user_id == user.user_id);
+                u.user_name= user.user_name;
+                u.email= user.email;
+                u.user_phone= user.user_phone;
+                u.birthday= user.birthday;
+                u.gender= user.gender;
+                mv.SaveChanges();
+                return flagEdit;
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                flagEdit = false;
+                return flagEdit;
+            }
+        }
+        public bool UserChangePassword(int user_id, string oldpassword, string newpassword)
+        {
+            bool flagChangePass = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var u = mv.Users.SingleOrDefault(x=>x.user_id == user_id);
+                bool checkOldPass = PasswordHashingService.Instance().VerifyPassword(oldpassword, u.password);
+                if (checkOldPass)
+                {
+                    var newp = PasswordHashingService.Instance().HashPassword(newpassword);
+                    u.password = newp;
+                    mv.SaveChanges();
+                    
+                }
+                else
+                {
+                    flagChangePass= false;
+                   
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                flagChangePass= false;
+            }
+            return flagChangePass;
+        }
+        public bool UserChangePasswordByEmail(string email, int verificationCode, string newpassword)
+        {
+            bool flagChangePassword = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var ad = mv.Users.SingleOrDefault(x => x.email == email && x.verificationCode.HasValue);
+                if (ad != null && ad.verificationCode == verificationCode)
+                {
+                    string hashedPassword = PasswordHashingService.Instance().HashPassword(newpassword);
+                    ad.password = hashedPassword;
+                    ad.verificationCode = 0;
+                    mv.SaveChanges();
+                    flagChangePassword = true;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                flagChangePassword = false;
+                Console.WriteLine(ex.Message);
+            }
+            return flagChangePassword;
+        }
+        public bool InsertCode(int verificationCode, string email)
+        {
+            bool flagInsert = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = mv.Users.SingleOrDefault(x => x.email == email);
+                if (result != null)
+                {
+                    result.verificationCode = verificationCode;
+                    mv.SaveChanges();
+                    flagInsert = true;
+                }
+                else
+                {
+                    flagInsert = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                flagInsert = false;
+                Console.WriteLine(ex.Message);
+            }
+            return flagInsert;
+        }
+
     }
 }

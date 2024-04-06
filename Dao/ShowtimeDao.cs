@@ -30,6 +30,8 @@ namespace MovieTicketBooking.Dao
             bool flagInsertShowtime = true;
             try
             {
+                int? moid = st.movie_id;
+                MovieDao.Instance().UpdateStatusMovie(moid.Value);
                 var mv = new MovieTicketBookingEntities2();
                 Showtime s = new Showtime();
                 s.movie_id = st.movie_id;
@@ -122,7 +124,6 @@ namespace MovieTicketBooking.Dao
             }
 
         }
-
         public List<Showtime> GetShowtimeofTheater(int theater_id, DateTime showtimedate)
         {
             try

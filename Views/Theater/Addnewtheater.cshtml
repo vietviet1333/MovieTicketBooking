@@ -44,7 +44,7 @@
     tbody tr:hover {
         background-color: #1A042D;
     }
-
+  
     img {
         max-width: 200px;
         height: auto;
@@ -140,7 +140,7 @@
         border-radius: 5px;
     }
 </style>
-<div class="container">
+<div class="container" style="height:700px; overflow-y:scroll">
     <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; background-color: #8f56cc;border:none" onclick="formaddtheater()">Add Theater </button>
     <div id="newtheater" style="display:none">
         <h1>Add New Theater</h1>
@@ -212,7 +212,7 @@
                             <td style="width:150px;text-align:center">@listtheater[i].location</td>
                             <td><img src="@listtheater[i].Theater_image" alt="Poster Image"></td>
                             <td style="width:100px;text-align:center">Active</td>
-                            <td style="width:100px;text-align:center"><a href="/Theater/Theater_detail?id=@listtheater[i].theater_id" >Detail</a></td>
+                            <td style="width:100px;text-align:center"><a href="/Theater/Theater_detail?id=@listtheater[i].theater_id" style="color: #00a008; font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; border: 1px solid #00a008; border-radius: 5px " >Detail</a></td>
                            
                         </tr>
 
