@@ -173,7 +173,8 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var u = mv.Users.SingleOrDefault(x=> x.user_id == user.user_id);
+                int userid = (int)HttpContext.Current.Session["LoggedInUserID"];
+                var u = mv.Users.SingleOrDefault(x=> x.user_id == userid);
                 u.user_name= user.user_name;
                 u.email= user.email;
                 u.user_phone= user.user_phone;

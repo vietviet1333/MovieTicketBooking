@@ -401,7 +401,7 @@ else
         var bir = document.getElementById("birthday").value;
         var pass = document.getElementById("password").value;
         var passwordconfirm = document.getElementById("passwordconfirm").value;
-
+        document.getElementById('l').style.display = 'flex';
         if (pass === passwordconfirm) {
             $.ajax({
                 url: '/Client/Register',
@@ -423,6 +423,7 @@ else
 
                         }).then((value) => {
                             if (value) {
+                                document.getElementById('l').style.display = 'none';
                                 window.location.replace("https://localhost:44351/Client/ViewLogin");
                             }
                         });
@@ -434,6 +435,7 @@ else
                             icon: "error",
 
                         }); // Phone number exists
+                        document.getElementById('l').style.display = 'none';
                     }
                     else if (response == 2) {
                         swal({
@@ -442,6 +444,7 @@ else
                             icon: "error",
 
                         }); // Email exists
+                        document.getElementById('l').style.display = 'none';
                     }
                     else if (response == 1) {
                         swal({
@@ -450,6 +453,7 @@ else
                             icon: "error",
 
                         }); // Both email and phone number exist
+                        document.getElementById('l').style.display = 'none';
                     } else {
                         swal({
                             title: "It Has Error",
@@ -472,6 +476,7 @@ else
                 icon: "error",
 
             });
+            document.getElementById('l').style.display = 'none';
         }
     }
 

@@ -14,7 +14,7 @@ namespace MovieTicketBooking
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

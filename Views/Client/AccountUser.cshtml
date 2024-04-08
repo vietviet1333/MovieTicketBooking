@@ -8,10 +8,12 @@
 @{
     var bkv = MovieTicketBooking.Dao.BookingDao.Instance().GetBookingOfUser(Model.user_id);
 }
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <body>
     <style>
+
         .mainprofile {
             width: 90%;
             height: auto;
@@ -187,6 +189,20 @@
             align-items: center
         }
 
+        #changepassmd {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 99999; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center
+        }
+
         #tabchild {
             width: 100%;
             height: auto;
@@ -196,6 +212,79 @@
             margin-top: 20px;
             border-radius: 8px;
             padding: 20px 20px;
+        }
+
+        #modalchangepass {
+            height: auto;
+            padding: 20px 20px;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30%;
+            border-top: 7px solid orange;
+            border-radius: 7px;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        }
+
+        .contentmd {
+            display: none;
+            position: fixed;
+            z-index: 99999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center
+        }
+
+        .modaledit {
+            width: 30%;
+            height: auto;
+            background-color: white;
+            padding: 20px 20px;
+            border-radius: 8px;
+            border-top: 7px solid rgb(255, 153, 0);
+        }
+
+        .itemedit {
+            height: auto;
+            padding: 10px 10px;
+        }
+
+        .itemeditchild {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            background-color: #efefef;
+            padding: 0px 10px;
+            border-radius: 5px;
+            justify-content: space-evenly;
+        }
+
+            .itemeditchild input {
+                width: 90%;
+                height: 70%;
+                border: none;
+            }
+
+            .itemeditchild select {
+                width: 90%;
+                height: 70%;
+                border: none;
+            }
+
+        .childlabel {
+            height: 30px;
+            font-weight: bold;
+            color: rgb(146, 146, 146);
+        }
+
+        *:focus {
+            outline: none;
         }
     </style>
     <div class="mainprofile">
@@ -325,11 +414,11 @@
                             </div>
                             <div class="itemdata">
                                 <i class="fa-solid fa-lock"
-                                   style="margin-right: 20px;"></i>..............
+                                   style="margin-right: 20px;"></i>..............<button style="margin-left:100px;border:none;color:orange" type="button" onclick="Changepassmd()">Change Password</button>
                             </div>
                         </div>
                     </div>
-                    <div style="width: 98%;text-align: end;">  <button class="btneditprofile"><a href="#">Edit</a></button></div>
+                    <div style="width: 98%;text-align: end;">  <button class="btneditprofile" onclick="Showmdeditprofile()">Edit Profile</button></div>
                 </div>
                 <div class="tab">3</div>
                 <div class="tab">4</div>
@@ -343,6 +432,82 @@
             <div id="historyseatcombo">
 
             </div>
+        </div>
+    </div>
+    <div id="changepassmd">
+        <div id="modalchangepass">
+            <form>
+                <div style="font-weight: bold;text-align: center;color: rgb(255, 140, 0);">Change Password</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: auto; padding: 20px 20px ">
+                    <div>Old Password</div>
+                    <input type="password" id="oldpassmd" style="width:70%" />
+                    <input type="hidden" id="id_userr" value="@Model.user_id" />
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: auto; padding: 20px 20px ">
+                    <div>New Password</div>
+                    <input type="password" id="newpassmd" style="width:70%" />
+                </div>
+                <div style="display: flex;
+      justify-content: space-between;
+      align-items: center;width:100%;height:auto;padding:20px 20px
+  ">
+                    <div>Confirm Password</div>
+                    <input type="password" id="confirmpassmd" style="width:80%" />
+                </div>
+                <div style="text-align:end">   <button type="button" onclick="Userchangepass()" style=" border: none; height: 30px; width: 80px; border-radius: 5px; background-color: #ff9100; color: white;">Submit</button></div>
+            </form>
+        </div>
+    </div>
+    <div class="contentmd" id="contentmd">
+        <div class="modaledit">
+            <div style="text-align: center;font-size: 18px;font-weight: bold;color: rgb(255, 153, 0);height: 50px;box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;">Edit Profile</div>
+            <form action="">
+                <div class="itemedit">
+                    <div class="childlabel">Name</div>
+                    <div class="itemeditchild">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="name_edit" value="@Model.user_name">
+                    </div>
+                </div>
+                <div class="itemedit">
+                    <div class="childlabel">Birthday</div>
+                    <div class="itemeditchild">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <input type="date" id="birthday_edit" value="@a">
+                    </div>
+                </div>
+                <div class="itemedit">
+                    <div class="childlabel">Email</div>
+                    <div class="itemeditchild">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="text" id="email_edit" value="@Model.email">
+                    </div>
+                </div>
+                <div class="itemedit">
+                    <div class="childlabel">Phone</div>
+                    <div class="itemeditchild">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="number" id="phone_edit" value="@Model.user_phone">
+                    </div>
+                </div>
+                <div class="itemedit">
+                    <div class="childlabel">Gender</div>
+                    <div class="itemeditchild">
+                        <i class="fa-solid fa-venus-mars"></i>
+                        <select name="gender" id="gender_edit">
+                            @{
+                                var gender = Model.gender;
+                            }
+                            <option value="1" @(gender == 1) ?? selected:"">Male</option>
+                            <option value="0" @(gender == 0) ?? selected:"">Female</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div style="width: 90%;height: 40px;display: flex;align-items: center;justify-content: end;">
+                    <button style="height: 30px;width: 80px;border: none; background-color:rgb(255, 153, 0) ;color: white;border-radius: 5px;cursor: pointer;" type="button" onclick="EditProfile()">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
@@ -391,4 +556,155 @@
             }
         });
     }
+    function Changepassmd() {
+        var changepassmd = document.getElementById("changepassmd");
+        changepassmd.style.display = "flex";
+        window.onclick = function (event) {
+            if (event.target == changepassmd) {
+                changepassmd.style.display = "none";
+            }
+        }
+    }
+    function Userchangepass() {
+        var user_id = document.getElementById("id_userr").value;
+        var oldpass = document.getElementById("oldpassmd").value;
+        var newpass = document.getElementById("newpassmd").value;
+        var confirmpass = document.getElementById("confirmpassmd").value;
+        if (oldpass != "" && newpass != "" && confirmpass != "") {
+            if (newpass == confirmpass) {
+                $.ajax({
+                    url: "/Client/UserChangePassword",
+                    type: "Post",
+                    data: {
+                        userid: user_id,
+                        oldpassword: oldpass,
+                        newpassword: newpass
+                    },
+                    success: function (response) {
+                        if (response == "True") {
+                            changepassmd.style.display = "none";
+                            swal({
+                                title: "Change Password Success",
+                                text: "success",
+
+
+                            });
+                        } else {
+                            changepassmd.style.display = "none";
+                            swal({
+                                title: "Change Password Fail",
+                                text: "Try again",
+                                icon: "error",
+
+                            }).then((value) => {
+                                if (value) {
+                                    changepassmd.style.display = "flex";
+                                }
+                            });
+
+                        }
+                    }
+                })
+            } else {
+                changepassmd.style.display = "none";
+                swal({
+                    title: "Password and PasswordConfirm does not match",
+                    text: "Try again",
+                    icon: "error",
+
+                }).then((value) => {
+                    if (value) {
+                        changepassmd.style.display = "flex";
+                    }
+                });
+            }
+        } else {
+            changepassmd.style.display = "none";
+            swal({
+                title: "Please input all field",
+                text: "Try again",
+                icon: "error",
+
+            }).then((value) => {
+                if (value) {
+                    changepassmd.style.display = "flex";
+                }
+            });
+        }
+    }
+    function Showmdeditprofile() {
+        var md = document.getElementById("contentmd");
+        md.style.display = "flex";
+        window.onclick = function (event) {
+            if (event.target == md) {
+                md.style.display = "none";
+            }
+        }
+    }
+    function EditProfile() {
+        debugger
+        var md = document.getElementById("contentmd");
+        var name_edit = document.getElementById("name_edit").value;
+        var email_edit = document.getElementById("email_edit").value;
+        var birthday_edit = document.getElementById("birthday_edit").value;
+        var phone_edit = document.getElementById("phone_edit").value;
+        var gender_edit = document.getElementById("gender_edit").value;
+        if (name_edit != "" && email_edit != "" && birthday_edit != "" && phone_edit != "" && gender_edit != "") {
+            $.ajax({
+                url: "/Client/UserEditProfile",
+                type: "Post",
+                data: {
+                    user_name: name_edit,
+                    email: email_edit,
+                    user_phone: phone_edit,
+                    birthday: birthday_edit,
+                    gender: gender_edit
+                },
+                success: function (response) {
+                    if (response == "True") {
+                        md.style.display = "none";
+                        swal({
+                            title: "Edit Profile Success",
+                            text: "Success",
+                            
+                            timer: 2000,
+                            buttons: false,
+
+                        }).then(() => {
+                            window.location.replace("https://localhost:44351/Client/AccountUser");
+                        });
+                    } else {
+                        md.style.display = "none";
+                        swal({
+                            title: "Edit Profile Fail",
+                            text: "Fail",
+                            icon: "error",
+                            timer: 2000,
+                            buttons: false,
+
+                        }).then(() => {
+                            md.style.display = "flex";
+                        });
+                    }
+                },
+                error:  function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                },
+            })
+
+        } else {
+            md.style.display = "none";
+            swal({
+                title: "Please input all field",
+                text: "Try again",
+                icon: "error",
+                timer: 2000,
+                buttons: false,
+
+            }).then(() => {
+                md.style.display = "flex";
+            });
+        }
+    }
+
 </script>

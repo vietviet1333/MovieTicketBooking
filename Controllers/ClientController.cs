@@ -17,7 +17,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-             var a=   BookingDao.Instance().ChartByYear(2024);
+                var a = BookingDao.Instance().ChartByYear(2024);
                 List<Movie> list = MovieDao.Instance().GetAllMovies();
                 List<Movie> listMovie = new List<Movie>();
                 if (list.Count < 6)
@@ -57,15 +57,16 @@ namespace MovieTicketBooking.Controllers
         public ActionResult ViewLogin()
         {
             try
-            {if(Session["LoggedInUserID"] == null)
+            {
+                if (Session["LoggedInUserID"] == null)
                 {
                     return View();
                 }
                 else
                 {
-                    return RedirectToAction("AccountUser", new { userid= Session["LoggedInUserID"] });
+                    return RedirectToAction("AccountUser", new { userid = Session["LoggedInUserID"] });
                 }
-               
+
             }
             catch
             {
@@ -130,10 +131,12 @@ namespace MovieTicketBooking.Controllers
         }
         [HttpGet]
         [CheckLogin]
-        public ActionResult AccountUser(int userid)
+        
+        public ActionResult AccountUser()
         {
             try
             {
+                int userid = (int)Session["LoggedInUserID"];
                 TempData["totalofuser"] = BookingDao.Instance().GetTotalPriceBookingOfUser(userid);
                 var u = UserDao.Instance().GetUserById(userid);
                 return View(u);
@@ -151,12 +154,12 @@ namespace MovieTicketBooking.Controllers
             try
             {
                 bool checkemail = UserDao.Instance().GetEmailExists(email);
-                if(checkemail == false)
+                if (checkemail == false)
                 {
                     Random random = new Random();
                     int randomNumber = random.Next(100000, 999999);
-                    UserDao.Instance().InsertCode(randomNumber,email);
-                    Sendmail.Instance().SendmailChangePassUser(email,randomNumber);
+                    UserDao.Instance().InsertCode(randomNumber, email);
+                    Sendmail.Instance().SendmailChangePassUser(email, randomNumber);
 
                 }
                 else
@@ -201,6 +204,51 @@ namespace MovieTicketBooking.Controllers
             }
 
         }
+        [HttpPost]
+        public bool UserChangePassword(int userid, string newpassword, string oldpassword)
+        {
+            bool flagUpdate = true;
+            try
+            {
+                bool updatepass = UserDao.Instance().UserChangePassword(userid, oldpassword, newpassword);
+                if (updatepass == true)
+                {
+                    flagUpdate = true;
+                }
+                else
+                {
+                    flagUpdate = false;
+                }
 
+
+            }
+            catch
+            {
+                flagUpdate = false;
+            }
+            return flagUpdate;
+        }
+        [HttpPost]
+        public bool UserEditProfile(User user)
+        {
+            bool flagUpdate = true;
+            try
+            {
+                bool edit = UserDao.Instance().EditUser(user);
+                if(edit == true)
+                {
+                    flagUpdate = true;
+                }
+                else
+                {
+                    flagUpdate = false;
+                }
+            }
+            catch
+            {
+                flagUpdate = false;
+            }
+            return flagUpdate;
+        }
     }
 }
