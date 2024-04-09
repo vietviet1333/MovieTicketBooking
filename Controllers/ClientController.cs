@@ -17,8 +17,7 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                var a = BookingDao.Instance().ChartByYear(2024);
-                List<Movie> list = MovieDao.Instance().GetAllMovies();
+                List<Movie> list = MovieDao.Instance().GetMovieNowPlaying();
                 List<Movie> listMovie = new List<Movie>();
                 if (list.Count < 6)
                 {
@@ -131,7 +130,7 @@ namespace MovieTicketBooking.Controllers
         }
         [HttpGet]
         [CheckLogin]
-        
+
         public ActionResult AccountUser()
         {
             try
@@ -235,7 +234,7 @@ namespace MovieTicketBooking.Controllers
             try
             {
                 bool edit = UserDao.Instance().EditUser(user);
-                if(edit == true)
+                if (edit == true)
                 {
                     flagUpdate = true;
                 }
@@ -249,6 +248,30 @@ namespace MovieTicketBooking.Controllers
                 flagUpdate = false;
             }
             return flagUpdate;
+        }
+        public ActionResult NowPlaying()
+        {
+            try
+            {
+                var movie = MovieDao.Instance().GetMovieNowPlaying();
+                return View(movie);
+            }
+            catch
+            {
+                return View("Errors");
+            }
+        }
+   public ActionResult CommingSoon()
+        {
+            try
+            {
+                var movie = MovieDao.Instance().GetMovieCommingSoon();
+                return View(movie);
+            }
+            catch
+            {
+                return View("Errors");
+            }
         }
     }
 }

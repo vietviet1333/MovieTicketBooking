@@ -127,6 +127,12 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Polly, Version=7.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>packages\Polly.7.0.1\lib\netstandard2.0\Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="Polly.Caching.Serialization.Json, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
+      <HintPath>packages\Polly.Caching.Serialization.Json.3.0.0\lib\netstandard2.0\Polly.Caching.Serialization.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -1308,6 +1314,8 @@
     <Content Include="Views\Booking\Historytransaction.cshtml" />
     <Content Include="Views\Admin\UserManagement.cshtml" />
     <Content Include="Views\Admin\UserBooking.cshtml" />
+    <Content Include="Views\Client\NowPlaying.cshtml" />
+    <Content Include="Views\Client\CommingSoon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

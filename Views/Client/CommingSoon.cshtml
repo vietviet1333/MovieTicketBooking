@@ -1,113 +1,34 @@
-﻿
-@{
+﻿@{
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
-
-@model List<MovieTicketBooking.Models.Movie>
 <style>
-    /* CSS */
-    .button-42 {
-        background-color: initial;
-        background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
-        border-radius: 6px;
-        box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-        color: #FFFFFF;
-        cursor: pointer;
-        display: inline-block;
-        font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
-        height: 40px;
-        line-height: 40px;
-        outline: 0;
-        overflow: hidden;
-        padding: 0 20px;
-        pointer-events: auto;
-        position: relative;
-        text-align: center;
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-user-select: none;
-        vertical-align: top;
-        white-space: nowrap;
-        width: 10%;
-        z-index: 9;
-        border: 0;
-        transition: box-shadow .2s;
+    .pagination {
+        margin-top: 20px; /* Adjust spacing as needed */
     }
 
-        .button-42:hover {
-            color:white;
-            box-shadow: rgba(253, 76, 0, 0.5) 0 3px 8px;
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
         }
+
+            .pagination a:hover {
+                background-color: #f0f0f0;
+            }
+
+            .pagination a.active {
+                background-color: #ff8400; /* Active page background color */
+                color: #fff; /* Active page text color */
+                border: none
+            }
 </style>
-
 <div data-elementor-type="wp-page" data-elementor-id="84" class="elementor elementor-84">
-    <section class="elementor-section elementor-top-section elementor-element elementor-element-08975e9 elementor-section-full_width elementor-section-height-default elementor-section-height-default"
-             data-id="08975e9" data-element_type="section">
-        <div class="elementor-container elementor-column-gap-default">
-            <div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-222b7e7"
-                 data-id="222b7e7" data-element_type="column">
-                <div class="elementor-widget-wrap elementor-element-populated">
-                    <div class="elementor-element elementor-element-6dd3468 elementor-widget__width-inherit elementor-widget elementor-widget-Amy_Movie_Slide"
-                         data-id="6dd3468" data-element_type="widget"
-                         data-widget_type="Amy_Movie_Slide.default">
-                        <div class="elementor-widget-container">
 
-                            <div class="amy-shortcode amy-mv-slide">
-                                <div class="amy-slick "
-                                     data-slick='{"slidesToShow":1,"slidesToScroll":1,"autoplay":true,"autoplaySpeed":3000,"prevArrow": "<a class=\"amy-arrow fa amy-pre fa-chevron-right\"></a>","nextArrow": "<a class=\"amy-arrow fa amy-next fa-chevron-left\"></a>","arrows":true,"infinite":true,"fade":true,"useCSS":true,"useTransform":true,"dots":true}'>
-                                    <div class="slide-item">
-
-                                    </div>
-                                    <div class="slide-item">
-                                        <div class="slide-thumb">
-                                            <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
-                                                <img src="~/asset/assets/images/img_27.jpg"
-                                                     alt="The Hurricane Heist" />
-                                            </a>
-                                        </div>
-                                        <div class="slide-content">
-                                            <h2 class="slide-title">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
-                                                    The Hurricane <span class="last_word">Heist</span>
-                                                </a>
-                                            </h2>
-
-                                            <div class="slide-release">
-                                                From <span>
-                                                    Apr 29
-                                                </span>
-                                            </div>
-
-                                            <div class="slide-desc">
-                                                <p>
-                                                    Sed ut perspiciatis unde omnis iste natus error sit
-                                                    voluptatem accusantium doloremque laudantium, totam
-                                                    rem aperiam, eaque ipsa quae ab ...
-                                                </p>
-                                            </div>
-
-                                            <div class="slide-button">
-                                                <a href="https://player.vimeo.com/video/51834631"
-                                                   class="fancybox.iframe amy-fancybox">
-                                                    <i aria-hidden="true" class="fa fa-play"></i>
-                                                    Trailer
-                                                </a>
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-hurricane-heist/">
-                                                    <i aria-hidden="true" class="fa fa-exclamation"></i>
-                                                    Detail
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <div class="elementor-container elementor-column-gap-default">
         <div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-a503e51"
              data-id="a503e51" data-element_type="column">
@@ -131,16 +52,16 @@
 
                             <div style="width:80%;margin:auto">
 
-                                <div class="row amy-ajax-content">
-                                    @for (int i = 0; i < Model.Count; i++)
+                                <div class="row amy-ajax-content" id="movieGrid">
+                                    @foreach (var movie in Model)
                                     {
-                                        String post = Model[i].release_date?.ToString("yyyy-MM-dd");
-                                        <div class="col-md-15 grid-item">
-                                            <article class="entry-item" onclick="">
+                                        String post = movie.release_date?.ToString("yyyy-MM-dd");
+                                        <div class="col-md-15 grid-item movie-item">
+                                            <article class="entry-item">
                                                 <div class="entry-thumb">
                                                     <img class=""
-                                                         src="@Model[i].poster_image"
-                                                         alt="Kubo and the Two Strings">
+                                                         src="@movie.poster_image"
+                                                         alt="@movie.title">
                                                     <div class="right-info">
                                                         <span class="pg">
                                                             G
@@ -149,7 +70,7 @@
                                                 </div>
                                                 <div class="entry-content">
                                                     <h4 class="entry-title">
-                                                        @Model[i].title
+                                                        @movie.title
                                                     </h4>
                                                     <div class="entry-date">
                                                         Release: @post
@@ -159,7 +80,7 @@
                                                             <i aria-hidden="true" class="fa fa-play"></i>
                                                             Trailer
                                                         </a>
-                                                        <a href="/Client/Detail_movie?movie_id=@Model[i].movie_id">
+                                                        <a href="/Client/Detail_movie?movie_id=@movie.movie_id">
                                                             <i aria-hidden="true" class="fa fa-exclamation"></i>
                                                             Detail
                                                         </a>
@@ -168,7 +89,7 @@
                                                 <div class="pic-caption open-left">
                                                     <h4 class="entry-title">
                                                         <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/kubo-and-the-two-strings/">
-                                                            @Model[i].title
+                                                            @movie.title
                                                         </a>
                                                     </h4>
                                                     <span class="pg">
@@ -182,18 +103,18 @@
 
                                                         <p>
                                                             <span>Genre: </span>
-                                                            <a href="">@Model[i].genre</a>,
+                                                            <a href="">@movie.genre</a>,
 
                                                         </p>
 
                                                         <p>
                                                             <span>Duration: </span>
-                                                            @Model[i].duration  minutes
+                                                            @movie.duration minutes
                                                         </p>
 
                                                         <p>
                                                             <span>Language: </span>
-                                                            @Model[i].language
+                                                            @movie.language
                                                         </p>
                                                     </div>
                                                     <div class="entry-button" style="top:80%">
@@ -210,7 +131,7 @@
                                                             <i aria-hidden="true" class="fa fa-play"></i>
                                                             Trailer
                                                         </a>
-                                                        <a href="/Client/Detailmovie?movie_id=@Model[i].movie_id">
+                                                        <a href="/Client/Detailmovie?movie_id=@movie.movie_id">
                                                             <i aria-hidden="true" class="fa fa-exclamation"></i>
                                                             Detail
                                                         </a>
@@ -218,12 +139,15 @@
                                                 </div>
                                             </article>
                                         </div>
-
                                     }
-
                                 </div>
 
+                                <div style="width:100%;text-align:center">
+                                    <div class="pagination" id="pagination">
+                                        <!-- Pagination controls will be added dynamically by JavaScript -->
+                                    </div>
 
+                                </div>
                             </div>
 
                         </div>
@@ -234,7 +158,64 @@
     </div>
 </div>
 
-<div style="text-align:center;margin:15px 15px">
-    <a href="/Client/NowPlaying" class="button-42" role="button">See more</a>
-</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const itemsPerPage = 5;
+        const movieItems = document.querySelectorAll('.movie-item');
+        const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+        let currentPage = 1;
 
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+            movieItems.forEach((item, index) => {
+                if (index >= startIndex && index <= endIndex) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const numPagesToShow = 3; // Number of pages to show before and after the current page
+            const startPage = Math.max(1, currentPage - numPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                    updatePagination();
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                if (index + 1 === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        showPage(currentPage);
+        generatePagination();
+    });
+</script>

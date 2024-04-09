@@ -142,3 +142,9 @@ D:\Vietcv\MovieTicketBooking\bin\System.Numerics.Vectors.xml
 D:\Vietcv\MovieTicketBooking\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\Vietcv\MovieTicketBooking\bin\System.Threading.Tasks.Extensions.xml
 D:\Vietcv\MovieTicketBooking\bin\System.ValueTuple.xml
+D:\Vietcv\MovieTicketBooking\bin\Polly.Caching.Serialization.Json.dll
+D:\Vietcv\MovieTicketBooking\bin\Polly.dll
+D:\Vietcv\MovieTicketBooking\bin\Polly.pdb
+D:\Vietcv\MovieTicketBooking\bin\Polly.xml
+D:\Vietcv\MovieTicketBooking\bin\Polly.Caching.Serialization.Json.pdb
+D:\Vietcv\MovieTicketBooking\bin\Polly.Caching.Serialization.Json.xml

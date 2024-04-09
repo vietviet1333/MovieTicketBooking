@@ -56,7 +56,7 @@ namespace MovieTicketBooking.Dao
         public List<Movie> GetAllMovies()
         {
             try
-            {
+            {//0 is new movie, 1 is movie have showtime, 2 is have show time comming
 
                 var mv = new MovieTicketBookingEntities2();
                 var result = mv.Movies.OrderByDescending((s) => s.movie_id).ToList();
@@ -87,9 +87,17 @@ namespace MovieTicketBooking.Dao
         {
             try
             {
-                var mv = new MovieTicketBookingEntities2();
-                var result = (from mo in mv.Movies where mo.status == 1 && mo.release_date < DateTime.Now select mo).ToList();
-                return result;
+                using (var mv = new MovieTicketBookingEntities2())
+                {
+                    var result = (from mo in mv.Movies
+                                  join st in mv.Showtimes on mo.movie_id equals st.movie_id
+                                  where mo.status == 1  && st.status == 0
+                                  select mo
+                                 ).Distinct().ToList();
+                    return result;
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -103,7 +111,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = (from mo in mv.Movies where mo.status == 1 && mo.release_date > DateTime.Now select mo).ToList();
+                var result = (from mo in mv.Movies where  mo.release_date > DateTime.Now select mo).ToList();
                 return result;
             }
             catch (Exception ex)
@@ -165,7 +173,7 @@ namespace MovieTicketBooking.Dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine();
+                Console.WriteLine(ex.Message);
                 flagUpdate = false;
             }
             return flagUpdate;

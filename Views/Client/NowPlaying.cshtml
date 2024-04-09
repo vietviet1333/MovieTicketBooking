@@ -1,0 +1,222 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+<style>
+    .pagination {
+        margin-top: 20px; /* Adjust spacing as needed */
+    }
+
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .pagination a:hover {
+                background-color: #f0f0f0;
+            }
+
+            .pagination a.active {
+                background-color: #ff8400; /* Active page background color */
+                color: #fff; /* Active page text color */
+                border:none
+            }
+
+</style>
+<div data-elementor-type="wp-page" data-elementor-id="84" class="elementor elementor-84">
+
+    <div class="elementor-container elementor-column-gap-default">
+        <div class="elementor-column elementor-col-100 elementor-top-column elementor-element elementor-element-a503e51"
+             data-id="a503e51" data-element_type="column">
+            <div class="elementor-widget-wrap elementor-element-populated">
+                <div class="elementor-element elementor-element-46cb6f1 elementor-widget elementor-widget-Amy_V2_Movie_Heading"
+                     data-id="46cb6f1" data-element_type="widget"
+                     data-widget_type="Amy_V2_Movie_Heading.default">
+                    <div class="elementor-widget-container">
+                        <div class="amy-heading text-center has-seperator    seperator-1 ">
+                            <header class="entry-header">
+                                <span class="seperator seperator-left"></span>
+                                <h2 class="title-heading"><span class="title">Now Playing</span></h2><span class="seperator seperator-right"></span>
+                            </header>
+                        </div>
+                    </div>
+                </div>
+                <div class="elementor-element elementor-element-f8ea438 elementor-widget elementor-widget-Amy_Movie_Grid"
+                     data-id="f8ea438" data-element_type="widget" data-widget_type="Amy_Movie_Grid.default">
+                    <div class="elementor-widget-container">
+                        <div class="amy-shortcode amy-mv-grid layout1">
+
+                            <div style="width:80%;margin:auto">
+
+                                <div class="row amy-ajax-content" id="movieGrid">
+                                    @foreach (var movie in Model)
+                                    {
+                                        String post = movie.release_date?.ToString("yyyy-MM-dd");
+                                        <div class="col-md-15 grid-item movie-item">
+                                            <article class="entry-item">
+                                                <div class="entry-thumb">
+                                                    <img class=""
+                                                         src="@movie.poster_image"
+                                                         alt="@movie.title">
+                                                    <div class="right-info">
+                                                        <span class="pg">
+                                                            G
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="entry-content">
+                                                    <h4 class="entry-title">
+                                                        @movie.title
+                                                    </h4>
+                                                    <div class="entry-date">
+                                                        Release: @post
+                                                    </div>
+                                                    <div class="entry-button">
+                                                        <a href="https://player.vimeo.com/video/51834631">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Trailer
+                                                        </a>
+                                                        <a href="/Client/Detail_movie?movie_id=@movie.movie_id">
+                                                            <i aria-hidden="true" class="fa fa-exclamation"></i>
+                                                            Detail
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="pic-caption open-left">
+                                                    <h4 class="entry-title">
+                                                        <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/kubo-and-the-two-strings/">
+                                                            @movie.title
+                                                        </a>
+                                                    </h4>
+                                                    <span class="pg">
+                                                        G
+                                                    </span>
+                                                    <div class="desc-mv">
+                                                        <p>
+                                                            <span>Release: </span>
+                                                            @post
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Genre: </span>
+                                                            <a href="">@movie.genre</a>,
+
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Duration: </span>
+                                                            @movie.duration minutes
+                                                        </p>
+
+                                                        <p>
+                                                            <span>Language: </span>
+                                                            @movie.language
+                                                        </p>
+                                                    </div>
+                                                    <div class="entry-button" style="top:80%">
+                                                        <a href="https://player.vimeo.com/video/51834631"
+                                                           class="fancybox.iframe amy-fancybox">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Buy Ticket
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="entry-button">
+                                                        <a href="https://player.vimeo.com/video/51834631"
+                                                           class="fancybox.iframe amy-fancybox">
+                                                            <i aria-hidden="true" class="fa fa-play"></i>
+                                                            Trailer
+                                                        </a>
+                                                        <a href="/Client/Detailmovie?movie_id=@movie.movie_id">
+                                                            <i aria-hidden="true" class="fa fa-exclamation"></i>
+                                                            Detail
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div style="width:100%;text-align:center">
+                                    <div class="pagination" id="pagination">
+                                        <!-- Pagination controls will be added dynamically by JavaScript -->
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const itemsPerPage = 5;
+        const movieItems = document.querySelectorAll('.movie-item');
+        const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+            movieItems.forEach((item, index) => {
+                if (index >= startIndex && index <= endIndex) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const numPagesToShow = 3; // Number of pages to show before and after the current page
+            const startPage = Math.max(1, currentPage - numPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                    updatePagination();
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                if (index + 1 === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        showPage(currentPage);
+        generatePagination();
+    });
+</script>

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var theater = MovieTicketBooking.Dao.TheaterDao.Instance().getAllTheater();
+}
+<!DOCTYPE html>
 <html lang="en-US">
 <!--[if IE]><![endif]-->
 
@@ -237,14 +240,14 @@
                                         <ul class="sub-menu">
                                             <li id="menu-item-143"
                                                 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-143">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/now-playing/">
+                                                <a href="/Client/NowPlaying">
                                                     Now
                                                     Playing
                                                 </a>
                                             </li>
                                             <li id="menu-item-134"
                                                 class="menu-item menu-item-type-post_type menu-item-object-page menu-item-134">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/coming-soon/">
+                                                <a href="/Client/CommingSoon">
                                                     Coming
                                                     Soon
                                                 </a>
@@ -253,36 +256,31 @@
                                     </li>
                                     <li id="menu-item-277"
                                         class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-277">
-                                        <a href="#">Single Movie</a>
+                                        <a href="#">Theater</a>
                                         <ul class="sub-menu">
-                                            <li id="menu-item-338"
-                                                class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-338">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/kubo-and-the-two-strings/">
-                                                    Full
-                                                    Width &#038; Banner
-                                                </a>
-                                            </li>
-                                            <li id="menu-item-365"
-                                                class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-365">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/the-girl-with-all-the-gifts/">
-                                                    Full
-                                                    Width &#038; No Banner
-                                                </a>
-                                            </li>
-                                            <li id="menu-item-340"
-                                                class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-340">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/jumanji-welcome-to-the-jungle/">
-                                                    Sidebar
-                                                    &#038; Banner
-                                                </a>
-                                            </li>
-                                            <li id="menu-item-366"
-                                                class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-366">
-                                                <a href="http://demo.amytheme.com/movie/demo/elementor-single-cinema/movie/bad-moms/">
-                                                    Sidebar
-                                                    &#038; No Banner
-                                                </a>
-                                            </li>
+                                            @if (theater != null)
+                                            {
+                                                for (int i = 0; i < theater.Count; i++)
+                                                {
+                                                    <li id="menu-item-338"
+                                                        class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-338">
+                                                        <a href="/Client/Theater?theater_id=@theater[i].theater_id">
+                                                            @theater[i].name
+                                                        </a>
+                                                    </li>
+                                                }
+
+
+                                            }
+                                            else
+                                            {
+                                                <li id="menu-item-338"
+                                                    class="menu-item menu-item-type-post_type menu-item-object-amy_movie menu-item-338">
+                                                    <a href="#">
+                                                        No Theater
+                                                    </a>
+                                                </li>
+                                            }
                                         </ul>
                                     </li>
                                     <li id="menu-item-278"
