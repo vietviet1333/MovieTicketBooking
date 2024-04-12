@@ -159,7 +159,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = (from u in mv.Users select u).ToList();
+                var result = (from u in mv.Users select u).OrderByDescending(x=>x.user_id).ToList();
                 return result;
             }catch(Exception ex)
             {

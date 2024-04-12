@@ -18,7 +18,14 @@ namespace MovieTicketBooking.Controllers
         [HttpGet]
         public ActionResult AdminLoginPage()
         {
-            return View();
+            try
+            {
+                return View();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View("Errors");
+            }
         }
         [HttpPost]
         public bool Login(string username, string password)
@@ -41,28 +48,63 @@ namespace MovieTicketBooking.Controllers
         public ActionResult Logout()
         {
             // Remove session variables
-            Session.Remove("LoggedInAdminID");
+            try
+            {
+                Session.Remove("LoggedInAdminID");
 
-            return RedirectToAction("AdminLoginPage", "Admin");
+                return RedirectToAction("AdminLoginPage", "Admin");
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View("Errors");
+            }
         }
         [CheckAdminLogin]
         public ActionResult Dashboard()
         {
-            return View();
+            try
+            {
+                return View();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View("Erorrs");
+            }
         }
         [CheckAdminLogin]
         public ActionResult Addnewmovie()
         {
-            return View();
+            try
+            {
+                return View();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return View("Errors");
+            }
         }
         [HttpPost]
-        public ActionResult Insertmovie(string namemovi, string directo, string languag, DateTime release_dat, int duratio, string genr, string descriptio, string urlimag, string cas)
+        public bool Insertmovie(string namemovi, string directo, string languag, DateTime release_dat, int duratio, string genr, string descriptio, string urlimag, string cas)
         {
-
-            MovieDao.Instance().Addnewmovie(namemovi, directo, languag, release_dat, duratio, genr, descriptio, urlimag, cas);
-
-            return Redirect("/Admin/Dashboard");
-
+            bool flagInsert = true;
+            try
+            {
+                bool insert = MovieDao.Instance().Addnewmovie(namemovi, directo, languag, release_dat, duratio, genr, descriptio, urlimag, cas);
+                if(insert == true)
+                {
+                    flagInsert = true;
+                }
+                else
+                {
+                    flagInsert = false;
+                }
+               
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                flagInsert= false;
+            }
+            return flagInsert;
         }
         [CheckAdminLogin]
         public ActionResult Listmovie()

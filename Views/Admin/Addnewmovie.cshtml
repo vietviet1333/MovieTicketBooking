@@ -5,7 +5,7 @@
 }
 
 
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
@@ -122,7 +122,9 @@
 
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">
+
                 <img id="imagePreview" src="#" alt="Image Preview">
+
 
 
 
@@ -130,7 +132,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; color: #492173; background-color: #8f56cc; border: none" type="button" onclick="abc();" id="btnsubmit"> <i class="mdi mdi-file-check btn-icon-prepend"></i>Add movie </button>
+        <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; color: #492173; background-color: #8f56cc; border: none" type="button" onclick="abc()" id="btnsubmit"> <i class="mdi mdi-file-check btn-icon-prepend"></i>Add movie </button>
 
     </form>
     <div class="loading-overlay" id="loadingOverlay">
@@ -138,6 +140,47 @@
     </div>
 
 </div>
+
+
+<script>
+    function validateForm() {
+        var moviename = document.getElementById('moviename').value.trim();
+        var director = document.getElementById('director').value.trim();
+        var cast = document.getElementById('cast').value.trim();
+        var language = document.getElementById('language').value.trim();
+        var genre = document.getElementById('genre').value.trim();
+        var description = document.getElementById('description').value.trim();
+        var duration = document.getElementById('duration').value;
+        var releaseDate = document.getElementById('release_date').value;
+
+        if (moviename === "" || director === "" || cast === "" || language === "" || genre === "" || description==="") {
+           
+            return 0;
+        }
+
+        if (new Date(releaseDate) < new Date()) {
+           
+            return 1;
+        }
+        if (duration < 10 || duration > 500) {
+          
+            return 2;
+        }
+
+        return 3;
+    
+       
+    }
+
+    // Set minimum release date to today
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('release_date').setAttribute('min', today);
+</script>
 
 <script>
     const firebaseConfig = {
@@ -165,57 +208,140 @@
         const name = uuid + inp.name;
         const uploadImage = ref.child(name).put(inp, metadata);
 
-        await uploadImage.then(snapshot => snapshot.ref.getDownloadURL())
-            .then(url => {
+        if (inp != null) {
+            await uploadImage.then(snapshot => snapshot.ref.getDownloadURL())
+                .then(url => {
 
-                urll.value = url;
-                urlPath = url;
-                console.log(urlPath);
+                    urll.value = url;
+                    urlPath = url;
+                    console.log(urlPath);
 
+                    return urlPath;
+                });
+        }
 
-            });
-        return urlPath;
     }
 
 
     async function abc() {
-        document.getElementById('loadingOverlay').style.display = 'flex';
-        await uploadImage();
+        const inp = document.querySelector('#image').files[0];
+        var checkform = validateForm();
+        if (inp != null && checkform == 3) {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            await uploadImage();
 
-        document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'none';
 
 
-        $.ajax({
-            url: '/Admin/Insertmovie',
-            type: "Post",
-            //contentType: "application/json",
-            data: {
-                namemovi: $("#moviename").val(),
-                directo: $("#director").val(),
-                languag: $("#language").val(),
-                cas: $("#cast").val(),
-                release_dat: $("#release_date").val(),
-                duratio: $("#duration").val(),
-                genr: $("#genre").val(),
-                descriptio: $("#description").val(),
-                urlimag: $("#urlimage").val(),
-            },
-            success: () => { window.location.replace("https://localhost:44351/admin/listmovie"); }
-        });
+            $.ajax({
+                url: '/Admin/Insertmovie',
+                type: "Post",
+                //contentType: "application/json",
+                data: {
+                    namemovi: $("#moviename").val(),
+                    directo: $("#director").val(),
+                    languag: $("#language").val(),
+                    cas: $("#cast").val(),
+                    release_dat: $("#release_date").val(),
+                    duratio: $("#duration").val(),
+                    genr: $("#genre").val(),
+                    descriptio: $("#description").val(),
+                    urlimag: $("#urlimage").val(),
+                },
+                success: (response) => {
+                    if (response == "True") {
+                        swal({
+                            title: "Add movie success",
+                            text: "success",
+                            timer: 2000,
+                            buttons: false,
+
+                        }).then(() => {
+                            window.location.replace("https://localhost:44351/Admin/Listmovie");
+                        })
+                    } else {
+                        swal({
+                            title: "Add movie fail",
+                            text: "Try again",
+                            icon: "error",
+                            timer: 2000,
+                            buttons: false,
+
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    swal({
+                        title: "Add movie fail",
+                        text: "Try again",
+                        icon: "error",
+                        timer: 2000,
+                        buttons: false,
+
+                    });
+                }
+            });
+        }
+
+        else
+            if (checkform == 0) {
+
+                swal({
+                    title: "Please fill all feild",
+                    text: "Try again",
+                    icon: "error",
+                    timer: 2000,
+                    buttons: false,
+
+                });
+
+            }
+
+            else if (checkform == 1) {
+
+                swal({
+                    title: "release date starts today",
+                    text: "Try again",
+                    icon: "error",
+                    timer: 2000,
+                    buttons: false,
+
+                });
+
+            }
+            else if (checkform == 2) {
+
+                swal({
+                    title: "duration from 10 minutes to 500 minutes ",
+                    text: "Try again",
+                    icon: "error",
+                    timer: 2000,
+                    buttons: false,
+
+                });
+
+            }
     }
-
-    //abc();
 </script>
 <script>
     function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = reader.result;
-            imagePreview.style.display = 'block';
+        var input = event.target;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = '';
+                imagePreview.src = reader.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        } else {
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
         }
-        reader.readAsDataURL(event.target.files[0]);
     }
+
 </script>
 
 

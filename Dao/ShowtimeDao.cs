@@ -56,7 +56,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = (from t in mv.Showtimes where t.movie_id == id_movie select t).ToList();
+                var result = (from t in mv.Showtimes where t.movie_id == id_movie select t).OrderByDescending(x=>x.show_date).ToList();
                 return result;
             }
             catch (Exception ex)
@@ -70,7 +70,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = mv.Showtimes.ToList();
+                var result = mv.Showtimes.OrderByDescending(s => s.showtime_id).ToList();
                 return result;
             }
             catch

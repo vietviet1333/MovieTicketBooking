@@ -48,7 +48,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 MovieTicketBookingEntities2 mv = new MovieTicketBookingEntities2();
-                var result = mv.Cities.ToList();
+                var result = mv.Cities.OrderByDescending(x=>x.id_city).ToList();
                 return result;
             }
             catch (Exception e)
@@ -84,7 +84,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                return mv.Theaters.ToList();
+                return mv.Theaters.OrderByDescending(x=>x.theater_id).ToList();
             }
             catch (Exception e)
             {

@@ -5,13 +5,13 @@
     List<MovieTicketBooking.Models.Theater> listtheater = MovieTicketBooking.Dao.TheaterDao.Instance().getAllTheater();
 }
 @model List<MovieTicketBooking.Models.City>
-    
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 
 <style>
-   
+
 
     body {
         font-family: Arial, sans-serif;
@@ -44,7 +44,7 @@
     tbody tr:hover {
         background-color: #1A042D;
     }
-  
+
     img {
         max-width: 200px;
         height: auto;
@@ -139,6 +139,64 @@
         margin-bottom: 5px;
         border-radius: 5px;
     }
+
+    .pagination {
+        margin-top: 20px; /* Adjust spacing as needed */
+    }
+
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .pagination a:hover {
+                background-color: #f0f0f0;
+            }
+
+            .pagination a.active {
+                background-color: #4c3896; /* Active page background color */
+                color: #fff; /* Active page text color */
+                border: none
+            }
+
+    .tabledatahead {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 20px 20px;
+        background-color: #191c24;
+        font-weight: bold;
+        font-size: 18px
+    }
+
+    .tabledatabo {
+        display: flex;
+        height: auto;
+        padding: 20px 20px;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 15px;
+        background-color: #191c24;
+        border-bottom: 1px solid grey;
+    }
+
+        .tabledatabo:hover {
+            background-color: black
+        }
+    #searchInput {
+        margin: 20px 0px;
+        background-color: black;
+        border: 1px solid grey;
+        color: white;
+        height: 40px;
+        border-radius: 5px;
+    }
 </style>
 <div class="container" style="height:700px; overflow-y:scroll">
     <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; background-color: #8f56cc;border:none" onclick="formaddtheater()">Add Theater </button>
@@ -184,136 +242,285 @@
 
         </form>
     </div>
-
-    <body>
-        <h1>Theater List</h1>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width:100px;text-align:center">ID</th>
-                        <th style="width:250px;text-align:center">Theater</th>
-                        <th style="width:150px;text-align:center">Location</th>
-                        <th style="width:250px;text-align:center"> Image</th>
-                        <th style="width:100px;text-align:center">Status</th>
-                        <th style="width:100px ;text-align:center">Detail</th>
-                      
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int i = 0; i < listtheater.Count; i++)
-                    {
-
-                       
-
-                        <tr>
-                            <td style="width:100px;text-align:center">@(i+1)</td>
-                            <td style="width:250px;margin:auto"><div style="width: 250px; word-wrap: break-word; text-align: center">@listtheater[i].name</div></td>
-                            <td style="width:150px;text-align:center">@listtheater[i].location</td>
-                            <td><img src="@listtheater[i].Theater_image" alt="Poster Image"></td>
-                            <td style="width:100px;text-align:center">Active</td>
-                            <td style="width:100px;text-align:center"><a href="/Theater/Theater_detail?id=@listtheater[i].theater_id" style="color: #00a008; font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; border: 1px solid #00a008; border-radius: 5px " >Detail</a></td>
-                           
-                        </tr>
-
-                    }
-
-
-                </tbody>
-            </table>
-        </div>
-    </body>
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loader"></div>
+    <div>
+        <input type="text" id="searchInput" onkeyup="searchMovies()" placeholder="  Search for theater...">
     </div>
+ 
+        <div class="tabledata">
+            <div class="tabledatahead">
+                <div style="width: 50px;text-align: center;">No</div>
+                <div style="width: 200px;text-align: center;">Theater</div>
+                <div style="width: 200px;text-align: center;">Location</div>
+                <div style="width: 250px;text-align: center;">Theater Image</div>
+                <div style="width: 100px;text-align: center;">Status</div>
+                <div style="width: 100px;text-align: center;">Detail</div>
+            </div>
 
-</div>
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyAULQ0nHsGhEO9t2EPmZlHlvqKhyExSx_g",
-        authDomain: "movieticketbooking-7da83.firebaseapp.com",
-        projectId: "movieticketbooking-7da83",
-        storageBucket: "movieticketbooking-7da83.appspot.com",
-        messagingSenderId: "66263933934",
-        appId: "1:66263933934:web:17a4eae96f357a8a1724ff",
-        measurementId: "G-G4SKDMJYN5"
-    };
-    firebase.initializeApp(firebaseConfig);
-    let urlPath = "";
-    async function uploadImage() {
-        const inp = document.querySelector('#image').files[0];
-        const urll = document.querySelector('#urlimagg');
+            <div class="fulldata">
+                @for (int i = 0; i < listtheater.Count; i++)
+                {<div class="tabledatabo">
+                        <div style="width: 50px;text-align: center;">@(i + 1)</div>
+                        <div style="width: 200px;text-align: center;">
+                            <div style="width: 100%; word-wrap: break-word; text-align: center">@listtheater[i].name</div>
+                        </div>
+                        <div style="width: 200px;text-align: center;">
+                            <div style="width: 100%; word-wrap: break-word; text-align: center">@listtheater[i].location</div>
+                        </div>
+                        <div style="width: 250px;text-align: center;">
+                            <img src="@listtheater[i].Theater_image" alt="Poster Image"
+                                 style="height:auto;width:250px">
+                        </div>
+                        <div style="width: 100px;text-align: center;">Active</div>
+                        <div style="width:100px;text-align:center">
+                            <a href="/Theater/Theater_detail?id=@listtheater[i].theater_id"
+                               style="color: #ffffff; font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px;  border-radius: 5px;background-color: rgb(0, 190, 0);">Detail</a>
+                        </div>
 
-        const storage = firebase.storage();
-        const ref = storage.ref();
-        const metadata = {
-            contentType: inp.type
-        };
+                    </div>
+                }
+            </div>
+        </div>
+        <div style="width:100%;display:flex;justify-content:center; align-items:center">
+            <div class="pagination" id="pagination">
+                <!-- Pagination controls will be added dynamically by JavaScript -->
+            </div>
+
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loader"></div>
+            </div>
+
+        </div>
+        <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyAULQ0nHsGhEO9t2EPmZlHlvqKhyExSx_g",
+                authDomain: "movieticketbooking-7da83.firebaseapp.com",
+                projectId: "movieticketbooking-7da83",
+                storageBucket: "movieticketbooking-7da83.appspot.com",
+                messagingSenderId: "66263933934",
+                appId: "1:66263933934:web:17a4eae96f357a8a1724ff",
+                measurementId: "G-G4SKDMJYN5"
+            };
+            firebase.initializeApp(firebaseConfig);
+            let urlPath = "";
+            async function uploadImage() {
+                const inp = document.querySelector('#image').files[0];
+                const urll = document.querySelector('#urlimagg');
+
+                const storage = firebase.storage();
+                const ref = storage.ref();
+                const metadata = {
+                    contentType: inp.type
+                };
 
 
-        const name = inp.name;
-        const uploadImage = ref.child(name).put(inp, metadata);
+                const name = inp.name;
+                const uploadImage = ref.child(name).put(inp, metadata);
 
-        await uploadImage.then(snapshot => snapshot.ref.getDownloadURL())
-            .then(url => {
+                await uploadImage.then(snapshot => snapshot.ref.getDownloadURL())
+                    .then(url => {
 
-                urll.value = url;
-                urlPath = url;
-                console.log(urlPath);
+                        urll.value = url;
+                        urlPath = url;
+                        console.log(urlPath);
 
 
+                    });
+                return urlPath;
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "flex";
+                }
+            };
+
+            async function abc() {
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                await uploadImage();
+
+                document.getElementById('loadingOverlay').style.display = 'none';
+
+
+                $.ajax({
+                    url: '/Theater/Inserttheate',
+                    type: "Post",
+                    //contentType: "application/json",
+                    data: {
+                        theatername: $("#theatername").val(),
+                        location: $("#location").val(),
+                        city: $("#country").val(),
+                        urlimag: $("#urlimagg").val(),
+                    },
+                    success: () => { window.location.replace("https://localhost:44351/theater/addnewtheater"); }
+                });
+            }
+
+            //abc();
+        </script>
+        <script>
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var imagePreview = document.getElementById('imagePreview');
+                    imagePreview.src = reader.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+            function formaddtheater() {
+                var x = document.getElementById("newtheater");
+
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+
+
+                } else {
+                    x.style.display = "none";
+
+                }
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const itemsPerPage = 5;
+                const movieItems = document.querySelectorAll('.tabledatabo');
+                const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+                let currentPage = 1;
+
+                function showPage(page) {
+                    const startIndex = (page - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+                    movieItems.forEach((item, index) => {
+                        if (index >= startIndex && index <= endIndex) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+
+                function generatePagination() {
+                    const pagination = document.getElementById('pagination');
+                    pagination.innerHTML = '';
+
+                    const numPagesToShow = 2; // Number of pages to show before and after the current page
+                    const startPage = Math.max(1, currentPage - numPagesToShow);
+                    const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        const pageLink = document.createElement('a');
+                        pageLink.href = '#';
+                        pageLink.textContent = i;
+                        if (i === currentPage) {
+                            pageLink.classList.add('active');
+                        }
+                        pageLink.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            currentPage = i;
+                            showPage(currentPage);
+                            updatePagination();
+                            generatePagination();
+                        });
+                        pagination.appendChild(pageLink);
+                    }
+                }
+
+
+                function updatePagination() {
+                    const pageLinks = document.querySelectorAll('.pagination a');
+                    pageLinks.forEach((link, index) => {
+                        if (index + 1 === currentPage) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
+
+                showPage(currentPage);
+                generatePagination();
             });
-        return urlPath;
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "flex";
-        }
-    };
+        </script>
+        <script>
+            function searchMovies() {
+                debugger
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput");
+                filter = input.value.toUpperCase();
+                if (filter == "") {
+                    defaul();
+                } else {
+                    table = document.getElementsByClassName("fulldata")[0];
+                    divs = table.getElementsByClassName("tabledatabo");
+                    for (i = 0; i < divs.length; i++) {
+                        titleDiv = divs[i].getElementsByTagName("div")[1];
+                        txtValue = titleDiv.textContent || titleDiv.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            divs[i].style.display = "";
+                        } else {
+                            divs[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+            function defaul() {
+                const itemsPerPage = 5;
+                const movieItems = document.querySelectorAll('.tabledatabo');
+                const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+                let currentPage = 1;
 
-    async function abc() {
-        document.getElementById('loadingOverlay').style.display = 'flex';
-        await uploadImage();
+                function showPage(page) {
+                    const startIndex = (page - 1) * itemsPerPage;
+                    const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
 
-        document.getElementById('loadingOverlay').style.display = 'none';
+                    movieItems.forEach((item, index) => {
+                        if (index >= startIndex && index <= endIndex) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+
+                function generatePagination() {
+                    const pagination = document.getElementById('pagination');
+                    pagination.innerHTML = '';
+
+                    const numPagesToShow = 2; // Number of pages to show before and after the current page
+                    const startPage = Math.max(1, currentPage - numPagesToShow);
+                    const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        const pageLink = document.createElement('a');
+                        pageLink.href = '#';
+                        pageLink.textContent = i;
+                        if (i === currentPage) {
+                            pageLink.classList.add('active');
+                        }
+                        pageLink.addEventListener('click', function (event) {
+                            event.preventDefault();
+                            currentPage = i;
+                            showPage(currentPage);
+                            updatePagination();
+                            generatePagination();
+                        });
+                        pagination.appendChild(pageLink);
+                    }
+                }
 
 
-        $.ajax({
-            url: '/Theater/Inserttheate',
-            type: "Post",
-            //contentType: "application/json",
-            data: {
-                theatername: $("#theatername").val(),
-                location: $("#location").val(),
-                city: $("#country").val(),
-                urlimag: $("#urlimagg").val(),
-            },
-            success: () => { window.location.replace("https://localhost:44351/theater/addnewtheater"); }
-        });
-    }
+                function updatePagination() {
+                    const pageLinks = document.querySelectorAll('.pagination a');
+                    pageLinks.forEach((link, index) => {
+                        if (index + 1 === currentPage) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                }
 
-    //abc();
-</script>
-<script>
-    function previewImage(event) {
-        var reader = new FileReader();
-        reader.onload = function () {
-            var imagePreview = document.getElementById('imagePreview');
-            imagePreview.src = reader.result;
-            imagePreview.style.display = 'block';
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-    function formaddtheater() {
-        var x = document.getElementById("newtheater");
-
-        if (x.style.display === "none") {
-            x.style.display = "block";
-
-
-        } else {
-            x.style.display = "none";
-
-        }
-    }
-</script>
+                showPage(currentPage);
+                generatePagination();
+            };
+        </script>

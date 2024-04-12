@@ -18,25 +18,55 @@
         overflow-x: auto;
     }
 
-    table {
-        width: 100%;
-        background-color: #0F021B;
-        border: 1px solid #640EA1;
+    .pagination {
+        margin-top: 20px; /* Adjust spacing as needed */
     }
 
-    tr {
-        border: 1px solid #640EA1;
-    }
+        .pagination a {
+            display: inline-block;
+            padding: 5px 10px;
+            margin-right: 5px;
+            text-decoration: none;
+            color: white;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    thead th {
-        background-color: #492173;
+            .pagination a:hover {
+                background-color: #f0f0f0;
+            }
+
+            .pagination a.active {
+                background-color: #4c3896; /* Active page background color */
+                color: #fff; /* Active page text color */
+                border: none
+            }
+
+    .tabledatahead {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 20px 20px;
+        background-color: #191c24;
         font-weight: bold;
-        text-transform: uppercase;
+        font-size: 18px
     }
 
-    tbody tr:hover {
-        background-color: #1A042D;
+    .tabledatabo {
+        display: flex;
+        height: auto;
+        padding: 20px 20px;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 15px;
+        background-color: #191c24;
+        border-bottom: 1px solid grey;
     }
+
+        .tabledatabo:hover {
+            background-color: black
+        }
 </style>
 <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; background-color: #8f56cc;border:none" onclick="myFunction()">Add City </button>
 
@@ -73,35 +103,38 @@
 </div>
 <div style="height:50px"></div>
 <div>
-    <table>
-        <thead>
-            <tr>
-                <th style="width:100px;text-align:center">No</th>
-                <th style="width:250px;text-align:center">Name</th>
-                <th style="width:100px;text-align:center">Edit</th>
+    <div>
+        <div class="tabledata">
+            <div class="tabledatahead">
+                <div style="width: 100px;text-align: center;">No</div>
+                <div style="width: 200px;text-align: center;">City</div>
+                <div style="width: 100px;text-align: center;">Edit</div>
 
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Count; i++)
-            {
+            </div>
 
+            <div class="fulldata">
+                @for (int i = 0; i < Model.Count; i++)
+                {<div class="tabledatabo">
+                        <div style="width: 100px;text-align: center;">@(i + 1)</div>
+                        <div style="width: 200px;text-align: center;">
+                            <div style="width: 100%; word-wrap: break-word; text-align: center">@Model[i].title_city</div>
+                        </div>
+                        <div style="width: 100px;text-align: center;">
+                            <a href="@Url.Action(" Editc", "Admin")?idc=@Model[i].id_city"
+                               style="color: rgb(255, 255, 255); font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; background-color:  rgb(228, 209, 0); border-radius: 5px ">Edit</a>
+                        </div>
 
-                <tr style="height:100px">
-                    <td style="width:100px;text-align:center">@(i+1)</td>
-                    <td style="width:250px  "><div style="width: 100%; word-wrap: break-word; text-align: center"> @Model[i].title_city</div></td>
+                    </div>
 
-
-                    <td style="text-align: center;">
-                        <a href="@Url.Action("Editc","Admin")?idc=@Model[i].id_city" style="color: rgb(220, 227, 15); font-size: 15px; padding: 7px 20px; text-decoration: none; width: 100%; height: 30px; border: 1px solid rgb(220, 227, 15); border-radius: 5px ">Edit</a>
-                    </td>
-                </tr>
-
-            }
-
-
-        </tbody>
-    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div style="width:100%;display:flex;justify-content:center; align-items:center">
+    <div class="pagination" id="pagination">
+        <!-- Pagination controls will be added dynamically by JavaScript -->
+    </div>
 </div>
 <script>
     function myFunction() {
@@ -126,4 +159,66 @@
             e.style.color = "#C2C4CC";
         }
     }
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const itemsPerPage = 5;
+        const movieItems = document.querySelectorAll('.tabledatabo');
+        const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+            movieItems.forEach((item, index) => {
+                if (index >= startIndex && index <= endIndex) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const numPagesToShow = 2; // Number of pages to show before and after the current page
+            const startPage = Math.max(1, currentPage - numPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                    updatePagination();
+                    generatePagination();
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                if (index + 1 === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        showPage(currentPage);
+        generatePagination();
+    });
 </script>

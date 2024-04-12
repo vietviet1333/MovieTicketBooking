@@ -74,7 +74,7 @@ namespace MovieTicketBooking.Controllers
             try
             {
                 TheaterDao.Instance().EditTheater(id_theater, theatername, location, city, urlimag);
-                return Redirect("Theater_detail?id=" + id_theater);
+                return RedirectToAction("Theater_detail",new {id = id_theater });
             }
             catch
             {

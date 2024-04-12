@@ -251,7 +251,7 @@ namespace MovieTicketBooking.Dao
                                       movie = movie,
                                       showtime = st,
                                       theater = th,
-                                  }).ToList();
+                                  }).OrderByDescending(x=>x.booking.booking_id).ToList();
 
                     if (result.Count > 0)
                     {
