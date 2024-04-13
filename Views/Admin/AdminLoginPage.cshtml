@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <style>
@@ -274,12 +274,12 @@ else
                     swal({
                         title: "Login",
                         text: "Login Success",
-                        allowOutsideClick: false,
-
-                    }).then((value) => {
-                        if (value) {
+                        timer: 2000,
+                        buttons: false,
+                    }).then(() => {
+                       
                             window.location.replace("https://localhost:44351/Admin/Dashboard");
-                        }
+                        
                     });
                 } else {
                     swal({

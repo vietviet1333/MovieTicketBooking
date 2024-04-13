@@ -48,7 +48,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 MovieTicketBookingEntities2 mv = new MovieTicketBookingEntities2();
-                var result = mv.Cities.OrderByDescending(x=>x.id_city).ToList();
+                var result = mv.Cities.OrderByDescending(x => x.id_city).ToList();
                 return result;
             }
             catch (Exception e)
@@ -84,7 +84,7 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                return mv.Theaters.OrderByDescending(x=>x.theater_id).ToList();
+                return mv.Theaters.OrderByDescending(x => x.theater_id).ToList();
             }
             catch (Exception e)
             {
@@ -129,7 +129,7 @@ namespace MovieTicketBooking.Dao
             }
             return flagEditTheater;
         }
-        public List<Theater> GetTheatersWithShowtime(int cityId, DateTime showDate,int movie_id)
+        public List<Theater> GetTheatersWithShowtime(int cityId, DateTime showDate, int movie_id)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace MovieTicketBooking.Dao
                     var result = (from th in mv.Theaters
                                   join st in mv.Showtimes on th.theater_id equals st.theater_id
                                   join mo in mv.Movies on st.movie_id equals mo.movie_id
-                                  where th.city_id == cityId && DbFunctions.TruncateTime(st.show_date) == showDate.Date && st.movie_id== movie_id && st.status== 0
+                                  where th.city_id == cityId && DbFunctions.TruncateTime(st.show_date) == showDate.Date && st.movie_id == movie_id && st.status == 0
                                   select th).Distinct().ToList();
                     return result;
                 }
@@ -154,12 +154,35 @@ namespace MovieTicketBooking.Dao
         {
             try
             {
-                var mv = new MovieTicketBookingEntities2(); 
+                var mv = new MovieTicketBookingEntities2();
                 var selectedCities = mv.Cities.ToList();
                 return selectedCities;
             }
             catch
             {
+                return null;
+            }
+        }
+        public List<Theater> GetTheaterHasRoom()
+        {
+            try
+            { List<Theater> t = new List<Theater>();
+                using(var mv= new MovieTicketBookingEntities2())
+                {
+                    var theaterhasroom = (from th in mv.Rooms select th.theater_id).Distinct().ToList();
+                    foreach(var theater in theaterhasroom)
+                    {
+                        var result = (from thea in mv.Theaters where thea.theater_id == theater select thea).FirstOrDefault();
+                       if(result != null)
+                        {
+                            t.Add(result);
+                        }
+                    }
+                }
+                return t;
+            }catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }

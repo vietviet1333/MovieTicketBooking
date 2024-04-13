@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var showtimes = MovieTicketBooking.Dao.ShowtimeDao.Instance().getAllShowtime();
     var movies = MovieTicketBooking.Dao.MovieDao.Instance().GetAllMovies();
-    var theaters = MovieTicketBooking.Dao.TheaterDao.Instance().getAllTheater();
+    var theaters = MovieTicketBooking.Dao.TheaterDao.Instance().GetTheaterHasRoom();
 
 }
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <style>
     .swal-modal {
@@ -175,6 +175,7 @@
         border: 1px solid darkblue;
         /* Adjust square border */
     }
+
     .pagination {
         margin-top: 20px; /* Adjust spacing as needed */
     }
@@ -199,6 +200,15 @@
                 color: #fff; /* Active page text color */
                 border: none
             }
+
+    #searchInput {
+        margin: 20px 0px;
+        background-color: black;
+        border: 1px solid grey;
+        color: white;
+        height: 40px;
+        border-radius: 5px;
+    }
 </style>
 <button class="btn btn-primary btn-xs" style="margin-left: 15px; margin-bottom: 10px; color: #492173; background-color: #8f56cc; border: none" onclick="formaddroom()">Add Showtime </button>
 <div id="newtheater" style="display: none; background-color: #1e1e27e3; border-radius: 10px; padding: 10px; ">
@@ -215,12 +225,15 @@
                         <option value="">Select Movie</option>
                         @for (int i = 0; i < movies.Count; i++)
                         {
-                            <option value="@movies[i].movie_id">@movies[i].title</option>
+                            <option value="@movies[i].movie_id" >@movies[i].title - @movies[i].duration minutes</option>
                         }
 
                     </select>
                 </div>
-                <div style="width:48%"></div>
+
+                <div style="width:48%">
+                  
+                </div>
             </div>
             <div style="display:flex;justify-content:space-around ">
 
@@ -250,12 +263,12 @@
                 </div>
                 <div class="form-group" style="width:30%">
                     <label for="time" class="form-label">Time Start</label>
-                    <input type="time" class="form-control" id="a" step="60">
+                    <input type="time" class="form-control" id="a" step="60" min="00:00">
 
                 </div>
                 <div class="form-group" style="width:30%">
                     <label for="time" class="form-label">Time End</label>
-                    <input type="time" class="form-control" id="b" step="60">
+                    <input type="time" class="form-control" id="b" step="60" max="23:59">
                     <input type="hidden" value="0" name="status" />
                 </div>
             </div>
@@ -266,7 +279,9 @@
 </div>
 
 <div style="margin-top:30px">
-
+    <div>
+        <input type="text" id="searchInput" onkeyup="searchMovies()" placeholder="  Search By Movie Name...">
+    </div>
     <div class="tabledata">
         <div class="tabledatahead">
             <div style="width: 50px;text-align: center;">No</div>
@@ -333,8 +348,48 @@
     </div>
 
 </div>
+
+<script>
+    function validateForm() {
+
+        var theater = document.querySelector("#theaterSelect").value;
+        var show = document.querySelector("#show_date").value;
+        var start = document.querySelector("#a").value;
+        var end = document.querySelector("#b").value;
+        var movie = document.getElementById("country").value;
+
+        if (theater === "" || show === "" || start === "" || end === "" || movie === "") {
+
+            return 0;
+        }
+
+        if (new Date(show) < new Date()) {
+
+            return 1;
+        }
+        if (start > end) {
+            return 2;
+        }
+
+        return 3;
+
+
+    }
+
+    // Set minimum release date to today
+    var today = new Date();
+    today.setDate(today.getDate() + 1);
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('show_date').setAttribute('min', today);
+</script>
+
 <script>
     $('#theaterSelect').change(function () {
+       
         var theaterId = $(this).val();
         $.ajax({
             url: '/Showtime/FetchRooms', // Controller action to fetch rooms
@@ -350,7 +405,7 @@
     });
     function checkshowtime() {
         debugger
-        var room = document.querySelector("#room").value;
+
         var show = document.querySelector("#show_date").value;
         var start = document.querySelector("#a").value;
         var end = document.querySelector("#b").value;
@@ -358,43 +413,68 @@
         var b = show + " " + end;
         document.querySelector("#starttime").value = a;
         document.querySelector("#endtime").value = b;
-        debugger
-        $.ajax({
-            url: '/Showtime/Checkshowtime',
-            type: 'POST',
-            data: {
-                room_id: room,
-                show_date: show,
-                starttime: a,
-                endtime: b
-            },
-            success: function (response) {
+        var checkForm = validateForm();
+        if (checkForm == 3) {
+            var room = document.querySelector("#room").value;
+            $.ajax({
+                url: '/Showtime/Checkshowtime',
+                type: 'POST',
+                data: {
+                    room_id: room,
+                    show_date: show,
+                    starttime: a,
+                    endtime: b
+                },
+                success: function (response) {
 
-                if (response == "True") {
-                    swal({
-                        title: "Success to add showtime",
-                        text: "Show time has been added",
-                        timer: 2000,
-                        buttons: false,
-                    });
+                    if (response == "True") {
+                        swal({
+                            title: "Success to add showtime",
+                            text: "Show time has been added",
+                            timer: 2000,
+                            buttons: false,
+                        });
 
-                    $("#myForm").submit();
+                        $("#myForm").submit();
 
 
 
-                } else {
-                    swal({
-                        title: "Error to add showtime",
-                        text: "Time overlap",
-                        icon: "error",
+                    } else {
+                        swal({
+                            title: "Error to add showtime",
+                            text: "Time overlap",
+                            icon: "error",
 
-                    });
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
+            });
+        } else if (checkForm == 0) {
+            swal({
+                title: "Please fill all field",
+                text: "",
+                icon: "error",
+
+            });
+        } else if (checkForm == 1) {
+            swal({
+                title: "Error show date",
+                text: "",
+                icon: "error",
+
+            });
+        } else if (checkForm == 2) {
+            swal({
+                title: "Start time have to before end time",
+                text: "",
+                icon: "error",
+
+            });
+        }
+
     };
     function formaddroom() {
         var x = document.getElementById("newtheater");
@@ -471,4 +551,87 @@
         showPage(currentPage);
         generatePagination();
     });
+</script>
+<script>
+    function searchMovies() {
+        debugger
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        if (filter == "") {
+            defaul();
+        } else {
+            table = document.getElementsByClassName("fulldata")[0];
+            divs = table.getElementsByClassName("tabledatabo");
+            for (i = 0; i < divs.length; i++) {
+                titleDiv = divs[i].getElementsByTagName("div")[1];
+                txtValue = titleDiv.textContent || titleDiv.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    divs[i].style.display = "";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function defaul() {
+        const itemsPerPage = 5;
+        const movieItems = document.querySelectorAll('.tabledatabo');
+        const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+            movieItems.forEach((item, index) => {
+                if (index >= startIndex && index <= endIndex) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const numPagesToShow = 2; // Number of pages to show before and after the current page
+            const startPage = Math.max(1, currentPage - numPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                    updatePagination();
+                    generatePagination();
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                if (index + 1 === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        showPage(currentPage);
+        generatePagination();
+    };
 </script>

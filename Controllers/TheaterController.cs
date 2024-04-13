@@ -14,12 +14,26 @@ namespace MovieTicketBooking.Controllers
         [CheckAdminLogin]
         public ActionResult Addnewtheater()
         {
-            return View(TheaterDao.Instance().getAllCity());
+            try
+            {
+                return View(TheaterDao.Instance().getAllCity());
+            }
+            catch
+            {
+                return View("Errors");
+            }
         }
         [CheckAdminLogin]
         public ActionResult AddnewCity()
         {
-            return View(TheaterDao.Instance().getAllCity());
+            try
+            {
+                return View(TheaterDao.Instance().getAllCity());
+            }
+            catch
+            {
+                return View("Errors");
+            }
         }
         [HttpPost]
         public ActionResult Insertcity()
@@ -28,17 +42,33 @@ namespace MovieTicketBooking.Controllers
             TheaterDao.Instance().Insertcity(name);
             return Redirect("AddnewCity");
         }
-        [ HttpPost]
-        public ActionResult Inserttheate(string theatername, string location, int city, string urlimag)
+        [HttpPost]
+        public bool Inserttheate(string theatername, string location, int city, string urlimag)
         {
-            TheaterDao.Instance().Inserttheater(theatername, location, city, urlimag);
-            return Redirect("Addnewtheater");
+            bool flagInsert = true;
+            try
+            {
+                bool inserted = TheaterDao.Instance().Inserttheater(theatername, location, city, urlimag);
+                if (inserted == true)
+                {
+                    flagInsert = true;
+                }
+                else
+                {
+                    flagInsert = false;
+                }
+            }
+            catch
+            {
+                flagInsert = false;
+            }
+            return flagInsert;
 
         }
-        [HttpGet,CheckAdminLogin]
+        [HttpGet, CheckAdminLogin]
         public ActionResult Theater_detail(int id)
         {
-            
+
             try
             {
 
@@ -53,7 +83,8 @@ namespace MovieTicketBooking.Controllers
                     return View(thea);
                 }
 
-            }catch
+            }
+            catch
             {
                 return Redirect("Addnewtheater");
             }
@@ -66,7 +97,7 @@ namespace MovieTicketBooking.Controllers
             int row = int.Parse(Request.Form["row"]);
             int column = int.Parse(Request.Form["colummn"]);
             RoomDao.Instance().Insertnewroomandchair(room_name, theater_id, row, column);
-            return Redirect("Theater_detail?id="+theater_id);
+            return Redirect("Theater_detail?id=" + theater_id);
         }
         [HttpPost]
         public ActionResult Edittheate(int id_theater, string theatername, string location, int city, string urlimag)
@@ -74,13 +105,13 @@ namespace MovieTicketBooking.Controllers
             try
             {
                 TheaterDao.Instance().EditTheater(id_theater, theatername, location, city, urlimag);
-                return RedirectToAction("Theater_detail",new {id = id_theater });
+                return RedirectToAction("Theater_detail", new { id = id_theater });
             }
             catch
             {
                 return Redirect("Addnewtheater");
             }
         }
-       
+
     }
 }

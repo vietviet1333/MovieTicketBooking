@@ -68,9 +68,20 @@
         .tabledatabo:hover {
             background-color: black
         }
+
+    #searchInput {
+        margin: 20px 0px;
+        background-color: black;
+        border: 1px solid grey;
+        color: white;
+        height: 40px;
+        border-radius: 5px;
+    }
 </style>
 
-<div style="height:50px"></div>
+<div>
+    <input type="text" id="searchInput" onkeyup="searchMovies()" placeholder="  Search By Phone...">
+</div>
 <div>
     <div>
         <div class="tabledata">
@@ -183,4 +194,87 @@
         showPage(currentPage);
         generatePagination();
     });
+</script>
+<script>
+    function searchMovies() {
+        debugger
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toUpperCase();
+        if (filter == "") {
+            defaul();
+        } else {
+            table = document.getElementsByClassName("fulldata")[0];
+            divs = table.getElementsByClassName("tabledatabo");
+            for (i = 0; i < divs.length; i++) {
+                titleDiv = divs[i].getElementsByTagName("div")[5];
+                txtValue = titleDiv.textContent || titleDiv.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    divs[i].style.display = "";
+                } else {
+                    divs[i].style.display = "none";
+                }
+            }
+        }
+    }
+    function defaul() {
+        const itemsPerPage = 5;
+        const movieItems = document.querySelectorAll('.tabledatabo');
+        const totalPages = Math.ceil(movieItems.length / itemsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage - 1, movieItems.length - 1);
+
+            movieItems.forEach((item, index) => {
+                if (index >= startIndex && index <= endIndex) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const numPagesToShow = 2; // Number of pages to show before and after the current page
+            const startPage = Math.max(1, currentPage - numPagesToShow);
+            const endPage = Math.min(totalPages, currentPage + numPagesToShow);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = '#';
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                    updatePagination();
+                    generatePagination();
+                });
+                pagination.appendChild(pageLink);
+            }
+        }
+
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                if (index + 1 === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        showPage(currentPage);
+        generatePagination();
+    };
 </script>
