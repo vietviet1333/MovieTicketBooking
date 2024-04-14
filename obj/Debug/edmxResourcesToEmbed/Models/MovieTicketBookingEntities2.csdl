@@ -135,7 +135,6 @@
     <Property Name="birthday" Type="DateTime" Precision="0" />
     <Property Name="gender" Type="Int32" />
     <Property Name="password" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
-    <Property Name="verificationCode" Type="Int32" />
   </EntityType>
   <Association Name="FK__Booking__showtim__4E88ABD4">
     <End Role="Showtimes" Type="Self.Showtime" Multiplicity="0..1" />
@@ -326,6 +325,7 @@
       <End Role="Showtimes" EntitySet="Showtimes" />
     </AssociationSet>
     <EntitySet Name="Admins" EntityType="MovieTicketBookingModel.Admin" />
+    <EntitySet Name="Tokens" EntityType="MovieTicketBookingModel.Token" />
   </EntityContainer>
   <EntityType Name="Admin">
     <Key>
@@ -337,5 +337,14 @@
     <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="verificationCode" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Token">
+    <Key>
+      <PropertyRef Name="token_id" />
+    </Key>
+    <Property Name="token_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="token1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="create_date" Type="DateTime" Precision="3" />
+    <Property Name="user_email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

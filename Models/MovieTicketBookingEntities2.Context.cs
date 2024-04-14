@@ -37,5 +37,6 @@ namespace MovieTicketBooking.Models
         public virtual DbSet<Theater> Theaters { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<Token> Tokens { get; set; }
     }
 }

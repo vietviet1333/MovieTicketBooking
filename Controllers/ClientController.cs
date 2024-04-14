@@ -146,7 +146,7 @@ namespace MovieTicketBooking.Controllers
             }
         }
         [HttpPost]
-        public int UserSendMail(string email)
+        public  int  UserSendMail (string email) 
         {//0 is success , 1 is email k tim thay, 2 is error
 
             int flagChange = 0;
@@ -155,10 +155,9 @@ namespace MovieTicketBooking.Controllers
                 bool checkemail = UserDao.Instance().GetEmailExists(email);
                 if (checkemail == false)
                 {
-                    Random random = new Random();
-                    int randomNumber = random.Next(100000, 999999);
-                    UserDao.Instance().InsertCode(randomNumber, email);
-                    Sendmail.Instance().SendmailChangePassUser(email, randomNumber);
+                    
+                  
+                    Sendmail.Instance().SendmailChangePassUser(email);
 
                 }
                 else
@@ -180,10 +179,10 @@ namespace MovieTicketBooking.Controllers
         {
             try
             {
-                string email = Request.Form["email"];
-                int verificationCode = int.Parse(Request.Form["verificationCode"]);
+                string email =Request.Form["email"] ;
+                string token  = Request.Form["token"];
                 string newpass = Request.Form["newPassword"];
-                bool c = UserDao.Instance().UserChangePasswordByEmail(email, verificationCode, newpass);
+                bool c = UserDao.Instance().UserChangePasswordByEmail(email,newpass,token);
                 if (c == true)
                 {
                     TempData["changepass"] = "Change Password Success";
@@ -227,6 +226,28 @@ namespace MovieTicketBooking.Controllers
             }
             return flagUpdate;
         }
+        [HttpGet]
+        public ActionResult Changepassword(string token, string email)
+        {
+            try
+            {
+                bool check = UserDao.Instance().CheckTokenViewchangepass(token, DateTime.Now);
+                if (check == true)
+                {
+                    TempData["token"] = token;
+                    TempData["email"] = email;
+                    return View();
+                }
+                else
+                {
+                    return View("Errors");
+                }
+            }
+            catch
+            {
+                return View("Errors");
+            }
+        }
         [HttpPost]
         public bool UserEditProfile(User user)
         {
@@ -261,7 +282,7 @@ namespace MovieTicketBooking.Controllers
                 return View("Errors");
             }
         }
-   public ActionResult CommingSoon()
+        public ActionResult CommingSoon()
         {
             try
             {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net;
 using System.Web;
+using MovieTicketBooking.Bcrypt;
+using MovieTicketBooking.Dao;
 
 namespace MovieTicketBooking.Others
 {
@@ -27,16 +29,11 @@ namespace MovieTicketBooking.Others
         <html>
         <body>
             <h2>Password Change Verification</h2>
-            <p>Your verification code is: <strong>" + verificationCode + @"</strong></p>
-            <p>Please enter the verification code in the field below to change your password:</p>
-            <form action='https://localhost:44351/Admin/Changepass' method='post'>
-                <input type='hidden' name='email' value='" + usermail + @"' />
-                <input type='text' name='verificationCode' placeholder='Verification Code' required /><br /><br />
-                <input type='password' name='newPassword' placeholder='New Password' required /><br /><br />
-                <input type='submit' style='background-color:white;border:1px solid green;border-radius:8px;color:green' value='Submit' />
-            </form>
+            <p>Your verification code is: <strong>"" + verificationCode + @""</strong></p>
+            <div>Change pass<a href='https://localhost:44351/Admin/Changepass'>here</a></div>
         </body>
-        </html>";
+        </html>
+       ";
 
             // Recipient's email address
             string toEmail = usermail;
@@ -51,7 +48,7 @@ namespace MovieTicketBooking.Others
             MailMessage mailMessage = new MailMessage(fromEmail, toEmail);
             mailMessage.From = new MailAddress(fromEmail, "VIET CINEMAS");
             mailMessage.Subject = "Password Change Verification";
-            mailMessage.IsBodyHtml = true; 
+            mailMessage.IsBodyHtml = true;
             mailMessage.Body = htmlBody;
 
 
@@ -68,25 +65,20 @@ namespace MovieTicketBooking.Others
 
         }
 
-        public void SendmailChangePassUser(string usermail, int verificationCode)
-        {
-            string fromEmail = "ntviet1333@gmail.com";
-            string password = "zkgq lmor buji xotb";
+        public void SendmailChangePassUser(string usermail)
+        {   
+            string token = PasswordHashingService.Instance().HashPassword(usermail);
+            UserDao.Instance().InsertToken(usermail, token);
+            string changepassurl = $"https://localhost:44351/Client/Changepassword?token={HttpUtility.UrlEncode(token)}&&email={HttpUtility.UrlEncode(usermail)}";
             string htmlBody = @"
         <html>
         <body>
-            <h2>Password Change Verification</h2>
-            <p>Your verification code is: <strong>" + verificationCode + @"</strong></p>
-            <p>Please enter the verification code in the field below to change your password:</p>
-            <form action='https://localhost:44351/Client/Changepass' method='post'>
-                <input type='hidden' name='email' value='" + usermail + @"' />
-                <input type='text' name='verificationCode' placeholder='Verification Code' required /><br /><br />
-                <input type='password' name='newPassword' placeholder='New Password' required /><br /><br />
-                <input type='submit' style='background-color:white;border:1px solid green;border-radius:8px;color:green' value='Submit' />
-            </form>
+             <div style=""font-weight: bold;color: rgb(216, 216, 0);"">Note: link is only valid for 5 minutes</div>
+            <div>Change pass <a href='" + changepassurl + @"'>here</a></div>
         </body>
         </html>";
-
+            string fromEmail = "ntviet1333@gmail.com";
+            string password = "zkgq lmor buji xotb";
             // Recipient's email address
             string toEmail = usermail;
 

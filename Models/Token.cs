@@ -12,14 +12,11 @@ namespace MovieTicketBooking.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Token
     {
-        public int user_id { get; set; }
-        public string user_name { get; set; }
-        public string email { get; set; }
-        public string user_phone { get; set; }
-        public Nullable<System.DateTime> birthday { get; set; }
-        public Nullable<int> gender { get; set; }
-        public string password { get; set; }
+        public int token_id { get; set; }
+        public string token1 { get; set; }
+        public Nullable<System.DateTime> create_date { get; set; }
+        public string user_email { get; set; }
     }
 }

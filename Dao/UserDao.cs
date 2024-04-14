@@ -3,12 +3,15 @@ using MovieTicketBooking.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace MovieTicketBooking.Dao
 {
     public class UserDao
     {
+
         private UserDao() { }
         private static UserDao instance;
         public static UserDao Instance()
@@ -102,8 +105,7 @@ namespace MovieTicketBooking.Dao
                 var user = (from u in mv.Users where u.email.Equals(email) select u).FirstOrDefault();
                 if (user != null)
                 {
-                    user.verificationCode = 0;
-                    mv.SaveChanges();
+
                     bool verifyPassword = PasswordHashingService.Instance().VerifyPassword(password, user.password);
                     if (verifyPassword)
                     {
@@ -159,9 +161,10 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = (from u in mv.Users select u).OrderByDescending(x=>x.user_id).ToList();
+                var result = (from u in mv.Users select u).OrderByDescending(x => x.user_id).ToList();
                 return result;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;
@@ -174,15 +177,16 @@ namespace MovieTicketBooking.Dao
             {
                 var mv = new MovieTicketBookingEntities2();
                 int userid = (int)HttpContext.Current.Session["LoggedInUserID"];
-                var u = mv.Users.SingleOrDefault(x=> x.user_id == userid);
-                u.user_name= user.user_name;
-                u.email= user.email;
-                u.user_phone= user.user_phone;
-                u.birthday= user.birthday;
-                u.gender= user.gender;
+                var u = mv.Users.SingleOrDefault(x => x.user_id == userid);
+                u.user_name = user.user_name;
+                u.email = user.email;
+                u.user_phone = user.user_phone;
+                u.birthday = user.birthday;
+                u.gender = user.gender;
                 mv.SaveChanges();
                 return flagEdit;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 flagEdit = false;
@@ -195,42 +199,53 @@ namespace MovieTicketBooking.Dao
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var u = mv.Users.SingleOrDefault(x=>x.user_id == user_id);
+                var u = mv.Users.SingleOrDefault(x => x.user_id == user_id);
                 bool checkOldPass = PasswordHashingService.Instance().VerifyPassword(oldpassword, u.password);
                 if (checkOldPass)
                 {
                     var newp = PasswordHashingService.Instance().HashPassword(newpassword);
                     u.password = newp;
                     mv.SaveChanges();
-                    
+
                 }
                 else
                 {
-                    flagChangePass= false;
-                   
+                    flagChangePass = false;
+
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                flagChangePass= false;
+                flagChangePass = false;
             }
             return flagChangePass;
         }
-        public bool UserChangePasswordByEmail(string email, int verificationCode, string newpassword)
+        public bool UserChangePasswordByEmail(string email, string newpassword , string token)
         {
             bool flagChangePassword = true;
             try
             {
-                var mv = new MovieTicketBookingEntities2();
-                var ad = mv.Users.SingleOrDefault(x => x.email == email && x.verificationCode.HasValue);
-                if (ad != null && ad.verificationCode == verificationCode)
+               using(var mv = new MovieTicketBookingEntities2())
                 {
-                    string hashedPassword = PasswordHashingService.Instance().HashPassword(newpassword);
-                    ad.password = hashedPassword;
-                    ad.verificationCode = 0;
-                    mv.SaveChanges();
-                    flagChangePassword = true;
-
+                    bool check = CheckToken(email, token, DateTime.Now);
+                    if(check == true)
+                    {
+                        var u = (from us in mv.Users where us.email== email select us).First();
+                        if (u != null)
+                        {
+                            u.password=PasswordHashingService.Instance().HashPassword(newpassword);
+                            mv.SaveChanges();
+                        }
+                        else
+                        {
+                            flagChangePassword = false;
+                        }
+                    }
+                    else
+                    {
+                        flagChangePassword = false;
+                    }
                 }
 
             }
@@ -241,23 +256,18 @@ namespace MovieTicketBooking.Dao
             }
             return flagChangePassword;
         }
-        public bool InsertCode(int verificationCode, string email)
+        public bool InsertToken(string email, string token)
         {
             bool flagInsert = true;
             try
             {
                 var mv = new MovieTicketBookingEntities2();
-                var result = mv.Users.SingleOrDefault(x => x.email == email);
-                if (result != null)
-                {
-                    result.verificationCode = verificationCode;
-                    mv.SaveChanges();
-                    flagInsert = true;
-                }
-                else
-                {
-                    flagInsert = false;
-                }
+                Token tk = new Token();
+                tk.create_date = DateTime.Now.AddMinutes(5);
+                tk.user_email = email;
+                tk.token1 =token;
+                mv.Tokens.Add(tk);
+                mv.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -266,6 +276,50 @@ namespace MovieTicketBooking.Dao
             }
             return flagInsert;
         }
-
+        public bool CheckToken(string email , string token, DateTime date)
+        {
+            bool check = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from t in mv.Tokens where t.user_email == email && t.token1 == token && t.create_date >date select t).First();
+                if (result != null)
+                {
+                    check = true;
+                }
+                else
+                {
+                    check = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                check = false;
+            }
+            return check;
+        }
+        public bool CheckTokenViewchangepass(string token, DateTime dat)
+        {
+            bool check = true;
+            try
+            {
+                var mv = new MovieTicketBookingEntities2();
+                var result = (from t in mv.Tokens where t.token1 == token && t.create_date > dat select t).First();
+                if (result != null)
+                {
+                    check = true;
+                }
+                else
+                {
+                    check = false;
+                }
+            }
+            catch
+            {
+               check= false;
+            }
+            return check;
+        }
     }
 }

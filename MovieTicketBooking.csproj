@@ -232,6 +232,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Models\Token.cs">
+      <DependentUpon>MovieTicketBookingEntities2.tt</DependentUpon>
+    </Compile>
     <Compile Include="Others\CheckAdminLoginAttribute.cs" />
     <Compile Include="Others\CheckLoginAttribute .cs" />
     <Compile Include="Others\ExcelPdfPrinter.cs" />
@@ -1316,6 +1319,7 @@
     <Content Include="Views\Admin\UserBooking.cshtml" />
     <Content Include="Views\Client\NowPlaying.cshtml" />
     <Content Include="Views\Client\CommingSoon.cshtml" />
+    <Content Include="Views\Client\Changepassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
